@@ -5,11 +5,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,14 +20,10 @@ import java.util.ArrayList;
 
 public class MainScreenView {
     //Declaração dos Nodes(elementos) da view
-    private BorderPane root;
-    private BorderPane commands;
+    private BorderPane root, commands;
     private GridPane editGraph, run;
     private Pane drawGraph;
-    private Button clear;
-    private Button addE;
-    private Button runBFS;
-    private Button random;
+    private Button clear, addE, runBFS, random;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Integer> numbers;
@@ -64,7 +63,7 @@ public class MainScreenView {
         return root;
     }
 
-    public void setRootStyled(BorderPane root) {
+    private void setRootStyled(BorderPane root) {
         root.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
         this.root = root;
     }
@@ -73,7 +72,7 @@ public class MainScreenView {
         return commands;
     }
 
-    public void setCommandsStyled(BorderPane commands) {
+    private void setCommandsStyled(BorderPane commands) {
         commands.setPadding(new Insets(7));
         commands.setBorder(new Border(new BorderStroke(Color.DARKSLATEGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         this.commands = commands;
@@ -82,7 +81,7 @@ public class MainScreenView {
         return editGraph;
     }
 
-    public void setEditGraphStyled(GridPane editGraph) {
+    private void setEditGraphStyled(GridPane editGraph) {
         editGraph.setAlignment(Pos.CENTER_LEFT);
         editGraph.setVgap(5);
         editGraph.setHgap(15);
@@ -93,7 +92,7 @@ public class MainScreenView {
         return run;
     }
 
-    public void setRunStyled(GridPane run) {
+    private void setRunStyled(GridPane run) {
         run.setAlignment(Pos.CENTER_RIGHT);
         run.setHgap(15);
         this.run = run;
@@ -102,14 +101,14 @@ public class MainScreenView {
         return drawGraph;
     }
 
-    public void setDrawGraph(Pane drawGraph) {
+    private void setDrawGraph(Pane drawGraph) {
         this.drawGraph = drawGraph;
     }
     public Button getRunBFS() {
         return runBFS;
     }
 
-    public void setRunBFSStyled(Button runBFS) throws FileNotFoundException {
+    private void setRunBFSStyled(Button runBFS) throws FileNotFoundException {
         FileInputStream input=new FileInputStream("resources/icons/play.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
@@ -122,7 +121,7 @@ public class MainScreenView {
         return random;
     }
 
-    public void setRandomStyled(Button random) throws FileNotFoundException {
+    private void setRandomStyled(Button random) throws FileNotFoundException {
         FileInputStream input=new FileInputStream("resources/icons/dice.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
@@ -134,7 +133,7 @@ public class MainScreenView {
         return clear;
     }
 
-    public void setClearStyled(Button clear) {
+    private void setClearStyled(Button clear) {
         clear.setTextFill(Color.DARKSLATEGRAY);
         clear.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
         clear.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
@@ -145,7 +144,7 @@ public class MainScreenView {
         return addE;
     }
 
-    public void setAddEStyled(Button addE) {
+    private void setAddEStyled(Button addE) {
         addE.setTextFill(Color.DARKSLATEGRAY);
         addE.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
         addE.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
@@ -156,7 +155,7 @@ public class MainScreenView {
         return addV;
     }
 
-    public void setAddVStyled(RadioButton addV) {
+    private void setAddVStyled(RadioButton addV) {
         addV.setTextFill(Color.LIGHTGRAY);
         addV.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
         addV.setUserData("AddV");
@@ -167,9 +166,10 @@ public class MainScreenView {
         return delete;
     }
 
-    public void setDeleteStyled(RadioButton delete) {
+    private void setDeleteStyled(RadioButton delete) {
         delete.setTextFill(Color.LIGHTGRAY);
         delete.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
+        delete.setUserData("Del");
         this.delete = delete;
     }
 
@@ -177,7 +177,7 @@ public class MainScreenView {
         return toggleAddDel;
     }
 
-    public void setToggleAddDel(ToggleGroup toggleAddDel) {
+    private void setToggleAddDel(ToggleGroup toggleAddDel) {
         this.toggleAddDel = toggleAddDel;
     }
 
@@ -185,7 +185,7 @@ public class MainScreenView {
         return numbers;
     }
 
-    public void setNumbers(ArrayList<Integer> numbers) {
+    private void setNumbers(ArrayList<Integer> numbers) {
         this.numbers = numbers;
     }
 
@@ -193,8 +193,25 @@ public class MainScreenView {
         return vertexes;
     }
 
-    public void setVertexes(ArrayList<StackPane> vertexes) {
+    private void setVertexes(ArrayList<StackPane> vertexes) {
         this.vertexes = vertexes;
+    }
+
+    //Métodos estáticos puramente para estilização
+    protected static void styleVertexShape(Circle vertexShape) {
+        vertexShape.setRadius(13);
+        vertexShape.setFill(Color.TRANSPARENT);
+        vertexShape.setStroke(Color.SPRINGGREEN);
+        DropShadow s = new DropShadow();
+        s.setColor(Color.SPRINGGREEN);
+        s.setRadius(13);
+        s.setSpread(0.0001);
+        vertexShape.setEffect(s);
+    }
+
+    protected static void styleVertexText(Text vertexText) {
+        vertexText.setFill(Color.SPRINGGREEN);
+        vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
     }
 }
 

@@ -22,8 +22,9 @@ public class MainScreenController {
         this.setView(new MainScreenView());
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunBFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear());
-        this.drawGraph(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getNumbers(), this.view.getVertexes());
-        this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
+        this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getNumbers(), this.view.getVertexes());
+        this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes(), this.view.getNumbers());
+        this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getNumbers());
     }
     //Getter e Setter para View
     public MainScreenView getView() {
@@ -35,6 +36,8 @@ public class MainScreenController {
     }
 
     //Métodos para adcionar eventos em Nodes
+
+    //*Completa
     public void colorPressedButton(Button... b){
         for (Button btn:b) {
             btn.setOnMousePressed(new EventHandler<>() {
@@ -56,20 +59,21 @@ public class MainScreenController {
         }
     }
 
-    public void drawGraph(Pane pane, ToggleGroup group, ArrayList<Integer>num, ArrayList<StackPane> stack){
+    //*Completa
+    //*Revisar quando o model for feito
+    public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Integer>num, ArrayList<StackPane> stack){
         EventHandler<MouseEvent> eventHandler = e -> {
             Circle circle = new Circle();
             circle.setCenterX(e.getX());
             circle.setCenterY(e.getY());
-            circle.setRadius(13);
-            circle.setFill(Color.LIGHTCORAL);
-            circle.setStroke(Color.DARKSLATEGRAY);
+            MainScreenView.styleVertexShape(circle);
 
             if(pane.contains(circle.getCenterX()+35, circle.getCenterY()+35)
                     && !(e.getTarget() instanceof StackPane) && !(e.getTarget() instanceof Circle)
                     && !(e.getTarget() instanceof Text)){
 
                 Text txt = new Text();
+                MainScreenView.styleVertexText(txt);
                 StackPane vertex = new StackPane(circle, txt);
                 stack.add(vertex);
                 num.add(stack.indexOf(vertex));
@@ -78,7 +82,6 @@ public class MainScreenController {
                 vertex.setLayoutY(circle.getCenterY());
                 pane.getChildren().addAll(vertex);
             }
-
         };
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
             if (group.getSelectedToggle().getUserData() == "AddV") {
@@ -89,12 +92,38 @@ public class MainScreenController {
         });
     }
 
-    public void clearGraph(Pane pane, Button b, ArrayList<StackPane> stack){
+    //*Completa
+    public void clearGraph(Pane pane, Button b, ArrayList<StackPane> stack, ArrayList<Integer> num){
         EventHandler<MouseEvent> eventHandler = e ->{
             pane.getChildren().removeAll(stack);
             stack.clear();
+            num.clear();
         };
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    //*Incompleta!!
+    //*Deleta apenas os vértices
+    //*Completar com o controller da tela popup
+    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<StackPane> stack, ArrayList<Integer> num){
+        EventHandler<MouseEvent> eventHandler = e ->{
+            for (StackPane s:stack) {
+                if(s.getChildren().contains(e.getTarget())) {
+                    s.getChildren().removeAll();
+                    pane.getChildren().remove(s);
+                    num.set(stack.indexOf(s), -1);
+                    //stack.remove(s);
+                    break;
+                }
+            }
+        };
+        group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
+            if (group.getSelectedToggle().getUserData() == "Del") {
+                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+            }else{
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+            }
+        });
     }
 }
 
