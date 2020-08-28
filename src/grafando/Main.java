@@ -10,8 +10,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         MainScreenController controller = new MainScreenController();
         primaryStage.setResizable(false);
-        primaryStage.setMinHeight(350);
-        primaryStage.setMinWidth(350);
         primaryStage.setTitle("Graph");
         primaryStage.setScene(new Scene(controller.getView().getRoot(), 600, 400));
         primaryStage.show();

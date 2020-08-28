@@ -5,15 +5,18 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import javax.tools.Tool;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,7 +26,7 @@ public class MainScreenView {
     private BorderPane root, commands;
     private GridPane editGraph, run;
     private Pane drawGraph;
-    private Button clear, addE, runBFS, random;
+    private Button clear, addE, runDFS, random;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Integer> numbers;
@@ -36,7 +39,7 @@ public class MainScreenView {
         this.setEditGraphStyled(new GridPane());
         this.setRunStyled(new GridPane());
         this.setDrawGraph(new Pane());
-        this.setRunBFSStyled(new Button());
+        this.setRunDFSStyled(new Button());
         this.setRandomStyled(new Button());
         this.setClearStyled(new Button("Clear"));
         this.setAddEStyled(new Button("Connect"));
@@ -54,7 +57,7 @@ public class MainScreenView {
         this.commands.setRight(this.run);
         this.editGraph.addColumn(0, this.addV, this.delete);
         this.editGraph.addColumn(1, this.addE, this.clear);
-        this.run.addColumn(0, this.runBFS);
+        this.run.addColumn(0, this.runDFS);
         this.run.addColumn(1, this.random);
     }
     //Métodos Setters e Getters para cada Node
@@ -104,17 +107,18 @@ public class MainScreenView {
     private void setDrawGraph(Pane drawGraph) {
         this.drawGraph = drawGraph;
     }
-    public Button getRunBFS() {
-        return runBFS;
+    public Button getRunDFS() {
+        return runDFS;
     }
 
-    private void setRunBFSStyled(Button runBFS) throws FileNotFoundException {
+    private void setRunDFSStyled(Button runDFS) throws FileNotFoundException {
         FileInputStream input=new FileInputStream("resources/icons/play.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
-        runBFS.setGraphic(img);
-        runBFS.setBackground(null);
-        this.runBFS = runBFS;
+        runDFS.setGraphic(img);
+        runDFS.setBackground(null);
+        runDFS.setTooltip(new Tooltip("Run depth-first search"));
+        this.runDFS = runDFS;
     }
 
     public Button getRandom() {
@@ -127,6 +131,7 @@ public class MainScreenView {
         ImageView img=new ImageView(image);
         random.setGraphic(img);
         random.setBackground(null);
+        random.setTooltip(new Tooltip("Generate random graph"));
         this.random = random;
     }
     public Button getClear() {
@@ -201,6 +206,7 @@ public class MainScreenView {
     protected static void styleVertexShape(Circle vertexShape) {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);
+        vertexShape.setStrokeType(StrokeType.CENTERED);
         vertexShape.setStroke(Color.SPRINGGREEN);
         DropShadow s = new DropShadow();
         s.setColor(Color.SPRINGGREEN);
