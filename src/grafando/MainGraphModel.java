@@ -15,7 +15,7 @@ public class MainGraphModel {
         return vertices;
     }
 
-    public HashMap<Integer,MainVertexModel> get_lista(){
+    public HashMap<Integer,MainVertexModel> getLista(){
         return lista_adj;
     }
 
@@ -34,22 +34,22 @@ public class MainGraphModel {
         }
     }
     public void conectarVertices(int v1, int v2){
-        if(!existeAresta(v1,v2) && (existeVertice(v1) && existeVertice(v2))){
+        if((existeVertice(v1) && existeVertice(v2)) && !existeAresta(v1,v2)){
             lista_adj.get(v1).getConjunto().add(v2);
             lista_adj.get(v1).getConjunto().add(v1);
         }
+        //else: joga uma exceção
     }
 
     public void removerVertice(int v){
-        if(existeVertice(v)){
+        if(existeVertice(v)) {
             vertices.getConjunto().remove(v);
             lista_adj.remove(v);
-        }
-        for(Integer c: lista_adj.keySet()){
-            if(existeAresta(v,c)){
-                removerAresta(v,c);
+            for (Integer c : lista_adj.keySet()) {
+                removerAresta(v, c);
             }
         }
+        //else: joga uma exceção
     }
 
     public void removerAresta(int v1, int v2){
@@ -57,6 +57,7 @@ public class MainGraphModel {
             lista_adj.get(v1).getConjunto().remove(v2);
             lista_adj.get(v2).getConjunto().remove(v1);
         }
+        //else: joga uma exceção
     }
 
     public void limparGrafo(){
