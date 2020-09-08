@@ -1,5 +1,6 @@
-package grafando;
+package grafando.Controller;
 
+import grafando.View.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

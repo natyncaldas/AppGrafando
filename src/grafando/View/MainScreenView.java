@@ -1,4 +1,4 @@
-package grafando;
+package grafando.View;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -202,7 +202,7 @@ public class MainScreenView {
     }
 
     //Métodos estáticos puramente para estilização
-    protected static void styleVertexShape(Circle vertexShape) {
+    public static void styleVertexShape(Circle vertexShape) {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
@@ -214,7 +214,7 @@ public class MainScreenView {
         vertexShape.setEffect(s);
     }
 
-    protected static void styleVertexText(Text vertexText) {
+    public static void styleVertexText(Text vertexText) {
         vertexText.setFill(Color.SPRINGGREEN);
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
     }

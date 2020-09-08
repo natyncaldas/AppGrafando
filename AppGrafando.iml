@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="javafx-14" level="application" />
+    <orderEntry type="library" name="lib" level="application" />
   </component>
 </module>

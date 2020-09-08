@@ -1,5 +1,6 @@
 package grafando;
 
+import grafando.Controller.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
