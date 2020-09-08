@@ -10,15 +10,20 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainScreenController {
     //Declaração da View
+    public Stage primaryStage;
     private MainScreenView view;
 
-    public MainScreenController() throws FileNotFoundException {
+    public MainScreenController(Stage primaryStage) throws FileNotFoundException {
+        //Salva referência ao stage principal
+        this.primaryStage = primaryStage;
+
         //Instanciação da View
         this.setView(new MainScreenView());
         //Chamada de métodos com eventos para Nodes específicos
