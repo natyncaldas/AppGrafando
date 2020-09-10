@@ -26,11 +26,15 @@ public class MainScreenController {
 
         //Instanciação da View
         this.setView(new MainScreenView());
+
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getNumbers(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes(), this.view.getNumbers());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getNumbers());
+
+        //testando
+        openConnectVertexScreen();
     }
     //Getter e Setter para View
     public MainScreenView getView() {
@@ -129,6 +133,13 @@ public class MainScreenController {
             }else{
                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             }
+        });
+    }
+
+    //adiciona funcionalidade de criar a popup
+    public void openConnectVertexScreen() {
+        view.getAddE().setOnAction(e ->{
+            ConnectVertexController popupController = new ConnectVertexController(this.primaryStage);
         });
     }
 }
