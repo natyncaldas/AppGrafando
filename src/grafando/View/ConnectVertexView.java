@@ -16,7 +16,6 @@ public class ConnectVertexView {
 
     Stage popUpStage;
     Stage primaryStage;
-    BorderPane root;
     GridPane vertexSelection;
     ComboBox startingVertex, finalVertex;
 
