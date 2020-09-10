@@ -27,9 +27,8 @@ public class ConnectVertexView {
     }
 
     private void setupElements() {
-        setupRootPane();
-        setupPopUpStage();
         setupGrid();
+        setupPopUpStage();
         initializeComboboxes();
     }
 
@@ -39,7 +38,7 @@ public class ConnectVertexView {
     }
 
     private void initializeComboboxes() {
-        //change to array from controller after
+        //TODO: pegar array de vertices do controller depois
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Option 1",
@@ -54,26 +53,21 @@ public class ConnectVertexView {
         popUpStage = new Stage();
         popUpStage.initModality(Modality.APPLICATION_MODAL);
         popUpStage.setResizable(false);
+        popUpStage.setTitle("Connect");
 
-        Scene popUpScene = new Scene(root, 300, 100);
+        Scene popUpScene = new Scene(vertexSelection, 300, 100);
         popUpScene.setFill(Color.web("#15202b"));
 
         popUpStage.setScene(popUpScene);
     }
 
-    private void setupRootPane() {
-        root = new BorderPane();
-        root.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
-        root.setPadding(new Insets(12,12,12,12));
-    }
-
     private void setupGrid() {
         vertexSelection = new GridPane();
-        Pane pane = new Pane();
+        vertexSelection.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
+        vertexSelection.setPadding(new Insets(12,12,12,12));
         vertexSelection.setHgap(20);
         vertexSelection.setVgap(5);
         vertexSelection.setAlignment(Pos.CENTER);
-        root.setBottom(vertexSelection);
     }
 
     private void positionElementsInsideGridLayout() {
@@ -95,6 +89,7 @@ public class ConnectVertexView {
             popUpStage.setY(centerYPosition - popUpStage.getHeight()/2d);
             popUpStage.show();
         });
+
         popUpStage.showAndWait();
     }
 }
