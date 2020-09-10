@@ -22,11 +22,11 @@ public class ConnectVertexView {
 
     public ConnectVertexView(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        setupViewElements();
+        setupElements();
         positionElementsInsideView();
     }
 
-    private void setupViewElements() {
+    private void setupElements() {
         setupRootPane();
         setupPopUpStage();
         setupGrid();
@@ -35,7 +35,7 @@ public class ConnectVertexView {
 
     private void positionElementsInsideView() {
         positionElementsInsideGridLayout();
-        positioningPopup();
+        positioningPopupInsideParentStage();
     }
 
     private void initializeComboboxes() {
@@ -81,7 +81,7 @@ public class ConnectVertexView {
         vertexSelection.addColumn(1, finalVertex);
     }
 
-    private void positioningPopup() {
+    private void positioningPopupInsideParentStage() {
         // Calculate the center position of the parent Stage
         double centerXPosition = primaryStage.getX() + primaryStage.getWidth()/2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight()/2d;
