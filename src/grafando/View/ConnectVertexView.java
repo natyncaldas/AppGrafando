@@ -145,4 +145,12 @@ public class ConnectVertexView {
     public Stage getPopUpStage() {
         return popUpStage;
     }
+
+    public ComboBox getStartingVertex() {
+        return startingVertex;
+    }
+
+    public ComboBox getFinalVertex() {
+        return finalVertex;
+    }
 }
