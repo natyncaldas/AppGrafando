@@ -42,16 +42,15 @@ public class ConnectVertexView {
 
     private void positionElementsInsideView() {
         positionElementsInsideGridLayout();
-        //positioningPopupInsideParentStage();
     }
 
     private void initializeComboboxes() {
         //TODO: pegar array de vertices do controller depois
         ObservableList<String> options =
                 FXCollections.observableArrayList(
-                        "Option 1",
-                        "Option 2",
-                        "Option 3"
+                        "1",
+                        "2",
+                        "3"
                 );
         startingVertex = new ComboBox(options);
         finalVertex = new ComboBox(options);

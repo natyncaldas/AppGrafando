@@ -2,13 +2,17 @@ package grafando.Controller;
 
 import grafando.View.*;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -139,8 +143,44 @@ public class MainScreenController {
     //adiciona funcionalidade de criar a popup
     public void openConnectVertexScreen() {
         view.getAddE().setOnAction(e ->{
-            ConnectVertexController popupController = new ConnectVertexController(this.primaryStage);
+            ConnectVertexController popupController = new ConnectVertexController(this.primaryStage, this);
         });
     }
+
+    //cria aresta ligando dois nós
+    public void createEdge(Node firstVertex, Node secondVertex) {
+        //TODO: MOVE THIS CODE TO VIEW
+        Line line = new Line();
+        line.setStroke(Color.SPRINGGREEN);
+        line.setStrokeWidth(2);
+
+        DropShadow s = new DropShadow();
+        s.setColor(Color.SPRINGGREEN);
+        s.setRadius(13);
+        s.setSpread(0.0001);
+        line.setEffect(s);
+
+        Double firstX;
+        Double firstY;
+        Bounds firstCenter = view.getVertexes().get(0).getBoundsInParent();
+        firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
+        firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
+
+        line.setStartX(firstX);
+        line.setStartY(firstY);
+
+        Double finalX;
+        Double finalY;
+        Bounds finalCenter = view.getVertexes().get(1).getBoundsInParent();
+        finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
+        finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
+
+        line.setEndX(finalX);
+        line.setEndY(finalY);
+
+        view.getDrawGraph().getChildren().add(line);
+        line.toBack();
+    }
+
 }
 

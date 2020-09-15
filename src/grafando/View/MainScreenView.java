@@ -204,7 +204,7 @@ public class MainScreenView {
     //Métodos estáticos puramente para estilização
     public static void styleVertexShape(Circle vertexShape) {
         vertexShape.setRadius(13);
-        vertexShape.setFill(Color.TRANSPARENT);
+        vertexShape.setFill(Color.web("#15202b"));
         vertexShape.setStrokeType(StrokeType.CENTERED);
         vertexShape.setStroke(Color.SPRINGGREEN);
         DropShadow s = new DropShadow();
