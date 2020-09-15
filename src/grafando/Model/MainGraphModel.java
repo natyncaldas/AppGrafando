@@ -1,25 +1,25 @@
 package grafando.Model;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class MainGraphModel {
     private final MainVertexModel vertices;
-    private final HashMap<Integer,MainVertexModel> lista_adj;
+    private final TreeMap<Integer,MainVertexModel> lista_adj;
 
     public MainGraphModel(){
         vertices = new MainVertexModel();
-        lista_adj = new HashMap<>();
+        lista_adj = new TreeMap<>();
     }
 
     public MainVertexModel getVertices(){
         return vertices;
     }
 
-    public HashMap<Integer,MainVertexModel> getLista(){
+    public TreeMap<Integer,MainVertexModel> getLista(){
         return lista_adj;
     }
 
-    public boolean existeAresta(int v1, int v2){
+    private boolean existeAresta(int v1, int v2){
         return lista_adj.get(v1).getConjunto().contains(v2);
     }
 
