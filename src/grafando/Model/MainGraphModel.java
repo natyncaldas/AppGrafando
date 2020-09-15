@@ -1,4 +1,4 @@
-package grafando;
+package grafando.Model;
 
 import java.util.HashMap;
 
