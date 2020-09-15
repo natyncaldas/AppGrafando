@@ -148,38 +148,8 @@ public class MainScreenController {
     }
 
     //cria aresta ligando dois nós
-    public void createEdge(Node firstVertex, Node secondVertex) {
-        //TODO: MOVE THIS CODE TO VIEW
-        Line line = new Line();
-        line.setStroke(Color.SPRINGGREEN);
-        line.setStrokeWidth(2);
-
-        DropShadow s = new DropShadow();
-        s.setColor(Color.SPRINGGREEN);
-        s.setRadius(13);
-        s.setSpread(0.0001);
-        line.setEffect(s);
-
-        Double firstX;
-        Double firstY;
-        Bounds firstCenter = view.getVertexes().get(0).getBoundsInParent();
-        firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
-        firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
-
-        line.setStartX(firstX);
-        line.setStartY(firstY);
-
-        Double finalX;
-        Double finalY;
-        Bounds finalCenter = view.getVertexes().get(1).getBoundsInParent();
-        finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
-        finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
-
-        line.setEndX(finalX);
-        line.setEndY(finalY);
-
-        view.getDrawGraph().getChildren().add(line);
-        line.toBack();
+    public void callDrawEdgeOnView(int initialVertexIndex, int finalVertexIndex) {
+        view.drawEdge(initialVertexIndex, finalVertexIndex);
     }
 
 }

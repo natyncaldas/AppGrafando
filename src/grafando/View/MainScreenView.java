@@ -1,5 +1,6 @@
 package grafando.View;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -177,6 +179,44 @@ public class MainScreenView {
         this.delete = delete;
     }
 
+    private Line styleLine(Line line) {
+        line.setStroke(Color.SPRINGGREEN);
+        line.setStrokeWidth(1);
+
+        DropShadow s = new DropShadow();
+        s.setColor(Color.SPRINGGREEN);
+        s.setRadius(13);
+        s.setSpread(0.0001);
+        line.setEffect(s);
+
+        return line;
+    }
+
+    public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
+        Line line = styleLine(new Line());
+
+        Double firstX;
+        Double firstY;
+        Bounds firstCenter = vertexes.get(initialVertexIndex).getBoundsInParent();
+        firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
+        firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
+
+        line.setStartX(firstX);
+        line.setStartY(firstY);
+
+        Double finalX;
+        Double finalY;
+        Bounds finalCenter = vertexes.get(finalVertexIndex).getBoundsInParent();
+        finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
+        finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
+
+        line.setEndX(finalX);
+        line.setEndY(finalY);
+
+        drawGraph.getChildren().add(line);
+        line.toBack();
+    }
+
     public ToggleGroup getToggleAddDel() {
         return toggleAddDel;
     }
@@ -210,7 +250,7 @@ public class MainScreenView {
         DropShadow s = new DropShadow();
         s.setColor(Color.SPRINGGREEN);
         s.setRadius(13);
-        s.setSpread(0.0001);
+        s.setSpread(0.00001);
         vertexShape.setEffect(s);
     }
 

@@ -1,9 +1,6 @@
 package grafando.Controller;
 
 import grafando.View.ConnectVertexView;
-import javafx.event.EventHandler;
-import javafx.scene.control.ComboBox;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class ConnectVertexController {
@@ -28,7 +25,7 @@ public class ConnectVertexController {
     }
 
     private void callDelegateDrawEdges() {
-        delegate.createEdge(view.getStartingVertex(), view.getFinalVertex());
+        delegate.callDrawEdgeOnView(0,1);
     }
 
 }
