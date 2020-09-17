@@ -33,9 +33,9 @@ public class MainScreenController {
 
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear());
-        this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getNumbers(), this.view.getVertexes());
-        this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes(), this.view.getNumbers());
-        this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getNumbers());
+        this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
+        this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
+        this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
 
         //testando
         openConnectVertexScreen();
@@ -75,8 +75,10 @@ public class MainScreenController {
 
     //*Completa
     //*Revisar quando o model for feito
-    public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Integer>num, ArrayList<StackPane> stack){
+    public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e -> {
+            Vertex vertex = new Vertex();
+
             Circle circle = new Circle();
             circle.setCenterX(e.getX());
             circle.setCenterY(e.getY());
@@ -86,15 +88,16 @@ public class MainScreenController {
                     && !(e.getTarget() instanceof StackPane) && !(e.getTarget() instanceof Circle)
                     && !(e.getTarget() instanceof Text)){
 
-                Text txt = new Text();
+                Text txt = new Text(""+vertexArray.size());
                 MainScreenView.styleVertexText(txt);
-                StackPane vertex = new StackPane(circle, txt);
-                stack.add(vertex);
-                num.add(stack.indexOf(vertex));
-                txt.setText(""+stack.indexOf(vertex));
-                vertex.setLayoutX(circle.getCenterX());
-                vertex.setLayoutY(circle.getCenterY());
-                pane.getChildren().addAll(vertex);
+
+                vertex.setVertex(new StackPane(), circle, txt);
+                vertexArray.add(vertex);
+
+                vertex.getVertex().setLayoutX(circle.getCenterX());
+                vertex.getVertex().setLayoutY(circle.getCenterY());
+
+                pane.getChildren().addAll(vertex.getVertex());
             }
         };
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
@@ -107,11 +110,10 @@ public class MainScreenController {
     }
 
     //*Completa
-    public void clearGraph(Pane pane, Button b, ArrayList<StackPane> stack, ArrayList<Integer> num){
+    public void clearGraph(Pane pane, Button b, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e ->{
-            pane.getChildren().removeAll(stack);
-            stack.clear();
-            num.clear();
+            pane.getChildren().clear();
+            vertexArray.clear();
         };
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
@@ -119,18 +121,18 @@ public class MainScreenController {
     //*Incompleta!!
     //*Deleta apenas os vértices
     //*Completar com o controller da tela popup
-    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<StackPane> stack, ArrayList<Integer> num){
+    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e ->{
-            for (StackPane s:stack) {
-                if(s.getChildren().contains(e.getTarget())) {
-                    s.getChildren().removeAll();
-                    pane.getChildren().remove(s);
-                    num.set(stack.indexOf(s), -1);
-                    //stack.remove(s);
+            for (Vertex v:vertexArray) {
+                if(v.getVertex().getChildren().contains(e.getTarget())) {
+                    v.getVertex().getChildren().removeAll();
+                    pane.getChildren().remove(v.getVertex());
+                    v.delete();
                     break;
                 }
             }
         };
+
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
             if (group.getSelectedToggle().getUserData() == "Del") {
                 pane.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);

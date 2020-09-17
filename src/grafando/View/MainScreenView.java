@@ -30,11 +30,15 @@ public class MainScreenView {
     private Button clear, addE, runDFS, random;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
-    private ArrayList<Integer> numbers;
-    private ArrayList<StackPane> vertexes;
+    private ArrayList<Vertex> vertexes;
 
     public MainScreenView() throws FileNotFoundException {
-        //Instanciação dos Nodes
+        this.setUpElements();
+        this.positionElements();
+    }
+
+    //Instanciação dos Nodes
+    public void setUpElements() throws FileNotFoundException {
         this.setRootStyled(new BorderPane());
         this.setCommandsStyled(new BorderPane());
         this.setEditGraphStyled(new GridPane());
@@ -47,9 +51,11 @@ public class MainScreenView {
         this.setAddVStyled(new RadioButton("Add Vertex"));
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
-        this.setNumbers(new ArrayList<>());
         this.setVertexes(new ArrayList<>());
-        //Posicionamento dos Nodes na interface gráfica
+    }
+
+    //Posicionamento dos Nodes na interface gráfica
+    public void positionElements(){
         this.root.setBottom(this.commands);
         this.root.setCenter(this.drawGraph);
         this.addV.setToggleGroup(this.toggleAddDel);
@@ -61,6 +67,7 @@ public class MainScreenView {
         this.run.addColumn(0, this.runDFS);
         this.run.addColumn(1, this.random);
     }
+
     //Métodos Setters e Getters para cada Node
     //(alguns Setters possuem o nome "Styled", para indicar que já atribuem a estilização do Node específico)
     public BorderPane getRoot() {
@@ -192,31 +199,6 @@ public class MainScreenView {
         return line;
     }
 
-    public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
-        Line line = styleLine(new Line());
-
-        Double firstX;
-        Double firstY;
-        Bounds firstCenter = vertexes.get(initialVertexIndex).getBoundsInParent();
-        firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
-        firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
-
-        line.setStartX(firstX);
-        line.setStartY(firstY);
-
-        Double finalX;
-        Double finalY;
-        Bounds finalCenter = vertexes.get(finalVertexIndex).getBoundsInParent();
-        finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
-        finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
-
-        line.setEndX(finalX);
-        line.setEndY(finalY);
-
-        drawGraph.getChildren().add(line);
-        line.toBack();
-    }
-
     public ToggleGroup getToggleAddDel() {
         return toggleAddDel;
     }
@@ -225,20 +207,37 @@ public class MainScreenView {
         this.toggleAddDel = toggleAddDel;
     }
 
-    public ArrayList<Integer> getNumbers() {
-        return numbers;
-    }
-
-    private void setNumbers(ArrayList<Integer> numbers) {
-        this.numbers = numbers;
-    }
-
-    public ArrayList<StackPane> getVertexes() {
+    public ArrayList<Vertex> getVertexes() {
         return vertexes;
     }
 
-    private void setVertexes(ArrayList<StackPane> vertexes) {
+    private void setVertexes(ArrayList<Vertex> vertexes) {
         this.vertexes = vertexes;
+    }
+
+    public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
+        Line line = styleLine(new Line());
+
+        Double firstX;
+        Double firstY;
+        Bounds firstCenter = vertexes.get(initialVertexIndex).getVertex().getBoundsInParent();
+        firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
+        firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
+
+        line.setStartX(firstX);
+        line.setStartY(firstY);
+
+        Double finalX;
+        Double finalY;
+        Bounds finalCenter = vertexes.get(finalVertexIndex).getVertex().getBoundsInParent();
+        finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
+        finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
+
+        line.setEndX(finalX);
+        line.setEndY(finalY);
+
+        drawGraph.getChildren().add(line);
+        line.toBack();
     }
 
     //Métodos estáticos puramente para estilização
