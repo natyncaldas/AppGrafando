@@ -7,12 +7,12 @@ public class ConnectVertexController {
 
     Stage primaryStage;
     ConnectVertexView view;
-    MainScreenController delegate;
+    MainScreenController mainScreenController;
 
-    ConnectVertexController(Stage primaryStage, MainScreenController delegate) {
+    ConnectVertexController(Stage primaryStage, MainScreenController mainScreenController) {
         this.primaryStage = primaryStage;
         this.view = new ConnectVertexView(this.primaryStage);
-        this.delegate = delegate;
+        this.mainScreenController = mainScreenController;
         confirmButtonAction();
         view.positioningPopupInsideParentStage();
     }
@@ -25,7 +25,7 @@ public class ConnectVertexController {
     }
 
     private void callDelegateDrawEdges() {
-        delegate.callDrawEdgeOnView(0,1);
+        mainScreenController.callDrawEdgeOnView(0,1);
     }
 
 }
