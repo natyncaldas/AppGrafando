@@ -1,30 +1,44 @@
-package grafando;
+package grafando.Controller;
 
+import grafando.View.*;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainScreenController {
     //Declaração da View
+    public Stage primaryStage;
     private MainScreenView view;
 
-    public MainScreenController() throws FileNotFoundException {
+    public MainScreenController(Stage primaryStage) throws FileNotFoundException {
+        //Salva referência ao stage principal
+        this.primaryStage = primaryStage;
+
         //Instanciação da View
         this.setView(new MainScreenView());
+
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getNumbers(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes(), this.view.getNumbers());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getNumbers());
+
+        //testando
+        openConnectVertexScreen();
     }
     //Getter e Setter para View
     public MainScreenView getView() {
@@ -125,5 +139,18 @@ public class MainScreenController {
             }
         });
     }
+
+    //adiciona funcionalidade de criar a popup
+    public void openConnectVertexScreen() {
+        view.getAddE().setOnAction(e ->{
+            ConnectVertexController popupController = new ConnectVertexController(this.primaryStage, this);
+        });
+    }
+
+    //cria aresta ligando dois nós
+    public void callDrawEdgeOnView(int initialVertexIndex, int finalVertexIndex) {
+        view.drawEdge(initialVertexIndex, finalVertexIndex);
+    }
+
 }
 
