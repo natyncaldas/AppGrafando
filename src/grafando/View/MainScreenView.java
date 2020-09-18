@@ -1,6 +1,5 @@
 package grafando.View;
 
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;

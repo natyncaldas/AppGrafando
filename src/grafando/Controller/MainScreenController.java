@@ -1,20 +1,17 @@
 package grafando.Controller;
 
 import grafando.Model.MainGraphModel;
-import grafando.View.*;
+import grafando.View.MainScreenView;
+import grafando.View.Vertex;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -78,7 +75,6 @@ public class MainScreenController {
     }
 
     //*Completa
-    //*Revisar quando o model for feito
     public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e -> {
 
@@ -127,7 +123,7 @@ public class MainScreenController {
 
     //*Incompleta!!
     //*Deleta apenas os vértices
-    //*Completar com o controller da tela popup
+    //TODO: completar deletando arestas
     public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e ->{
             for (Vertex v:vertexArray) {

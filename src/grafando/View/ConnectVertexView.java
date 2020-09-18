@@ -24,7 +24,7 @@ public class ConnectVertexView {
     Stage popUpStage;
     Stage primaryStage;
     GridPane vertexSelection;
-    ComboBox startingVertex, finalVertex;
+    ComboBox<Integer> startingVertex, finalVertex;
     Label labelVertexA, labelVertexB;
     Button confirmButton;
     HashSet<Integer> vertexesCurrentlyOnScreen;
@@ -51,13 +51,15 @@ public class ConnectVertexView {
     private void initializeComboboxes() {
         //TODO: pegar array de vertices do controller depois
         ObservableList<Integer> options = FXCollections.observableArrayList(vertexesCurrentlyOnScreen);
-        startingVertex = new ComboBox(options);
-        finalVertex = new ComboBox(options);
+        startingVertex = new ComboBox<>(options);
+        finalVertex = new ComboBox<>(options);
+        startingVertex.setBorder((new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5)))));
+        finalVertex.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5))));
     }
 
     private void initializeLabels() {
-        labelVertexA = new Label("Vértice A");
-        labelVertexB = new Label("Vértice B");
+        labelVertexA = new Label("Vertex A");
+        labelVertexB = new Label("Vertex B");
         labelVertexA.setTextFill(Color.web("#ffffff"));
         labelVertexB.setTextFill(Color.web("#ffffff"));
     }
@@ -144,11 +146,11 @@ public class ConnectVertexView {
         return popUpStage;
     }
 
-    public ComboBox getStartingVertex() {
+    public ComboBox<Integer> getStartingVertex() {
         return startingVertex;
     }
 
-    public ComboBox getFinalVertex() {
+    public ComboBox<Integer> getFinalVertex() {
         return finalVertex;
     }
 }
