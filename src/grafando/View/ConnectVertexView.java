@@ -16,6 +16,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.HashSet;
+
 
 public class ConnectVertexView {
 
@@ -25,9 +27,11 @@ public class ConnectVertexView {
     ComboBox startingVertex, finalVertex;
     Label labelVertexA, labelVertexB;
     Button confirmButton;
+    HashSet<Integer> vertexesCurrentlyOnScreen;
 
-    public ConnectVertexView(Stage primaryStage) {
+    public ConnectVertexView(Stage primaryStage, HashSet<Integer> vertexesCurrentlyOnScreen) {
         this.primaryStage = primaryStage;
+        this.vertexesCurrentlyOnScreen = vertexesCurrentlyOnScreen;
         setupElements();
         positionElementsInsideView();
     }
@@ -46,12 +50,8 @@ public class ConnectVertexView {
 
     private void initializeComboboxes() {
         //TODO: pegar array de vertices do controller depois
-        ObservableList<String> options =
-                FXCollections.observableArrayList(
-                        "1",
-                        "2",
-                        "3"
-                );
+        ObservableList<Integer> options =
+                FXCollections.observableArrayList(vertexesCurrentlyOnScreen);
         startingVertex = new ComboBox(options);
         finalVertex = new ComboBox(options);
     }

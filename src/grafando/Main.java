@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         MainScreenController controller = new MainScreenController(primaryStage);
         primaryStage.setResizable(false);
-        primaryStage.setTitle("Graph");
+        primaryStage.setTitle("Grafando");
         primaryStage.setScene(new Scene(controller.getView().getRoot(), 600, 400));
         primaryStage.show();
     }

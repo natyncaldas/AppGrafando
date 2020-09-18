@@ -1,5 +1,6 @@
 package grafando.Controller;
 
+import grafando.Model.MainGraphModel;
 import grafando.View.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -24,6 +25,7 @@ public class MainScreenController {
     //Declaração da View
     public Stage primaryStage;
     private MainScreenView view;
+    public MainGraphModel graphModel;
 
     public MainScreenController(Stage primaryStage) throws FileNotFoundException {
         //Salva referência ao stage principal
@@ -38,8 +40,8 @@ public class MainScreenController {
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
 
-        //testando
-        openConnectVertexScreen();
+        this.graphModel = MainGraphModel.getInstance();
+        this.openConnectVertexScreen();
     }
     //Getter e Setter para View
     public MainScreenView getView() {
@@ -84,6 +86,7 @@ public class MainScreenController {
                     && !(e.getTarget() instanceof StackPane) && !(e.getTarget() instanceof Circle)
                     && !(e.getTarget() instanceof Text)){
 
+                graphModel.adicionarVertice(vertexArray.size());
                 Vertex vertex = new Vertex();
 
                 Circle circle = new Circle();
@@ -117,6 +120,7 @@ public class MainScreenController {
         EventHandler<MouseEvent> eventHandler = e ->{
             pane.getChildren().clear();
             vertexArray.clear();
+            graphModel.limparGrafo();
         };
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
@@ -131,6 +135,7 @@ public class MainScreenController {
                     v.getVertex().getChildren().removeAll();
                     pane.getChildren().remove(v.getVertex());
                     v.delete();
+                    graphModel.removerVertice(vertexArray.indexOf(v));
                     break;
                 }
             }
@@ -155,6 +160,7 @@ public class MainScreenController {
 
     //cria aresta ligando dois nós
     public void callDrawEdgeOnView(int initialVertexIndex, int finalVertexIndex) {
+        graphModel.conectarVertices(initialVertexIndex, finalVertexIndex);
         view.drawEdge(initialVertexIndex, finalVertexIndex);
     }
 
