@@ -2,6 +2,8 @@ package grafando.Controller;
 
 import grafando.Model.MainGraphModel;
 import grafando.View.ConnectVertexView;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -28,7 +30,7 @@ public class ConnectVertexController {
 
     private void confirmButtonAction() {
 
-        view.getConfirmButton().setOnMousePressed(mouseEvent -> {
+        EventHandler<MouseEvent> mousePressed = e ->{
             boolean emptyStart = view.getStartingVertex().getSelectionModel().isEmpty();
             boolean emptyFinal = view.getFinalVertex().getSelectionModel().isEmpty();
             if (emptyStart || emptyFinal) {
@@ -38,12 +40,15 @@ public class ConnectVertexController {
                 callDelegateDrawEdges();
                 view.getPopUpStage().close();
             }
-        });
+        };
 
-        view.getConfirmButton().setOnMouseReleased(mouseEvent -> {
+        EventHandler<MouseEvent> mouseReleased = e ->{
             view.getStartingVertex().setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5))));
             view.getFinalVertex().setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5))));
-        });
+        };
+
+        view.getConfirmButton().addEventFilter(MouseEvent.MOUSE_PRESSED, mousePressed);
+        view.getConfirmButton().addEventFilter(MouseEvent.MOUSE_RELEASED, mouseReleased);
     }
 
     private void callDelegateDrawEdges() {
