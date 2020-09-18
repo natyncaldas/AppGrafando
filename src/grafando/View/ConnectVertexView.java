@@ -50,8 +50,7 @@ public class ConnectVertexView {
 
     private void initializeComboboxes() {
         //TODO: pegar array de vertices do controller depois
-        ObservableList<Integer> options =
-                FXCollections.observableArrayList(vertexesCurrentlyOnScreen);
+        ObservableList<Integer> options = FXCollections.observableArrayList(vertexesCurrentlyOnScreen);
         startingVertex = new ComboBox(options);
         finalVertex = new ComboBox(options);
     }
