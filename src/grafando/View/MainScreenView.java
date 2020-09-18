@@ -4,7 +4,6 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -207,26 +206,20 @@ public class MainScreenView {
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
         Line line = styleEdge(new Line());
 
-        double firstX;
-        double firstY;
-        Bounds firstCenter = vertexes.get(initialVertexIndex).getVertex().getBoundsInParent();
-        firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
-        firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
+        Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
+        Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
 
-        line.setStartX(firstX);
-        line.setStartY(firstY);
+        Point2D dir = new Point2D(c2.getCenterX() - c1.getCenterX(), c2.getCenterY() - c1.getCenterY()).normalize();
+        Point2D off = dir.multiply(c1.getRadius());
+        line.setStartX(c1.getCenterX() + off.getX());
+        line.setStartY(c1.getCenterY() + off.getY());
 
-        double finalX;
-        double finalY;
-        Bounds finalCenter = vertexes.get(finalVertexIndex).getVertex().getBoundsInParent();
-        finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
-        finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
-
-        line.setEndX(finalX);
-        line.setEndY(finalY);
+        dir = dir.multiply(-1);
+        off = dir.multiply(c2.getRadius());
+        line.setEndX(c2.getCenterX() + off.getX());
+        line.setEndY(c2.getCenterY() + off.getY());
 
         drawGraph.getChildren().add(line);
-        line.toBack();
     }
 
     //Métodos estáticos puramente para estilização
