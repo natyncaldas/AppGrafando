@@ -2,7 +2,9 @@ package grafando.View;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -186,19 +188,6 @@ public class MainScreenView {
         this.delete = delete;
     }
 
-    private Line styleLine(Line line) {
-        line.setStroke(Color.SPRINGGREEN);
-        line.setStrokeWidth(1);
-
-        DropShadow s = new DropShadow();
-        s.setColor(Color.SPRINGGREEN);
-        s.setRadius(13);
-        s.setSpread(0.0001);
-        line.setEffect(s);
-
-        return line;
-    }
-
     public ToggleGroup getToggleAddDel() {
         return toggleAddDel;
     }
@@ -216,10 +205,10 @@ public class MainScreenView {
     }
 
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
-        Line line = styleLine(new Line());
+        Line line = styleEdge(new Line());
 
-        Double firstX;
-        Double firstY;
+        double firstX;
+        double firstY;
         Bounds firstCenter = vertexes.get(initialVertexIndex).getVertex().getBoundsInParent();
         firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
         firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
@@ -227,8 +216,8 @@ public class MainScreenView {
         line.setStartX(firstX);
         line.setStartY(firstY);
 
-        Double finalX;
-        Double finalY;
+        double finalX;
+        double finalY;
         Bounds finalCenter = vertexes.get(finalVertexIndex).getVertex().getBoundsInParent();
         finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
         finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
@@ -243,7 +232,7 @@ public class MainScreenView {
     //Métodos estáticos puramente para estilização
     public static void styleVertexShape(Circle vertexShape) {
         vertexShape.setRadius(13);
-        vertexShape.setFill(Color.web("#15202b"));
+        vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
         vertexShape.setStroke(Color.SPRINGGREEN);
         DropShadow s = new DropShadow();
@@ -256,6 +245,18 @@ public class MainScreenView {
     public static void styleVertexText(Text vertexText) {
         vertexText.setFill(Color.SPRINGGREEN);
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
+    }
+
+    private static Line styleEdge(Line line) {
+        line.setStroke(Color.SPRINGGREEN);
+        line.setStrokeWidth(1);
+
+        DropShadow s = new DropShadow();
+        s.setColor(Color.SPRINGGREEN);
+        s.setRadius(13);
+        s.setSpread(0.0001);
+        line.setEffect(s);
+        return line;
     }
 }
 

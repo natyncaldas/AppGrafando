@@ -4,6 +4,7 @@ import grafando.View.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
@@ -55,6 +56,7 @@ public class MainScreenController {
     public void colorPressedButton(Button... b){
         for (Button btn:b) {
             btn.setOnMousePressed(new EventHandler<>() {
+
                 final Color bg = btn.getGraphic() == null ? Color.SPRINGGREEN : Color.SLATEGRAY;
 
                 @Override
@@ -77,31 +79,32 @@ public class MainScreenController {
     //*Revisar quando o model for feito
     public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e -> {
-            Vertex vertex = new Vertex();
 
-            Circle circle = new Circle();
-            circle.setCenterX(e.getX());
-            circle.setCenterY(e.getY());
-            MainScreenView.styleVertexShape(circle);
-
-            if(pane.contains(circle.getCenterX()+35, circle.getCenterY()+35)
+            if(pane.contains(e.getX() + 30, e.getY() + 30)
                     && !(e.getTarget() instanceof StackPane) && !(e.getTarget() instanceof Circle)
                     && !(e.getTarget() instanceof Text)){
+
+                Vertex vertex = new Vertex();
+
+                Circle circle = new Circle();
+                circle.setCenterX(e.getX());
+                circle.setCenterY(e.getY());
+                MainScreenView.styleVertexShape(circle);
 
                 Text txt = new Text(""+vertexArray.size());
                 MainScreenView.styleVertexText(txt);
 
                 vertex.setVertex(new StackPane(), circle, txt);
                 vertexArray.add(vertex);
-
-                vertex.getVertex().setLayoutX(circle.getCenterX());
-                vertex.getVertex().setLayoutY(circle.getCenterY());
+                vertex.getVertex().setLayoutX(e.getX()-13);
+                vertex.getVertex().setLayoutY(e.getY()-13);
 
                 pane.getChildren().addAll(vertex.getVertex());
             }
         };
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
             if (group.getSelectedToggle().getUserData() == "AddV") {
+                pane.setCursor(Cursor.HAND);
                 pane.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             }else{
                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
@@ -135,6 +138,7 @@ public class MainScreenController {
 
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
             if (group.getSelectedToggle().getUserData() == "Del") {
+                pane.setCursor(Cursor.CROSSHAIR);
                 pane.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             }else{
                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
