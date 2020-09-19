@@ -115,6 +115,7 @@ public class MainScreenView {
     private void setDrawGraph(Pane drawGraph) {
         this.drawGraph = drawGraph;
     }
+
     public Button getRunDFS() {
         return runDFS;
     }
@@ -150,6 +151,7 @@ public class MainScreenView {
         clear.setTextFill(Color.DARKSLATEGRAY);
         clear.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
         clear.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
+        colorButtonOnMouseEntered(clear);
         this.clear = clear;
     }
 
@@ -161,6 +163,7 @@ public class MainScreenView {
         addE.setTextFill(Color.DARKSLATEGRAY);
         addE.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
         addE.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
+        colorButtonOnMouseEntered(addE);
         this.addE = addE;
     }
 
@@ -227,6 +230,15 @@ public class MainScreenView {
     }
 
     //Métodos estáticos puramente para estilização
+    private static void colorButtonOnMouseEntered(Button button){
+        button.setOnMouseEntered(mouseEvent -> {
+            button.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(50), Insets.EMPTY)));
+        });
+        button.setOnMouseExited(mouseEvent -> {
+            button.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
+        });
+    }
+
     public static void styleVertexShape(Circle vertexShape) {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);

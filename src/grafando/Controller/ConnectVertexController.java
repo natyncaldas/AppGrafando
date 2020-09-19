@@ -53,8 +53,8 @@ public class ConnectVertexController {
 
     private void callDelegateDrawEdges() {
         Integer initialVertex, finalVertex;
-        initialVertex = (Integer) view.getStartingVertex().getValue();
-        finalVertex = (Integer) view.getFinalVertex().getValue();
+        initialVertex = view.getStartingVertex().getValue();
+        finalVertex = view.getFinalVertex().getValue();
         mainScreenController.callDrawEdgeOnView(initialVertex,finalVertex);
     }
 }
