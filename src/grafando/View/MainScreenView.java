@@ -208,26 +208,23 @@ public class MainScreenView {
     }
 
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
-        try {
-            Line line = styleEdge(new Line());
 
-            Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
-            Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
+        Line line = styleEdge(new Line());
 
-            Point2D dir = new Point2D(c2.getCenterX() - c1.getCenterX(), c2.getCenterY() - c1.getCenterY()).normalize();
-            Point2D off = dir.multiply(c1.getRadius());
-            line.setStartX(c1.getCenterX() + off.getX());
-            line.setStartY(c1.getCenterY() + off.getY());
+        Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
+        Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
 
-            dir = dir.multiply(-1);
-            off = dir.multiply(c2.getRadius());
-            line.setEndX(c2.getCenterX() + off.getX());
-            line.setEndY(c2.getCenterY() + off.getY());
+        Point2D dir = new Point2D(c2.getCenterX() - c1.getCenterX(), c2.getCenterY() - c1.getCenterY()).normalize();
+        Point2D off = dir.multiply(c1.getRadius());
+        line.setStartX(c1.getCenterX() + off.getX());
+        line.setStartY(c1.getCenterY() + off.getY());
 
-            drawGraph.getChildren().add(line);
-        } catch(Exception e) {
-            System.out.println("ERROR: NULL POINTER");
-        }
+        dir = dir.multiply(-1);
+        off = dir.multiply(c2.getRadius());
+        line.setEndX(c2.getCenterX() + off.getX());
+        line.setEndY(c2.getCenterY() + off.getY());
+
+        drawGraph.getChildren().add(line);
 
     }
 
