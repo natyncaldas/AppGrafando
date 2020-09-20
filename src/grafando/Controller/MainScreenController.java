@@ -39,6 +39,7 @@ public class MainScreenController {
 
         this.graphModel = MainGraphModel.getInstance();
         this.openConnectVertexScreen();
+        this.openRandomGraphScreen();
     }
     //Getter e Setter para View
     public MainScreenView getView() {
@@ -142,6 +143,11 @@ public class MainScreenController {
     public void openConnectVertexScreen() {
         view.getAddE().setOnAction(e ->{
             ConnectVertexController popupController = new ConnectVertexController(this.primaryStage, this);
+        });
+    }
+    public void openRandomGraphScreen() {
+        view.getRandom().setOnAction(e ->{
+           RandomGraphController popupRandom = new RandomGraphController(this.primaryStage, this);
         });
     }
 
