@@ -54,22 +54,13 @@ public class MainScreenController {
     //*Completa
     public void colorPressedButton(Button... b){
         for (Button btn:b) {
-            btn.setOnMousePressed(new EventHandler<>() {
-
+            btn.setOnMousePressed(mouseEvent -> {
                 final Color bg = btn.getGraphic() == null ? Color.SPRINGGREEN : Color.SLATEGRAY;
-
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    btn.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
-                }
+                btn.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
             }) ;
-            btn.setOnMouseReleased(new EventHandler<>() {
+            btn.setOnMouseReleased(mouseEvent -> {
                 final Color bg = btn.getGraphic() == null ? Color.LIGHTGRAY : null;
-
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    btn.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
-                }
+                btn.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
             });
         }
     }

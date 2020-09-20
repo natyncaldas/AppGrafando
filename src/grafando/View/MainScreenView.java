@@ -127,6 +127,7 @@ public class MainScreenView {
         runDFS.setGraphic(img);
         runDFS.setBackground(null);
         runDFS.setTooltip(new Tooltip("Run depth-first search"));
+        colorButtonOnMouseEntered(runDFS);
         this.runDFS = runDFS;
     }
 
@@ -141,6 +142,7 @@ public class MainScreenView {
         random.setGraphic(img);
         random.setBackground(null);
         random.setTooltip(new Tooltip("Generate random graph"));
+        colorButtonOnMouseEntered(random);
         this.random = random;
     }
     public Button getClear() {
@@ -232,10 +234,12 @@ public class MainScreenView {
     //Métodos estáticos puramente para estilização
     private static void colorButtonOnMouseEntered(Button button){
         button.setOnMouseEntered(mouseEvent -> {
-            button.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(50), Insets.EMPTY)));
+            final Color bg = button.getGraphic() == null ? Color.LIGHTGREEN : Color.DARKSLATEGRAY;
+            button.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
         });
         button.setOnMouseExited(mouseEvent -> {
-            button.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
+            final Color bg = button.getGraphic() == null ? Color.LIGHTGRAY : Color.TRANSPARENT;
+            button.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
         });
     }
 
