@@ -1,7 +1,7 @@
 package grafando.View;
 
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -30,11 +30,15 @@ public class MainScreenView {
     private Button clear, addE, runDFS, random;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
-    private ArrayList<Integer> numbers;
-    private ArrayList<StackPane> vertexes;
+    private ArrayList<Vertex> vertexes;
 
     public MainScreenView() throws FileNotFoundException {
-        //Instanciação dos Nodes
+        this.setUpElements();
+        this.positionElements();
+    }
+
+    //Instanciação dos Nodes
+    public void setUpElements() throws FileNotFoundException {
         this.setRootStyled(new BorderPane());
         this.setCommandsStyled(new BorderPane());
         this.setEditGraphStyled(new GridPane());
@@ -47,9 +51,11 @@ public class MainScreenView {
         this.setAddVStyled(new RadioButton("Add Vertex"));
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
-        this.setNumbers(new ArrayList<>());
         this.setVertexes(new ArrayList<>());
-        //Posicionamento dos Nodes na interface gráfica
+    }
+
+    //Posicionamento dos Nodes na interface gráfica
+    public void positionElements(){
         this.root.setBottom(this.commands);
         this.root.setCenter(this.drawGraph);
         this.addV.setToggleGroup(this.toggleAddDel);
@@ -61,6 +67,7 @@ public class MainScreenView {
         this.run.addColumn(0, this.runDFS);
         this.run.addColumn(1, this.random);
     }
+
     //Métodos Setters e Getters para cada Node
     //(alguns Setters possuem o nome "Styled", para indicar que já atribuem a estilização do Node específico)
     public BorderPane getRoot() {
@@ -108,6 +115,7 @@ public class MainScreenView {
     private void setDrawGraph(Pane drawGraph) {
         this.drawGraph = drawGraph;
     }
+
     public Button getRunDFS() {
         return runDFS;
     }
@@ -119,6 +127,7 @@ public class MainScreenView {
         runDFS.setGraphic(img);
         runDFS.setBackground(null);
         runDFS.setTooltip(new Tooltip("Run depth-first search"));
+        colorButtonOnMouseEntered(runDFS);
         this.runDFS = runDFS;
     }
 
@@ -133,6 +142,7 @@ public class MainScreenView {
         random.setGraphic(img);
         random.setBackground(null);
         random.setTooltip(new Tooltip("Generate random graph"));
+        colorButtonOnMouseEntered(random);
         this.random = random;
     }
     public Button getClear() {
@@ -143,6 +153,7 @@ public class MainScreenView {
         clear.setTextFill(Color.DARKSLATEGRAY);
         clear.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
         clear.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
+        colorButtonOnMouseEntered(clear);
         this.clear = clear;
     }
 
@@ -154,6 +165,7 @@ public class MainScreenView {
         addE.setTextFill(Color.DARKSLATEGRAY);
         addE.setFont(Font.loadFont("file:resources/fonts/OpenSans-Regular.ttf", 12));
         addE.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
+        colorButtonOnMouseEntered(addE);
         this.addE = addE;
     }
 
@@ -179,44 +191,6 @@ public class MainScreenView {
         this.delete = delete;
     }
 
-    private Line styleLine(Line line) {
-        line.setStroke(Color.SPRINGGREEN);
-        line.setStrokeWidth(1);
-
-        DropShadow s = new DropShadow();
-        s.setColor(Color.SPRINGGREEN);
-        s.setRadius(13);
-        s.setSpread(0.0001);
-        line.setEffect(s);
-
-        return line;
-    }
-
-    public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
-        Line line = styleLine(new Line());
-
-        Double firstX;
-        Double firstY;
-        Bounds firstCenter = vertexes.get(initialVertexIndex).getBoundsInParent();
-        firstX = (firstCenter.getMinX() + firstCenter.getWidth()  / 2);
-        firstY = (firstCenter.getMinY() + firstCenter.getHeight() / 2);
-
-        line.setStartX(firstX);
-        line.setStartY(firstY);
-
-        Double finalX;
-        Double finalY;
-        Bounds finalCenter = vertexes.get(finalVertexIndex).getBoundsInParent();
-        finalX = (finalCenter.getMinX() + finalCenter.getWidth()  / 2);
-        finalY = (finalCenter.getMinY() + finalCenter.getHeight() / 2);
-
-        line.setEndX(finalX);
-        line.setEndY(finalY);
-
-        drawGraph.getChildren().add(line);
-        line.toBack();
-    }
-
     public ToggleGroup getToggleAddDel() {
         return toggleAddDel;
     }
@@ -225,26 +199,50 @@ public class MainScreenView {
         this.toggleAddDel = toggleAddDel;
     }
 
-    public ArrayList<Integer> getNumbers() {
-        return numbers;
-    }
-
-    private void setNumbers(ArrayList<Integer> numbers) {
-        this.numbers = numbers;
-    }
-
-    public ArrayList<StackPane> getVertexes() {
+    public ArrayList<Vertex> getVertexes() {
         return vertexes;
     }
 
-    private void setVertexes(ArrayList<StackPane> vertexes) {
+    private void setVertexes(ArrayList<Vertex> vertexes) {
         this.vertexes = vertexes;
     }
 
+    public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
+
+        Line line = styleEdge(new Line());
+
+        Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
+        Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
+
+        Point2D dir = new Point2D(c2.getCenterX() - c1.getCenterX(), c2.getCenterY() - c1.getCenterY()).normalize();
+        Point2D off = dir.multiply(c1.getRadius());
+        line.setStartX(c1.getCenterX() + off.getX());
+        line.setStartY(c1.getCenterY() + off.getY());
+
+        dir = dir.multiply(-1);
+        off = dir.multiply(c2.getRadius());
+        line.setEndX(c2.getCenterX() + off.getX());
+        line.setEndY(c2.getCenterY() + off.getY());
+
+        drawGraph.getChildren().add(line);
+
+    }
+
     //Métodos estáticos puramente para estilização
+    private static void colorButtonOnMouseEntered(Button button){
+        button.setOnMouseEntered(mouseEvent -> {
+            final Color bg = button.getGraphic() == null ? Color.LIGHTGREEN : Color.DARKSLATEGRAY;
+            button.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
+        });
+        button.setOnMouseExited(mouseEvent -> {
+            final Color bg = button.getGraphic() == null ? Color.LIGHTGRAY : Color.TRANSPARENT;
+            button.setBackground(new Background(new BackgroundFill(bg, new CornerRadii(50), Insets.EMPTY)));
+        });
+    }
+
     public static void styleVertexShape(Circle vertexShape) {
         vertexShape.setRadius(13);
-        vertexShape.setFill(Color.web("#15202b"));
+        vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
         vertexShape.setStroke(Color.SPRINGGREEN);
         DropShadow s = new DropShadow();
@@ -257,6 +255,18 @@ public class MainScreenView {
     public static void styleVertexText(Text vertexText) {
         vertexText.setFill(Color.SPRINGGREEN);
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
+    }
+
+    private static Line styleEdge(Line line) {
+        line.setStroke(Color.SPRINGGREEN);
+        line.setStrokeWidth(1);
+
+        DropShadow s = new DropShadow();
+        s.setColor(Color.SPRINGGREEN);
+        s.setRadius(13);
+        s.setSpread(0.0001);
+        line.setEffect(s);
+        return line;
     }
 }
 

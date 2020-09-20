@@ -6,9 +6,15 @@ public class MainGraphModel {
     private final MainVertexModel vertices;
     private final TreeMap<Integer,MainVertexModel> lista_adj;
 
-    public MainGraphModel(){
+    private static MainGraphModel sharedModelGraph = new MainGraphModel();
+
+    private MainGraphModel(){
         vertices = new MainVertexModel();
         lista_adj = new TreeMap<>();
+    }
+
+    public static MainGraphModel getInstance() {
+        return sharedModelGraph;
     }
 
     public MainVertexModel getVertices(){
