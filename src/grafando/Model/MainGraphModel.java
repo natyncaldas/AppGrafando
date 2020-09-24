@@ -3,76 +3,76 @@ package grafando.Model;
 import java.util.TreeMap;
 
 public class MainGraphModel {
-    private final MainVertexModel vertices;
-    private final TreeMap<Integer,MainVertexModel> lista_adj;
+    private final MainVertexModel vertexes;
+    private final TreeMap<Integer,MainVertexModel> adjList;
 
     private static MainGraphModel sharedModelGraph = new MainGraphModel();
 
     private MainGraphModel(){
-        vertices = new MainVertexModel();
-        lista_adj = new TreeMap<>();
+        vertexes = new MainVertexModel();
+        adjList = new TreeMap<>();
     }
 
     public static MainGraphModel getInstance() {
         return sharedModelGraph;
     }
 
-    public MainVertexModel getVertices(){
-        return vertices;
+    public MainVertexModel getVertexes(){
+        return vertexes;
     }
 
-    public TreeMap<Integer,MainVertexModel> getLista(){
-        return lista_adj;
+    public TreeMap<Integer,MainVertexModel> getAdjList(){
+        return adjList;
     }
 
-    private boolean existeAresta(int v1, int v2){
-        return lista_adj.get(v1).getConjunto().contains(v2);
+    public boolean existEdge(int v1, int v2){
+        return adjList.get(v1).getVertexSet().contains(v2);
     }
 
-    public boolean existeVertice(int v){
-        return vertices.getConjunto().contains(v);
+    public boolean existVertex(int v){
+        return vertexes.getVertexSet().contains(v);
     }
 
-    public void adicionarVertice(Integer... v){
+    public void addVertex(Integer... v){
         for(Integer c: v){
-            vertices.getConjunto().add(c);
-            lista_adj.put(c, new MainVertexModel());
+            vertexes.getVertexSet().add(c);
+            adjList.put(c, new MainVertexModel());
         }
     }
-    public void conectarVertices(int v1, int v2){
-        if((existeVertice(v1) && existeVertice(v2)) && !existeAresta(v1,v2)){
-            lista_adj.get(v1).getConjunto().add(v2);
-            lista_adj.get(v2).getConjunto().add(v1);
+    public void connectVertexes(int v1, int v2){
+        if((existVertex(v1) && existVertex(v2)) && !existEdge(v1,v2)){
+            adjList.get(v1).getVertexSet().add(v2);
+            adjList.get(v2).getVertexSet().add(v1);
         }
         //else: joga uma exceção
     }
 
-    public void removerVertice(int v){
-        if(existeVertice(v)) {
-            vertices.getConjunto().remove(v);
-            for (Integer c : lista_adj.keySet()) {
-                removerAresta(c, v);
+    public void removeVertex(int v){
+        if(existVertex(v)) {
+            vertexes.getVertexSet().remove(v);
+            for (Integer c : adjList.keySet()) {
+                removeEdge(c, v);
             }
-            lista_adj.remove(v);
+            adjList.remove(v);
         }
         //else: joga uma exceção
     }
 
-    public void removerAresta(int v1, int v2){
-        if(existeAresta(v1,v2)){
-            lista_adj.get(v1).getConjunto().remove(v2);
-            lista_adj.get(v2).getConjunto().remove(v1);
+    public void removeEdge(int v1, int v2){
+        if(existEdge(v1,v2)){
+            adjList.get(v1).getVertexSet().remove(v2);
+            adjList.get(v2).getVertexSet().remove(v1);
         }
         //else: joga uma exceção
     }
 
-    public void limparGrafo(){
-        lista_adj.clear();
-        vertices.getConjunto().clear();
+    public void clearGraph(){
+        adjList.clear();
+        vertexes.getVertexSet().clear();
     }
 
-    public int totalVertices(){
-        return vertices.getConjunto().size();
+    public int totalVertexes(){
+        return vertexes.getVertexSet().size();
     }
 
 }
