@@ -21,7 +21,7 @@ public class ConnectVertexController {
         this.primaryStage = primaryStage;
         this.graphModel = MainGraphModel.getInstance();
 
-        HashSet<Integer> vertexesCurrentlyOnScreen = graphModel.getVertices().getConjunto();
+        HashSet<Integer> vertexesCurrentlyOnScreen = graphModel.getVertexes().getVertexSet();
         this.view = new ConnectVertexView(this.primaryStage, vertexesCurrentlyOnScreen);
         this.mainScreenController = mainScreenController;
         confirmButtonAction();
@@ -55,6 +55,9 @@ public class ConnectVertexController {
         Integer initialVertex, finalVertex;
         initialVertex = view.getStartingVertex().getValue();
         finalVertex = view.getFinalVertex().getValue();
-        mainScreenController.callDrawEdgeOnView(initialVertex,finalVertex);
+        if (!graphModel.existEdge(initialVertex, finalVertex)) {
+            mainScreenController.callDrawEdgeOnView(initialVertex,finalVertex);
+            System.out.println("Entrou.");
+        }
     }
 }

@@ -74,7 +74,7 @@ public class MainScreenController {
                     && !(e.getTarget() instanceof StackPane) && !(e.getTarget() instanceof Circle)
                     && !(e.getTarget() instanceof Text)){
 
-                graphModel.adicionarVertice(vertexArray.size());
+                graphModel.addVertex(vertexArray.size());
                 Vertex vertex = new Vertex();
 
                 Circle circle = new Circle();
@@ -108,7 +108,7 @@ public class MainScreenController {
         EventHandler<MouseEvent> eventHandler = e ->{
             pane.getChildren().clear();
             vertexArray.clear();
-            graphModel.limparGrafo();
+            graphModel.clearGraph();
         };
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
@@ -123,7 +123,7 @@ public class MainScreenController {
                     v.getVertex().getChildren().removeAll();
                     pane.getChildren().remove(v.getVertex());
                     v.delete();
-                    graphModel.removerVertice(vertexArray.indexOf(v));
+                    graphModel.removeVertex(vertexArray.indexOf(v));
                     break;
                 }
             }
@@ -153,7 +153,7 @@ public class MainScreenController {
 
     //cria aresta ligando dois nós
     public void callDrawEdgeOnView(int initialVertexIndex, int finalVertexIndex) {
-        graphModel.conectarVertices(initialVertexIndex, finalVertexIndex);
+        graphModel.connectVertexes(initialVertexIndex, finalVertexIndex);
         view.drawEdge(initialVertexIndex, finalVertexIndex);
     }
 
