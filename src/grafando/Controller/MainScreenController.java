@@ -121,6 +121,7 @@ public class MainScreenController {
         EventHandler<MouseEvent> eventHandler = e ->{
             for (Vertex v:vertexArray) {
                 if(v.getVertex().getChildren().contains(e.getTarget())) {
+                    pane.getChildren().removeAll(v.getConnectedEdges());
                     v.getVertex().getChildren().removeAll();
                     pane.getChildren().remove(v.getVertex());
                     v.delete();
@@ -161,6 +162,5 @@ public class MainScreenController {
         graphModel.connectVertexes(initialVertexIndex, finalVertexIndex);
         view.drawEdge(initialVertexIndex, finalVertexIndex);
     }
-
 }
 

@@ -230,7 +230,8 @@ public class MainScreenView {
 
         edges.add(line);
         drawGraph.getChildren().add(line);
-
+        this.getVertexes().get(initialVertexIndex).connectEdge(line);
+        this.getVertexes().get(finalVertexIndex).connectEdge(line);
     }
 
     //Métodos estáticos puramente para estilização
@@ -264,7 +265,7 @@ public class MainScreenView {
 
     private static Line styleEdge(Line line) {
         line.setStroke(Color.SPRINGGREEN);
-        line.setStrokeWidth(1);
+        line.setStrokeWidth(3);
 
         DropShadow s = new DropShadow();
         s.setColor(Color.SPRINGGREEN);
