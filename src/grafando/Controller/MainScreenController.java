@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -35,7 +36,7 @@ public class MainScreenController {
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
-        this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
+        this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
         this.graphModel = MainGraphModel.getInstance();
         this.openConnectVertexScreen();
@@ -116,7 +117,7 @@ public class MainScreenController {
     //*Incompleta!!
     //*Deleta apenas os vértices
     //TODO: completar deletando arestas
-    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
+    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray, ArrayList<Line> edgesArray){
         EventHandler<MouseEvent> eventHandler = e ->{
             for (Vertex v:vertexArray) {
                 if(v.getVertex().getChildren().contains(e.getTarget())) {
@@ -126,6 +127,10 @@ public class MainScreenController {
                     graphModel.removeVertex(vertexArray.indexOf(v));
                     break;
                 }
+            }
+            for (Line l: edgesArray) {
+                l.addEventHandler(MouseEvent.MOUSE_PRESSED, me ->
+                        pane.getChildren().remove(l));
             }
         };
 

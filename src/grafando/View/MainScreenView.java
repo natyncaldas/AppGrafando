@@ -31,6 +31,7 @@ public class MainScreenView {
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Vertex> vertexes;
+    private ArrayList<Line> edges;
 
     public MainScreenView() throws FileNotFoundException {
         this.setUpElements();
@@ -52,6 +53,7 @@ public class MainScreenView {
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
         this.setVertexes(new ArrayList<>());
+        edges = new ArrayList<>();
     }
 
     //Posicionamento dos Nodes na interface gráfica
@@ -207,6 +209,8 @@ public class MainScreenView {
         this.vertexes = vertexes;
     }
 
+    public ArrayList<Line> getEdges() { return edges; }
+
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
 
         Line line = styleEdge(new Line());
@@ -224,6 +228,7 @@ public class MainScreenView {
         line.setEndX(c2.getCenterX() + off.getX());
         line.setEndY(c2.getCenterY() + off.getY());
 
+        edges.add(line);
         drawGraph.getChildren().add(line);
 
     }
