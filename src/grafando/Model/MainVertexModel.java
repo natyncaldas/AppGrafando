@@ -3,18 +3,18 @@ package grafando.Model;
 import java.util.HashSet;
 
 public class MainVertexModel {
-    private HashSet<Integer> conjunto;
+    private HashSet<Integer> vertexSet;
 
     public MainVertexModel(){
-        this.setConjunto(new HashSet<>());
+        this.setVertexSet(new HashSet<>());
     }
 
-    void setConjunto(HashSet<Integer> conjunto){
-        this.conjunto = conjunto;
+    void setVertexSet(HashSet<Integer> vertexSet){
+        this.vertexSet = vertexSet;
     }
 
-    public HashSet<Integer> getConjunto() {
-        return this.conjunto;
+    public HashSet<Integer> getVertexSet() {
+        return this.vertexSet;
     }
 
 
