@@ -1,5 +1,6 @@
 package grafando.Model;
 
+import java.util.HashSet;
 import java.util.TreeMap;
 
 public class MainGraphModel {
@@ -23,6 +24,10 @@ public class MainGraphModel {
 
     public TreeMap<Integer,MainVertexModel> getAdjList(){
         return adjList;
+    }
+
+    public HashSet<Integer> getAdjVertex(int v){
+        return this.adjList.get(v).getVertexSet();
     }
 
     public boolean existEdge(int v1, int v2){
