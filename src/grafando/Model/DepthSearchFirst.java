@@ -9,8 +9,7 @@ public class DepthSearchFirst extends
 
     private HashMap<Integer, String> vertexesColors;
     private HashMap <Integer, Integer> vertexParent;
-    private HashMap <Integer, Integer> vertexInitialTime, vertexFinalTime
-            ;
+    private HashMap <Integer, Integer> vertexInitialTime, vertexFinalTime;
     private ArrayList<DepthSearchFirst> searchExecution;
     private int executionTime;
 
