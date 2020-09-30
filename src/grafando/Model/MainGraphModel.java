@@ -1,6 +1,7 @@
 package grafando.Model;
 
 import java.util.TreeMap;
+import java.util.Random;
 
 public class MainGraphModel {
     private final MainVertexModel vertexes;
@@ -73,6 +74,22 @@ public class MainGraphModel {
 
     public int totalVertexes(){
         return vertexes.getVertexSet().size();
+    }
+    public void generateRandomGraph(int numberVertexes){
+        MainGraphModel randomGraph = new MainGraphModel();
+        for (int i = 0; i < numberVertexes; i++){
+            randomGraph.addVertex(i);
+        }
+        Random random = new Random();
+        int numberEdges = random.nextInt((int)(randomGraph.totalVertexes()*((totalVertexes()-1)/2) +1));
+
+        for (int i=0; i < numberEdges; i++){
+            int vertexA = random.nextInt(randomGraph.totalVertexes());
+            int vertexB = random.nextInt(randomGraph.totalVertexes());
+            if(!(randomGraph.existEdge(vertexA, vertexB))){
+                randomGraph.connectVertexes(vertexA, vertexB);
+            }
+        }
     }
 
 }
