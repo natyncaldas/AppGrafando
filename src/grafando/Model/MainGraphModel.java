@@ -31,7 +31,7 @@ public class MainGraphModel {
     }
 
     public boolean existEdge(int v1, int v2){
-        return adjList.get(v1).getVertexSet().contains(v2);
+        return adjList.get(v1).getVertexSet().contains(v2) || adjList.get(v2).getVertexSet().contains(v1);
     }
 
     public boolean existVertex(int v){

@@ -12,7 +12,7 @@ public class Vertex{
     private Text index;
     private StackPane vertex;
     private boolean deleted;
-    private ArrayList<Line> connectedEdges;
+    private ArrayList<Edge> connectedEdges;
 
     public Vertex() {
         this.deleted = false;
@@ -38,11 +38,11 @@ public class Vertex{
         this.vertex = vertex;
     }
 
-    public void connectEdge(Line edge) {
+    public void connectEdge(Edge edge) {
         connectedEdges.add(edge);
     }
 
-    public ArrayList<Line> getConnectedEdges() {
+    public ArrayList<Edge> getConnectedEdges() {
         return connectedEdges;
     }
 

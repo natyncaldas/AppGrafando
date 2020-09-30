@@ -55,7 +55,7 @@ public class ConnectVertexController {
         Integer initialVertex, finalVertex;
         initialVertex = view.getStartingVertex().getValue();
         finalVertex = view.getFinalVertex().getValue();
-        if (!graphModel.existEdge(initialVertex, finalVertex)) {
+        if (!graphModel.existEdge(initialVertex, finalVertex) && !initialVertex.equals(finalVertex)) {
             mainScreenController.callDrawEdgeOnView(initialVertex,finalVertex);
             System.out.println("Entrou.");
         }

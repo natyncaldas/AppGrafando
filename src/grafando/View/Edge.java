@@ -1,4 +1,28 @@
 package grafando.View;
 
-public class Edge {
+import javafx.scene.shape.Line;
+
+public class Edge extends Line {
+    int initialVertex, finalVertex;
+
+    public Edge(int initialVertex, int finalVertex){
+        this.initialVertex = initialVertex;
+        this.finalVertex = finalVertex;
+    }
+
+    public int getInitialVertex() {
+        return initialVertex;
+    }
+
+    public void setInitialVertex(int initialVertex) {
+        this.initialVertex = initialVertex;
+    }
+
+    public int getFinalVertex() {
+        return finalVertex;
+    }
+
+    public void setFinalVertex(int finalVertex) {
+        this.finalVertex = finalVertex;
+    }
 }

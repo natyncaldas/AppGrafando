@@ -31,7 +31,7 @@ public class MainScreenView {
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Vertex> vertexes;
-    private ArrayList<Line> edges;
+    private ArrayList<Edge> edges;
 
     public MainScreenView() throws FileNotFoundException {
         this.setUpElements();
@@ -209,11 +209,11 @@ public class MainScreenView {
         this.vertexes = vertexes;
     }
 
-    public ArrayList<Line> getEdges() { return edges; }
+    public ArrayList<Edge> getEdges() { return edges; }
 
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
 
-        Line line = styleEdge(new Line());
+        Edge line = styleEdge(new Edge(initialVertexIndex, finalVertexIndex));
 
         Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
         Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
@@ -250,6 +250,7 @@ public class MainScreenView {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
+        vertexShape.setStrokeWidth(2);
         vertexShape.setStroke(Color.SPRINGGREEN);
         DropShadow s = new DropShadow();
         s.setColor(Color.SPRINGGREEN);
@@ -263,9 +264,9 @@ public class MainScreenView {
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
     }
 
-    private static Line styleEdge(Line line) {
+    private static Edge styleEdge(Edge line) {
         line.setStroke(Color.SPRINGGREEN);
-        line.setStrokeWidth(3);
+        line.setStrokeWidth(2);
 
         DropShadow s = new DropShadow();
         s.setColor(Color.SPRINGGREEN);

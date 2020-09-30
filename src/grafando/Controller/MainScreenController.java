@@ -1,6 +1,7 @@
 package grafando.Controller;
 
 import grafando.Model.MainGraphModel;
+import grafando.View.Edge;
 import grafando.View.MainScreenView;
 import grafando.View.Vertex;
 import javafx.event.EventHandler;
@@ -8,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -114,25 +116,48 @@ public class MainScreenController {
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    //*Incompleta!!
-    //*Deleta apenas os vértices
-    //TODO: completar deletando arestas
-    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray, ArrayList<Line> edgesArray){
+
+    //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos
+    //TODO: verificar se operacões marcadas como "teste" resolvem o problema
+    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray){
         EventHandler<MouseEvent> eventHandler = e ->{
+
+            ArrayList<Edge>deleted = new ArrayList<>();//teste
+
             for (Vertex v:vertexArray) {
                 if(v.getVertex().getChildren().contains(e.getTarget())) {
+
+                    for (Edge l:v.getConnectedEdges()) {
+                        graphModel.removeEdge(l.getInitialVertex(), l.getFinalVertex());
+                        deleted.add(l);//teste
+
+                    }
+                    for (Edge l:deleted){
+                        int index  = vertexArray.indexOf(v) == l.getInitialVertex() ? l.getFinalVertex() : l.getInitialVertex();
+                        vertexArray.get(index).getConnectedEdges().remove(l);//teste
+                    }
+
+                    graphModel.removeVertex(vertexArray.indexOf(v));
                     pane.getChildren().removeAll(v.getConnectedEdges());
+                    edgesArray.removeAll(v.getConnectedEdges());//teste
                     v.getVertex().getChildren().removeAll();
                     pane.getChildren().remove(v.getVertex());
                     v.delete();
-                    graphModel.removeVertex(vertexArray.indexOf(v));
                     break;
                 }
             }
-            for (Line l: edgesArray) {
-                l.addEventHandler(MouseEvent.MOUSE_PRESSED, me ->
-                        pane.getChildren().remove(l));
+            deleted = new ArrayList<>();//teste
+
+            for (Edge l: edgesArray){
+                if(l.contains(e.getX(), e.getY())){
+                    pane.getChildren().remove(l);
+                    graphModel.removeEdge(l.getInitialVertex(), l.getFinalVertex());
+                    vertexArray.get(l.getInitialVertex()).getConnectedEdges().remove(l);//teste
+                    vertexArray.get(l.getFinalVertex()).getConnectedEdges().remove(l);//teste
+                    deleted.add(l);//teste
+                }
             }
+            edgesArray.removeAll(deleted);//teste
         };
 
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
