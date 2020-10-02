@@ -3,7 +3,6 @@ package grafando.View;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -28,7 +27,13 @@ public class MainScreenView {
     private GridPane editGraph, run;
     private Pane drawGraph;
     private VBox forward, backwards;
-    private Button clear, addE, runDFS, random, previous, next;
+    private Button clear;
+    private Button addE;
+    private Button stopDFS;
+    private Button runDFS;
+    private Button random;
+    private Button previous;
+    private Button next;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Vertex> vertexes;
@@ -48,6 +53,7 @@ public class MainScreenView {
         this.setEditGraphStyled(new GridPane());
         this.setRunStyled(new GridPane());
         this.setDrawGraph(new Pane());
+        this.setStopDFSStyled(new Button());
         this.setRunDFSStyled(new Button());
         this.setRandomStyled(new Button());
         this.setClearStyled(new Button("Clear"));
@@ -75,8 +81,9 @@ public class MainScreenView {
         this.commands.setRight(this.run);
         this.editGraph.addColumn(0, this.addV, this.delete);
         this.editGraph.addColumn(1, this.addE, this.clear);
-        this.run.addColumn(0, this.runDFS);
-        this.run.addColumn(1, this.random);
+        this.run.addColumn(0, this.random);
+        this.run.addColumn(1, this.runDFS);
+        this.run.addColumn(2, this.stopDFS);
     }
 
     //Métodos Setters e Getters para cada Node
@@ -145,6 +152,20 @@ public class MainScreenView {
         this.drawGraph = drawGraph;
     }
 
+    public Button getStopDFS() {
+        return stopDFS;
+    }
+    private void setStopDFSStyled(Button stopDFS) throws FileNotFoundException {
+        FileInputStream input=new FileInputStream("resources/icons/stop-16.png");
+        Image image = new Image(input);
+        ImageView img=new ImageView(image);
+        stopDFS.setGraphic(img);
+        stopDFS.setBackground(null);
+        stopDFS.setTooltip(new Tooltip("Stop depth-first search"));
+        colorButtonOnMouseEntered(stopDFS);
+        this.stopDFS = stopDFS;
+    }
+
     public Button getRunDFS() {
         return runDFS;
     }
@@ -209,6 +230,8 @@ public class MainScreenView {
         next.setGraphic(img);
         next.setBackground(null);
         next.setTooltip(new Tooltip("Next DFS state"));
+        next.setOpacity(0);
+        next.setDisable(true);
         colorButtonOnMouseEntered(next);
         this.next = next;
     }
@@ -224,6 +247,8 @@ public class MainScreenView {
         previous.setGraphic(img);
         previous.setBackground(null);
         previous.setTooltip(new Tooltip("Previous DFS state"));
+        previous.setOpacity(0);
+        previous.setDisable(true);
         colorButtonOnMouseEntered(previous);
         this.previous = previous;
     }
