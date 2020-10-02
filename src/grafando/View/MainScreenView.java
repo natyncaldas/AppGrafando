@@ -3,6 +3,7 @@ package grafando.View;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -26,7 +27,8 @@ public class MainScreenView {
     private BorderPane root, commands;
     private GridPane editGraph, run;
     private Pane drawGraph;
-    private Button clear, addE, runDFS, random;
+    private VBox forward, backwards;
+    private Button clear, addE, runDFS, random, previous, next;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Vertex> vertexes;
@@ -40,6 +42,8 @@ public class MainScreenView {
     //Instanciação dos Nodes
     public void setUpElements() throws FileNotFoundException {
         this.setRootStyled(new BorderPane());
+        this.setForwardStyled(new VBox());
+        this.setBackwardsStyled(new VBox());
         this.setCommandsStyled(new BorderPane());
         this.setEditGraphStyled(new GridPane());
         this.setRunStyled(new GridPane());
@@ -48,17 +52,23 @@ public class MainScreenView {
         this.setRandomStyled(new Button());
         this.setClearStyled(new Button("Clear"));
         this.setAddEStyled(new Button("Connect"));
+        this.setNextStyled(new Button());
+        this.setPreviousStyled(new Button());
         this.setAddVStyled(new RadioButton("Add Vertex"));
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
         this.setVertexes(new ArrayList<>());
-        edges = new ArrayList<>();
+        this.edges = new ArrayList<>();
     }
 
     //Posicionamento dos Nodes na interface gráfica
     public void positionElements(){
         this.root.setBottom(this.commands);
         this.root.setCenter(this.drawGraph);
+        this.root.setRight(this.forward);
+        this.root.setLeft(this.backwards);
+        this.forward.getChildren().add(this.next);
+        this.backwards.getChildren().add(this.previous);
         this.addV.setToggleGroup(this.toggleAddDel);
         this.delete.setToggleGroup(this.toggleAddDel);
         this.commands.setLeft(this.editGraph);
@@ -78,6 +88,24 @@ public class MainScreenView {
     private void setRootStyled(BorderPane root) {
         root.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
         this.root = root;
+    }
+
+    public VBox getForward() {
+        return forward;
+    }
+
+    private void setForwardStyled(VBox forward) {
+        forward.setAlignment(Pos.CENTER);
+        this.forward = forward;
+    }
+
+    public VBox getBackwards() {
+        return backwards;
+    }
+
+    private void setBackwardsStyled(VBox backwards) {
+        backwards.setAlignment(Pos.CENTER);
+        this.backwards = backwards;
     }
 
     public BorderPane getCommands() {
@@ -168,6 +196,36 @@ public class MainScreenView {
         addE.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(50), Insets.EMPTY)));
         colorButtonOnMouseEntered(addE);
         this.addE = addE;
+    }
+
+    public Button getNext(){
+        return next;
+    }
+
+    private void setNextStyled(Button next) throws FileNotFoundException {
+        FileInputStream input=new FileInputStream("resources/icons/arrow-31-24.png");
+        Image image = new Image(input);
+        ImageView img=new ImageView(image);
+        next.setGraphic(img);
+        next.setBackground(null);
+        next.setTooltip(new Tooltip("Next DFS state"));
+        colorButtonOnMouseEntered(next);
+        this.next = next;
+    }
+
+    public Button getPrevious(){
+        return previous;
+    }
+
+    private void setPreviousStyled(Button previous) throws FileNotFoundException {
+        FileInputStream input=new FileInputStream("resources/icons/arrow-96-24.png");
+        Image image = new Image(input);
+        ImageView img=new ImageView(image);
+        previous.setGraphic(img);
+        previous.setBackground(null);
+        previous.setTooltip(new Tooltip("Previous DFS state"));
+        colorButtonOnMouseEntered(previous);
+        this.previous = previous;
     }
 
     public RadioButton getAddV() {

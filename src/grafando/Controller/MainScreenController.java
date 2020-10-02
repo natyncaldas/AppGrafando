@@ -33,7 +33,7 @@ public class MainScreenController {
         this.setView(new MainScreenView());
 
         //Chamada de métodos com eventos para Nodes específicos
-        this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear());
+        this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
