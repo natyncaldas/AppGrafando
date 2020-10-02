@@ -1,9 +1,9 @@
 package grafando.View;
 
+import grafando.Model.DepthFirstSearch;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -33,6 +33,7 @@ public class MainScreenView {
     private ToggleGroup toggleAddDel;
     private ArrayList<Vertex> vertexes;
     private ArrayList<Edge> edges;
+    private DepthFirstSearch currentSearchState;
 
     public MainScreenView() throws FileNotFoundException {
         this.setUpElements();
@@ -331,6 +332,43 @@ public class MainScreenView {
         s.setSpread(0.0001);
         line.setEffect(s);
         return line;
+    }
+
+    public void setCurrentSearchState(DepthFirstSearch state) {
+        this.currentSearchState = state;
+    }
+
+    public void reloadGraphState() {
+        // para cada vertice in vertexes
+        // pega o index dele e vê a cor dele no dfs
+        // colore
+        for (Vertex v: vertexes) {
+            String color = currentSearchState.getVertexColor(vertexes.lastIndexOf(v));
+            if (color.equals("white")) {
+                v.getShape().setStroke(Color.WHITE);
+                DropShadow s = new DropShadow();
+                s.setColor(Color.WHITE);
+                s.setRadius(13);
+                s.setSpread(0.00001);
+                v.getShape().setEffect(s);
+            }
+            if (color.equals("gray")) {
+                v.getShape().setStroke(Color.GRAY);
+                DropShadow s = new DropShadow();
+                s.setColor(Color.GRAY);
+                s.setRadius(13);
+                s.setSpread(0.00001);
+                v.getShape().setEffect(s);
+            }
+            if (color.equals("black")) {
+                v.getShape().setStroke(Color.BLACK);
+                DropShadow s = new DropShadow();
+                s.setColor(Color.BLACK);
+                s.setRadius(13);
+                s.setSpread(0.00001);
+                v.getShape().setEffect(s);
+            }
+        }
     }
 }
 

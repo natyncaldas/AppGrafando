@@ -2,10 +2,10 @@ package grafando.Model;
 
 import java.util.HashSet;
 
-public class MainVertexModel {
+public class VertexModel {
     private HashSet<Integer> vertexSet;
 
-    public MainVertexModel(){
+    public VertexModel(){
         this.setVertexSet(new HashSet<>());
     }
 

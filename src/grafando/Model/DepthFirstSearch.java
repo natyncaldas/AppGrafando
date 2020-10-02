@@ -3,23 +3,23 @@ package grafando.Model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DepthSearchFirst extends
+public class DepthFirstSearch extends
         GraphSearchAlgorithms{
-    private MainGraphModel Graph;
+    private GraphModel Graph;
 
     private HashMap<Integer, String> vertexesColors;
     private HashMap <Integer, Integer> vertexParent;
     private HashMap <Integer, Integer> vertexInitialTime, vertexFinalTime;
-    private ArrayList<DepthSearchFirst> searchExecution;
+    private ArrayList<DepthFirstSearch> searchExecution;
     private int executionTime;
 
-    public DepthSearchFirst(MainGraphModel G){
+    public DepthFirstSearch(GraphModel G){
         this();
         setGraph(G);
         executeSearch();
     }
 
-    private DepthSearchFirst(){
+    private DepthFirstSearch(){
 
         searchExecution = new ArrayList<>();
         vertexFinalTime = new HashMap<>();
@@ -76,7 +76,7 @@ public class DepthSearchFirst extends
 
     private void copyAttributes(HashMap<Integer,String> color, HashMap<Integer,Integer> parent, HashMap<Integer,Integer> i, HashMap<Integer,Integer> f){
 
-        DepthSearchFirst temp = new DepthSearchFirst();
+        DepthFirstSearch temp = new DepthFirstSearch();
 
         temp.Graph = this.Graph;
         temp.vertexInitialTime = new HashMap<>(i);
@@ -87,7 +87,7 @@ public class DepthSearchFirst extends
         this.searchExecution.add(temp);
     }
 
-    private void setGraph(MainGraphModel G){
+    private void setGraph(GraphModel G){
         this.Graph = G;
     }
 
@@ -107,7 +107,7 @@ public class DepthSearchFirst extends
         vertexesColors.put(v, c);
     }
 
-    public ArrayList<DepthSearchFirst> getSearchExecution(){
+    public ArrayList<DepthFirstSearch> getSearchExecution(){
         return searchExecution;
     }
 
@@ -126,7 +126,7 @@ public class DepthSearchFirst extends
     public int getFinalVertexTime(int v){
         return vertexFinalTime.get(v);
     }
-    public MainGraphModel getGraph(){
+    public GraphModel getGraph(){
         return Graph;
     }
 }

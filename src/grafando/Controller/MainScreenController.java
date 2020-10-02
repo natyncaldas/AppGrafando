@@ -1,6 +1,7 @@
 package grafando.Controller;
 
-import grafando.Model.MainGraphModel;
+import grafando.Model.DepthFirstSearch;
+import grafando.Model.GraphModel;
 import grafando.View.Edge;
 import grafando.View.MainScreenView;
 import grafando.View.Vertex;
@@ -23,7 +24,9 @@ public class MainScreenController {
     //Declaração da View
     public Stage primaryStage;
     private MainScreenView view;
-    public MainGraphModel graphModel;
+    public GraphModel graphModel;
+    private ArrayList<DepthFirstSearch> searchExecution;
+    private int currentState;
 
     public MainScreenController(Stage primaryStage) throws FileNotFoundException {
         //Salva referência ao stage principal
@@ -38,7 +41,7 @@ public class MainScreenController {
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
-        this.graphModel = MainGraphModel.getInstance();
+        this.graphModel = GraphModel.getInstance();
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
     }
@@ -184,6 +187,26 @@ public class MainScreenController {
     public void callDrawEdgeOnView(int initialVertexIndex, int finalVertexIndex) {
         graphModel.connectVertexes(initialVertexIndex, finalVertexIndex);
         view.drawEdge(initialVertexIndex, finalVertexIndex);
+    }
+
+    // novas
+    public void executeDFS() {
+        DepthFirstSearch dfs = new DepthFirstSearch(this.graphModel);
+        this.searchExecution = dfs.getSearchExecution();
+    }
+
+    // novas
+    public void goToNextExecutionStep() {
+        currentState += 1;
+        view.setCurrentSearchState(searchExecution.get(currentState));
+        view.reloadGraphState();
+    }
+
+    // novas
+    public void goToPreviousExecutionStep() {
+        currentState -= 1;
+        view.setCurrentSearchState(searchExecution.get(currentState));
+        view.reloadGraphState();
     }
 }
 

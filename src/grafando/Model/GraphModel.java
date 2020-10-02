@@ -3,26 +3,26 @@ package grafando.Model;
 import java.util.HashSet;
 import java.util.TreeMap;
 
-public class MainGraphModel {
-    private final MainVertexModel vertexes;
-    private final TreeMap<Integer,MainVertexModel> adjList;
+public class GraphModel {
+    private final VertexModel vertexes;
+    private final TreeMap<Integer, VertexModel> adjList;
 
-    private static MainGraphModel sharedModelGraph = new MainGraphModel();
+    private static GraphModel sharedModelGraph = new GraphModel();
 
-    private MainGraphModel(){
-        vertexes = new MainVertexModel();
+    private GraphModel(){
+        vertexes = new VertexModel();
         adjList = new TreeMap<>();
     }
 
-    public static MainGraphModel getInstance() {
+    public static GraphModel getInstance() {
         return sharedModelGraph;
     }
 
-    public MainVertexModel getVertexes(){
+    public VertexModel getVertexes(){
         return vertexes;
     }
 
-    public TreeMap<Integer,MainVertexModel> getAdjList(){
+    public TreeMap<Integer, VertexModel> getAdjList(){
         return adjList;
     }
 
@@ -41,7 +41,7 @@ public class MainGraphModel {
     public void addVertex(Integer... v){
         for(Integer c: v){
             vertexes.getVertexSet().add(c);
-            adjList.put(c, new MainVertexModel());
+            adjList.put(c, new VertexModel());
         }
     }
     public void connectVertexes(int v1, int v2){
