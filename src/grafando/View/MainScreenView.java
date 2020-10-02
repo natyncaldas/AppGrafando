@@ -360,10 +360,12 @@ public class MainScreenView {
         return line;
     }
 
+    //nova
     public void setCurrentSearchState(DepthFirstSearch state) {
         this.currentSearchState = state;
     }
 
+    // nova
     public void reloadGraphState() {
         // para cada vertice in vertexes
         // pega o index dele e vê a cor dele no dfs
