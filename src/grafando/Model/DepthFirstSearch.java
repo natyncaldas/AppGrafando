@@ -38,6 +38,7 @@ public class DepthFirstSearch extends
             this.setInitialVertexTime(v, 0);
             this.setFinalVertexTime(v, 0);
             this.setVertexParent(v, -1);
+
             this.setVertexColor(v, "white");
         }
 

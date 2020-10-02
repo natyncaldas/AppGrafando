@@ -39,6 +39,7 @@ public class MainScreenController {
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
+        this.showDFSStateButtons(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
         this.graphModel = GraphModel.getInstance();
@@ -105,6 +106,24 @@ public class MainScreenController {
                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             }
         });
+    }
+
+    public void showDFSStateButtons(Button b1, Button b2, Button run, Button stop){
+        EventHandler<MouseEvent> eventHandler = e ->{
+            if(e.getSource().equals(run)){
+                b1.setOpacity(1);
+                b2.setOpacity(1);
+                b1.setDisable(false);
+                b2.setDisable(false);
+            }else{
+                b1.setOpacity(0);
+                b2.setOpacity(0);
+                b1.setDisable(true);
+                b2.setDisable(true);
+            }
+        };
+        stop.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        run.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
     //*Completa
