@@ -372,29 +372,31 @@ public class MainScreenView {
         // colore
         for (Vertex v: vertexes) {
             String color = currentSearchState.getVertexColor(vertexes.lastIndexOf(v));
-            if (color.equals("white")) {
-                v.getShape().setStroke(Color.WHITE);
-                DropShadow s = new DropShadow();
-                s.setColor(Color.WHITE);
-                s.setRadius(13);
-                s.setSpread(0.00001);
-                v.getShape().setEffect(s);
-            }
-            if (color.equals("gray")) {
-                v.getShape().setStroke(Color.GRAY);
-                DropShadow s = new DropShadow();
-                s.setColor(Color.GRAY);
-                s.setRadius(13);
-                s.setSpread(0.00001);
-                v.getShape().setEffect(s);
-            }
-            if (color.equals("black")) {
-                v.getShape().setStroke(Color.BLACK);
-                DropShadow s = new DropShadow();
-                s.setColor(Color.BLACK);
-                s.setRadius(13);
-                s.setSpread(0.00001);
-                v.getShape().setEffect(s);
+            if (color != null) {
+                if (color.equals("white")) {
+                    v.getShape().setStroke(Color.WHITE);
+                    DropShadow s = new DropShadow();
+                    s.setColor(Color.WHITE);
+                    s.setRadius(13);
+                    s.setSpread(0.00001);
+                    v.getShape().setEffect(s);
+                }
+                if (color.equals("gray")) {
+                    v.getShape().setStroke(Color.GRAY);
+                    DropShadow s = new DropShadow();
+                    s.setColor(Color.GRAY);
+                    s.setRadius(13);
+                    s.setSpread(0.00001);
+                    v.getShape().setEffect(s);
+                }
+                if (color.equals("black")) {
+                    v.getShape().setStroke(Color.BLACK);
+                    DropShadow s = new DropShadow();
+                    s.setColor(Color.BLACK);
+                    s.setRadius(13);
+                    s.setSpread(0.00001);
+                    v.getShape().setEffect(s);
+                }
             }
         }
     }

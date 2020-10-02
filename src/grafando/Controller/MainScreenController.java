@@ -39,7 +39,7 @@ public class MainScreenController {
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
-        this.showDFSStateButtons(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
+        this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
         this.graphModel = GraphModel.getInstance();
@@ -108,22 +108,36 @@ public class MainScreenController {
         });
     }
 
-    public void showDFSStateButtons(Button b1, Button b2, Button run, Button stop){
+    public void showDFSState(Button b1, Button b2, Button run, Button stop){
         EventHandler<MouseEvent> eventHandler = e ->{
             if(e.getSource().equals(run)){
                 b1.setOpacity(1);
                 b2.setOpacity(1);
                 b1.setDisable(false);
                 b2.setDisable(false);
-            }else{
+                executeDFS();
+            }
+            if (e.getSource().equals(stop)) {
                 b1.setOpacity(0);
                 b2.setOpacity(0);
                 b1.setDisable(true);
                 b2.setDisable(true);
             }
+            if (e.getSource().equals(b1)) {
+                boolean isValidState = goToNextExecutionStep();
+                if (!isValidState) { b1.setDisable(true); }
+                if (isValidState) { b2.setDisable(false); }
+            }
+            if (e.getSource().equals(b2)) {
+                boolean isValidState = goToPreviousExecutionStep();
+                if (!isValidState) { b2.setDisable(true); }
+                if (isValidState) { b1.setDisable(false); }
+            }
         };
         stop.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
         run.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        b1.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        b2.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
     //*Completa
@@ -209,23 +223,31 @@ public class MainScreenController {
     }
 
     // novas
-    public void executeDFS() {
+    private void executeDFS() {
         DepthFirstSearch dfs = new DepthFirstSearch(this.graphModel);
         this.searchExecution = dfs.getSearchExecution();
     }
 
     // novas
-    public void goToNextExecutionStep() {
+    public boolean goToNextExecutionStep() {
         currentState += 1;
+        if (currentState >= searchExecution.size()) {
+            return false;
+        }
         view.setCurrentSearchState(searchExecution.get(currentState));
         view.reloadGraphState();
+        return true;
     }
 
     // novas
-    public void goToPreviousExecutionStep() {
+    public boolean goToPreviousExecutionStep() {
         currentState -= 1;
+        if (currentState < 0) {
+            return false;
+        }
         view.setCurrentSearchState(searchExecution.get(currentState));
         view.reloadGraphState();
+        return true;
     }
 }
 
