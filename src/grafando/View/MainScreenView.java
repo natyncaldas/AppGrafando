@@ -13,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -31,6 +30,7 @@ public class MainScreenView {
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Vertex> vertexes;
+    private ArrayList<Edge> edges;
 
     public MainScreenView() throws FileNotFoundException {
         this.setUpElements();
@@ -52,6 +52,7 @@ public class MainScreenView {
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
         this.setVertexes(new ArrayList<>());
+        edges = new ArrayList<>();
     }
 
     //Posicionamento dos Nodes na interface gráfica
@@ -207,9 +208,11 @@ public class MainScreenView {
         this.vertexes = vertexes;
     }
 
+    public ArrayList<Edge> getEdges() { return edges; }
+
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
 
-        Line line = styleEdge(new Line());
+        Edge line = styleEdge(new Edge(initialVertexIndex, finalVertexIndex));
 
         Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
         Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
@@ -224,8 +227,10 @@ public class MainScreenView {
         line.setEndX(c2.getCenterX() + off.getX());
         line.setEndY(c2.getCenterY() + off.getY());
 
+        edges.add(line);
         drawGraph.getChildren().add(line);
-
+        this.getVertexes().get(initialVertexIndex).connectEdge(line);
+        this.getVertexes().get(finalVertexIndex).connectEdge(line);
     }
 
     //Métodos estáticos puramente para estilização
@@ -244,6 +249,7 @@ public class MainScreenView {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
+        vertexShape.setStrokeWidth(2);
         vertexShape.setStroke(Color.SPRINGGREEN);
         DropShadow s = new DropShadow();
         s.setColor(Color.SPRINGGREEN);
@@ -257,9 +263,9 @@ public class MainScreenView {
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
     }
 
-    private static Line styleEdge(Line line) {
+    private static Edge styleEdge(Edge line) {
         line.setStroke(Color.SPRINGGREEN);
-        line.setStrokeWidth(1);
+        line.setStrokeWidth(2);
 
         DropShadow s = new DropShadow();
         s.setColor(Color.SPRINGGREEN);

@@ -1,5 +1,6 @@
 package grafando.Model;
 
+import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.Random;
 
@@ -26,8 +27,12 @@ public class MainGraphModel {
         return adjList;
     }
 
+    public HashSet<Integer> getAdjVertex(int v){
+        return this.adjList.get(v).getVertexSet();
+    }
+
     public boolean existEdge(int v1, int v2){
-        return adjList.get(v1).getVertexSet().contains(v2);
+        return adjList.get(v1).getVertexSet().contains(v2) || adjList.get(v2).getVertexSet().contains(v1);
     }
 
     public boolean existVertex(int v){
