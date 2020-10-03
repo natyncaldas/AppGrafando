@@ -1,7 +1,7 @@
 package grafando.Controller;
 
 
-import grafando.Model.MainGraphModel;
+import grafando.Model.GraphModel;
 
 import grafando.View.RandomGraphView;
 import javafx.event.EventHandler;
@@ -17,11 +17,11 @@ public class RandomGraphController {
     Stage primaryStage;
     RandomGraphView random_view;
     MainScreenController mainScreenController;
-    MainGraphModel graphModel;
+    GraphModel graphModel;
 
     RandomGraphController(Stage primaryStage, MainScreenController mainScreenController) {
         this.primaryStage = primaryStage;
-        this.graphModel = MainGraphModel.getInstance();
+        this.graphModel = GraphModel.getInstance();
         ArrayList<Integer> quantidade = new ArrayList<Integer>();
         for (int i=5; i<26; i++){
             quantidade.add(i);

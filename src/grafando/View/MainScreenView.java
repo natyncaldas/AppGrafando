@@ -1,5 +1,6 @@
 package grafando.View;
 
+import grafando.Model.DepthFirstSearch;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -26,11 +27,19 @@ public class MainScreenView {
     private BorderPane root, commands;
     private GridPane editGraph, run;
     private Pane drawGraph;
-    private Button clear, addE, runDFS, random;
+    private VBox forward, backwards;
+    private Button clear;
+    private Button addE;
+    private Button stopDFS;
+    private Button runDFS;
+    private Button random;
+    private Button previous;
+    private Button next;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private ArrayList<Vertex> vertexes;
     private ArrayList<Edge> edges;
+    private DepthFirstSearch currentSearchState;
 
     public MainScreenView() throws FileNotFoundException {
         this.setUpElements();
@@ -40,33 +49,43 @@ public class MainScreenView {
     //Instanciação dos Nodes
     public void setUpElements() throws FileNotFoundException {
         this.setRootStyled(new BorderPane());
+        this.setForwardStyled(new VBox());
+        this.setBackwardsStyled(new VBox());
         this.setCommandsStyled(new BorderPane());
         this.setEditGraphStyled(new GridPane());
         this.setRunStyled(new GridPane());
         this.setDrawGraph(new Pane());
+        this.setStopDFSStyled(new Button());
         this.setRunDFSStyled(new Button());
         this.setRandomStyled(new Button());
         this.setClearStyled(new Button("Clear"));
         this.setAddEStyled(new Button("Connect"));
+        this.setNextStyled(new Button());
+        this.setPreviousStyled(new Button());
         this.setAddVStyled(new RadioButton("Add Vertex"));
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
         this.setVertexes(new ArrayList<>());
-        edges = new ArrayList<>();
+        this.edges = new ArrayList<>();
     }
 
     //Posicionamento dos Nodes na interface gráfica
     public void positionElements(){
         this.root.setBottom(this.commands);
         this.root.setCenter(this.drawGraph);
+        this.root.setRight(this.forward);
+        this.root.setLeft(this.backwards);
+        this.forward.getChildren().add(this.next);
+        this.backwards.getChildren().add(this.previous);
         this.addV.setToggleGroup(this.toggleAddDel);
         this.delete.setToggleGroup(this.toggleAddDel);
         this.commands.setLeft(this.editGraph);
         this.commands.setRight(this.run);
         this.editGraph.addColumn(0, this.addV, this.delete);
         this.editGraph.addColumn(1, this.addE, this.clear);
-        this.run.addColumn(0, this.runDFS);
-        this.run.addColumn(1, this.random);
+        this.run.addColumn(0, this.random);
+        this.run.addColumn(1, this.runDFS);
+        this.run.addColumn(2, this.stopDFS);
     }
 
     //Métodos Setters e Getters para cada Node
@@ -78,6 +97,24 @@ public class MainScreenView {
     private void setRootStyled(BorderPane root) {
         root.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
         this.root = root;
+    }
+
+    public VBox getForward() {
+        return forward;
+    }
+
+    private void setForwardStyled(VBox forward) {
+        forward.setAlignment(Pos.CENTER);
+        this.forward = forward;
+    }
+
+    public VBox getBackwards() {
+        return backwards;
+    }
+
+    private void setBackwardsStyled(VBox backwards) {
+        backwards.setAlignment(Pos.CENTER);
+        this.backwards = backwards;
     }
 
     public BorderPane getCommands() {
@@ -115,6 +152,20 @@ public class MainScreenView {
 
     private void setDrawGraph(Pane drawGraph) {
         this.drawGraph = drawGraph;
+    }
+
+    public Button getStopDFS() {
+        return stopDFS;
+    }
+    private void setStopDFSStyled(Button stopDFS) throws FileNotFoundException {
+        FileInputStream input=new FileInputStream("resources/icons/stop-16.png");
+        Image image = new Image(input);
+        ImageView img=new ImageView(image);
+        stopDFS.setGraphic(img);
+        stopDFS.setBackground(null);
+        stopDFS.setTooltip(new Tooltip("Stop depth-first search"));
+        colorButtonOnMouseEntered(stopDFS);
+        this.stopDFS = stopDFS;
     }
 
     public Button getRunDFS() {
@@ -170,6 +221,40 @@ public class MainScreenView {
         this.addE = addE;
     }
 
+    public Button getNext(){
+        return next;
+    }
+
+    private void setNextStyled(Button next) throws FileNotFoundException {
+        FileInputStream input=new FileInputStream("resources/icons/arrow-31-24.png");
+        Image image = new Image(input);
+        ImageView img=new ImageView(image);
+        next.setGraphic(img);
+        next.setBackground(null);
+        next.setTooltip(new Tooltip("Next DFS state"));
+        next.setOpacity(0);
+        next.setDisable(true);
+        colorButtonOnMouseEntered(next);
+        this.next = next;
+    }
+
+    public Button getPrevious(){
+        return previous;
+    }
+
+    private void setPreviousStyled(Button previous) throws FileNotFoundException {
+        FileInputStream input=new FileInputStream("resources/icons/arrow-96-24.png");
+        Image image = new Image(input);
+        ImageView img=new ImageView(image);
+        previous.setGraphic(img);
+        previous.setBackground(null);
+        previous.setTooltip(new Tooltip("Previous DFS state"));
+        previous.setOpacity(0);
+        previous.setDisable(true);
+        colorButtonOnMouseEntered(previous);
+        this.previous = previous;
+    }
+
     public RadioButton getAddV() {
         return addV;
     }
@@ -212,7 +297,7 @@ public class MainScreenView {
 
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
 
-        Edge line = styleEdge(new Edge(initialVertexIndex, finalVertexIndex));
+        Edge line = styleEdge(new Edge(initialVertexIndex, finalVertexIndex), Color.SPRINGGREEN);
 
         Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
         Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
@@ -245,34 +330,92 @@ public class MainScreenView {
         });
     }
 
-    public static void styleVertexShape(Circle vertexShape) {
+    public static void styleVertexShape(Circle vertexShape, Color color, Color shadow) {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
         vertexShape.setStrokeWidth(2);
-        vertexShape.setStroke(Color.SPRINGGREEN);
+        vertexShape.setStroke(color);
         DropShadow s = new DropShadow();
-        s.setColor(Color.SPRINGGREEN);
+        s.setColor(shadow);
         s.setRadius(13);
         s.setSpread(0.00001);
         vertexShape.setEffect(s);
     }
 
-    public static void styleVertexText(Text vertexText) {
-        vertexText.setFill(Color.SPRINGGREEN);
+    public static void styleVertexText(Text vertexText, Color color) {
+        vertexText.setFill(color);
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
     }
 
-    private static Edge styleEdge(Edge line) {
-        line.setStroke(Color.SPRINGGREEN);
+    private static Edge styleEdge(Edge line, Color color) {
+        line.setStroke(color);
         line.setStrokeWidth(2);
 
         DropShadow s = new DropShadow();
-        s.setColor(Color.SPRINGGREEN);
+        s.setColor(color);
         s.setRadius(13);
         s.setSpread(0.0001);
         line.setEffect(s);
         return line;
+    }
+
+    public void setDefaultEdgeAndVertexColors() {
+        for (Vertex v: vertexes) {
+            styleVertexShape(v.getShape(), Color.SPRINGGREEN, Color.SPRINGGREEN);
+            styleVertexText(v.getIndex(), Color.SPRINGGREEN);
+        }
+        for (Edge e: edges) {
+            styleEdge(e, Color.SPRINGGREEN);
+        }
+    }
+
+    //nova
+    public void setCurrentSearchState(DepthFirstSearch state) {
+        this.currentSearchState = state;
+    }
+
+    // nova
+    public void reloadGraphState() {
+        // para cada vertice in vertexes
+        // pega o index dele e vê a cor dele no dfs
+        // colore
+        for (Vertex v: vertexes) {
+            String color = currentSearchState.getVertexColor(vertexes.lastIndexOf(v));
+            if (color != null) {
+                if (color.equals("white")) {
+                    styleVertexShape(v.getShape(), Color.WHITE, Color.WHITE);
+                    styleVertexText(v.getIndex(), Color.WHITE);
+                }
+                if (color.equals("gray")) {
+                    styleVertexShape(v.getShape(), Color.LIGHTSLATEGRAY, Color.LIGHTSLATEGRAY);
+                    styleVertexText(v.getIndex(), Color.LIGHTSLATEGRAY);
+                }
+                if (color.equals("black")) {
+                    styleVertexShape(v.getShape(), Color.BLACK, Color.WHITE);
+                    styleVertexText(v.getIndex(), Color.WHITE);
+                }
+            }else{
+                MainScreenView.styleVertexShape(v.getShape(), Color.SPRINGGREEN, Color.SPRINGGREEN);
+                MainScreenView.styleVertexText(v.getIndex(), Color.SPRINGGREEN);
+            }
+            try{
+                int current = vertexes.lastIndexOf(v);
+                int parent = currentSearchState.getVertexParent(current);
+
+                for (Edge e:edges) {
+                    if(parent != -1){
+                        if(e.containsVertexPair(current, parent)){
+                            e.setStroke(Color.WHITE);
+                        }
+                    }
+                    assert color != null;
+                    if(color.equals("white") && e.getStroke().equals(Color.WHITE) && v.getConnectedEdges().contains(e)){
+                        MainScreenView.styleEdge(e, Color.SPRINGGREEN);
+                    }
+                }
+            }catch (NullPointerException ignored){}
+        }
     }
 }
 

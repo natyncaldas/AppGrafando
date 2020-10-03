@@ -1,6 +1,7 @@
 package grafando.Controller;
 
-import grafando.Model.MainGraphModel;
+import grafando.Model.DepthFirstSearch;
+import grafando.Model.GraphModel;
 import grafando.View.Edge;
 import grafando.View.MainScreenView;
 import grafando.View.Vertex;
@@ -8,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -23,22 +25,24 @@ public class MainScreenController {
     //Declaração da View
     public Stage primaryStage;
     private MainScreenView view;
-    public MainGraphModel graphModel;
+    public GraphModel graphModel;
+    private ArrayList<DepthFirstSearch> searchExecution;
+    private int currentState;
 
     public MainScreenController(Stage primaryStage) throws FileNotFoundException {
         //Salva referência ao stage principal
         this.primaryStage = primaryStage;
-
         //Instanciação da View
         this.setView(new MainScreenView());
 
         //Chamada de métodos com eventos para Nodes específicos
-        this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear());
+        this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
+        this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
-        this.graphModel = MainGraphModel.getInstance();
+        this.graphModel = GraphModel.getInstance();
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
     }
@@ -81,10 +85,10 @@ public class MainScreenController {
                 Circle circle = new Circle();
                 circle.setCenterX(e.getX());
                 circle.setCenterY(e.getY());
-                MainScreenView.styleVertexShape(circle);
+                MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN, Color.SPRINGGREEN);
 
                 Text txt = new Text(""+vertexArray.size());
-                MainScreenView.styleVertexText(txt);
+                MainScreenView.styleVertexText(txt, Color.SPRINGGREEN);
 
                 vertex.setVertex(new StackPane(), circle, txt);
                 vertexArray.add(vertex);
@@ -102,6 +106,53 @@ public class MainScreenController {
                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             }
         });
+    }
+
+    private void disableAllOnDFS(boolean b){
+        this.view.getAddV().setDisable(b);
+        this.view.getDelete().setDisable(b);
+        this.view.getAddE().setDisable(b);
+        this.view.getClear().setDisable(b);
+        this.view.getRunDFS().setDisable(b);
+        this.view.getRandom().setDisable(b);
+        this.view.getDrawGraph().setDisable(b);
+    }
+
+    public void showDFSState(Button b1, Button b2, Button run, Button stop){
+        EventHandler<MouseEvent> eventHandler = e ->{
+            if(e.getSource().equals(run)){
+                b1.setOpacity(1);
+                b2.setOpacity(1);
+                b1.setDisable(false);
+                currentState = -1;
+                disableAllOnDFS(true);
+                executeDFS();
+            }
+            if (e.getSource().equals(stop)) {
+                run.setDisable(false);
+                b1.setOpacity(0);
+                b2.setOpacity(0);
+                b1.setDisable(true);
+                b2.setDisable(true);
+                disableAllOnDFS(false);
+                view.setDefaultEdgeAndVertexColors();
+            }
+            if (e.getSource().equals(b1)) {
+                boolean isValidState = goToNextExecutionStep();
+                if (!isValidState) { b1.setDisable(true); }
+                if (isValidState) { b2.setDisable(false); }
+
+            }
+            if (e.getSource().equals(b2)) {
+                boolean isValidState = goToPreviousExecutionStep();
+                if (!isValidState) { b2.setDisable(true); }
+                if (isValidState) { b1.setDisable(false); }
+            }
+        };
+        stop.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        run.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        b1.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        b2.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
     //*Completa
@@ -184,6 +235,34 @@ public class MainScreenController {
     public void callDrawEdgeOnView(int initialVertexIndex, int finalVertexIndex) {
         graphModel.connectVertexes(initialVertexIndex, finalVertexIndex);
         view.drawEdge(initialVertexIndex, finalVertexIndex);
+    }
+
+    // novas
+    private void executeDFS() {
+        DepthFirstSearch dfs = new DepthFirstSearch(this.graphModel);
+        this.searchExecution = dfs.getSearchExecution();
+    }
+
+    // novas
+    private boolean goToNextExecutionStep() {
+        currentState += 1;
+        if (currentState >= searchExecution.size()) {
+            return false;
+        }
+        view.setCurrentSearchState(searchExecution.get(currentState));
+        view.reloadGraphState();
+        return true;
+    }
+
+    // novas
+    private boolean goToPreviousExecutionStep() {
+        currentState -= 1;
+        if (currentState < 0) {
+            return false;
+        }
+        view.setCurrentSearchState(searchExecution.get(currentState));
+        view.reloadGraphState();
+        return true;
     }
 }
 

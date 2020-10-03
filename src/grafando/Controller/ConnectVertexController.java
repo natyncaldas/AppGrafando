@@ -1,6 +1,6 @@
 package grafando.Controller;
 
-import grafando.Model.MainGraphModel;
+import grafando.Model.GraphModel;
 import grafando.View.ConnectVertexView;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -15,11 +15,11 @@ public class ConnectVertexController {
     Stage primaryStage;
     ConnectVertexView view;
     MainScreenController mainScreenController;
-    MainGraphModel graphModel;
+    GraphModel graphModel;
 
     ConnectVertexController(Stage primaryStage, MainScreenController mainScreenController) {
         this.primaryStage = primaryStage;
-        this.graphModel = MainGraphModel.getInstance();
+        this.graphModel = GraphModel.getInstance();
 
         HashSet<Integer> vertexesCurrentlyOnScreen = graphModel.getVertexes().getVertexSet();
         this.view = new ConnectVertexView(this.primaryStage, vertexesCurrentlyOnScreen);
