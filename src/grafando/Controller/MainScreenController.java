@@ -39,7 +39,7 @@ public class MainScreenController {
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
-        this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS(),this.view.getAddV(), this.view.getDelete(), this.view.getAddE(), this.view.getClear(), this.view.getRandom());
+        this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
         this.graphModel = GraphModel.getInstance();
@@ -108,30 +108,32 @@ public class MainScreenController {
         });
     }
 
-    public void showDFSState(Button b1, Button b2, Button run, Button stop, RadioButton toDisable, RadioButton toDisable2, Button... toDisable3){
+    private void disableAllOnDFS(boolean b){
+        this.view.getAddV().setDisable(b);
+        this.view.getDelete().setDisable(b);
+        this.view.getAddE().setDisable(b);
+        this.view.getClear().setDisable(b);
+        this.view.getRunDFS().setDisable(b);
+        this.view.getRandom().setDisable(b);
+    }
+
+    public void showDFSState(Button b1, Button b2, Button run, Button stop){
         EventHandler<MouseEvent> eventHandler = e ->{
             if(e.getSource().equals(run)){
                 b1.setOpacity(1);
                 b2.setOpacity(1);
                 b1.setDisable(false);
-                toDisable.setDisable(true);
-                toDisable2.setDisable(true);
-                for (Button b:toDisable3) {
-                    b.setDisable(true);
-                }
                 currentState = -1;
+                disableAllOnDFS(true);
                 executeDFS();
             }
             if (e.getSource().equals(stop)) {
+                run.setDisable(false);
                 b1.setOpacity(0);
                 b2.setOpacity(0);
                 b1.setDisable(true);
                 b2.setDisable(true);
-                toDisable.setDisable(false);
-                toDisable2.setDisable(false);
-                for (Button b:toDisable3) {
-                    b.setDisable(false);
-                }
+                disableAllOnDFS(false);
             }
             if (e.getSource().equals(b1)) {
                 boolean isValidState = goToNextExecutionStep();
@@ -143,7 +145,6 @@ public class MainScreenController {
                 boolean isValidState = goToPreviousExecutionStep();
                 if (!isValidState) { b2.setDisable(true); }
                 if (isValidState) { b1.setDisable(false); }
-
             }
         };
         stop.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);

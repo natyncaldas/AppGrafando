@@ -400,6 +400,22 @@ public class MainScreenView {
             }else{
                 MainScreenView.styleVertexShape(v.getShape());
             }
+            try{
+                int current = vertexes.lastIndexOf(v);
+                int parent = currentSearchState.getVertexParent(current);
+
+                for (Edge e:edges) {
+                    if(parent != -1){
+                        if(e.containsVertexPair(current, parent)){
+                            e.setStroke(Color.ORANGERED);
+                        }
+                    }
+                    assert color != null;
+                    if(color.equals("white") && e.getStroke().equals(Color.ORANGERED) && v.getConnectedEdges().contains(e)){
+                        MainScreenView.styleEdge(e);
+                    }
+                }
+            }catch (NullPointerException ignored){}
         }
     }
 }

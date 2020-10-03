@@ -25,4 +25,11 @@ public class Edge extends Line {
     public void setFinalVertex(int finalVertex) {
         this.finalVertex = finalVertex;
     }
+
+    public boolean containsVertexPair(int ini, int fin){
+        if((ini == initialVertex && fin == finalVertex) || (ini == finalVertex && fin == initialVertex)){
+            return true;
+        }
+        return false;
+    }
 }
