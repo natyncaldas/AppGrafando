@@ -1,8 +1,8 @@
 package grafando.Model;
 
-import java.util.HashSet;
-import java.util.TreeMap;
-import java.util.Random;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 public class GraphModel {
     private final VertexModel vertexes;
@@ -80,8 +80,9 @@ public class GraphModel {
     public int totalVertexes(){
         return vertexes.getVertexSet().size();
     }
-    public void generateRandomGraph(int numberVertexes){
-        MainGraphModel randomGraph = new MainGraphModel();
+
+    public GraphModel generateRandomGraph(int numberVertexes){
+        GraphModel randomGraph = new GraphModel();
         for (int i = 0; i < numberVertexes; i++){
             randomGraph.addVertex(i);
         }
@@ -95,6 +96,25 @@ public class GraphModel {
                 randomGraph.connectVertexes(vertexA, vertexB);
             }
         }
+        return randomGraph;
     }
 
+    public static ArrayList<Double[]> getPositionsArray() throws FileNotFoundException {
+        ArrayList<Double[]> pos = new ArrayList<>();
+        File file = new File("resources/data_source/positions.txt");
+        Scanner scanner = new Scanner(file);
+        while(scanner.hasNextLine()){
+            Double[] coord = new Double[2];
+            String[] line = scanner.nextLine().split("\\s");
+            coord[0] = Double.parseDouble(line[0]);
+            coord[1] = Double.parseDouble(line[1]);
+            pos.add(coord);
+        }
+
+        Random random = new Random();
+        for(int i = 0; i < random.nextInt(); i++){
+            Collections.shuffle(pos);
+       }
+        return pos;
+    }
 }

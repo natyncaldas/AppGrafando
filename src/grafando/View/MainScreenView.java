@@ -295,6 +295,25 @@ public class MainScreenView {
 
     public ArrayList<Edge> getEdges() { return edges; }
 
+    public void drawVertex(double x, double y){
+        Vertex vertex = new Vertex();
+
+        Circle circle = new Circle();
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN, Color.SPRINGGREEN);
+
+        Text txt = new Text(""+vertexes.size());
+        MainScreenView.styleVertexText(txt, Color.SPRINGGREEN);
+
+        vertex.setVertex(new StackPane(), circle, txt);
+        vertexes.add(vertex);
+        vertex.getVertex().setLayoutX(x-13);
+        vertex.getVertex().setLayoutY(y-13);
+
+        drawGraph.getChildren().addAll(vertex.getVertex());
+    }
+
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
 
         Edge line = styleEdge(new Edge(initialVertexIndex, finalVertexIndex), Color.SPRINGGREEN);

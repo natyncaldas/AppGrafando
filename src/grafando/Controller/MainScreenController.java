@@ -80,22 +80,7 @@ public class MainScreenController {
                     && !(e.getTarget() instanceof Text)){
 
                 graphModel.addVertex(vertexArray.size());
-                Vertex vertex = new Vertex();
-
-                Circle circle = new Circle();
-                circle.setCenterX(e.getX());
-                circle.setCenterY(e.getY());
-                MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN, Color.SPRINGGREEN);
-
-                Text txt = new Text(""+vertexArray.size());
-                MainScreenView.styleVertexText(txt, Color.SPRINGGREEN);
-
-                vertex.setVertex(new StackPane(), circle, txt);
-                vertexArray.add(vertex);
-                vertex.getVertex().setLayoutX(e.getX()-13);
-                vertex.getVertex().setLayoutY(e.getY()-13);
-
-                pane.getChildren().addAll(vertex.getVertex());
+                this.view.drawVertex(e.getX(), e.getY());
             }
         };
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
@@ -165,6 +150,9 @@ public class MainScreenController {
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
+    public void callDrawGraph(int graphSize){
+        //TODO: fazer tudo kk
+    }
 
     //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos
     //TODO: verificar se operacões marcadas como "teste" resolvem o problema
