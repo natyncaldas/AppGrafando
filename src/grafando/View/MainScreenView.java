@@ -392,11 +392,13 @@ public class MainScreenView {
                 if (color.equals("black")) {
                     v.getShape().setStroke(Color.BLACK);
                     DropShadow s = new DropShadow();
-                    s.setColor(Color.BLACK);
+                    s.setColor(Color.WHITE);
                     s.setRadius(13);
                     s.setSpread(0.00001);
                     v.getShape().setEffect(s);
                 }
+            }else{
+                MainScreenView.styleVertexShape(v.getShape());
             }
         }
     }

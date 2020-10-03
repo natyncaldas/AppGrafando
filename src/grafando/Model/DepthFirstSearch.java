@@ -38,8 +38,8 @@ public class DepthFirstSearch extends
             this.setInitialVertexTime(v, 0);
             this.setFinalVertexTime(v, 0);
             this.setVertexParent(v, -1);
-            copyAttributes(this.vertexesColors,this.vertexParent,this.vertexInitialTime,this.vertexFinalTime);
             this.setVertexColor(v, "white");
+            copyAttributes(this.vertexesColors,this.vertexParent,this.vertexInitialTime,this.vertexFinalTime);
         }
 
         for(Integer u: this.Graph.getVertexes().getVertexSet()){
@@ -50,7 +50,6 @@ public class DepthFirstSearch extends
     }
 
     private void visitVertex(int u){
-        copyAttributes(this.vertexesColors,this.vertexParent,this.vertexInitialTime,this.vertexFinalTime);
 
         setVertexColor(u, "gray");
         this.executionTime++;

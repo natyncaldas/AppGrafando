@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -31,7 +32,6 @@ public class MainScreenController {
     public MainScreenController(Stage primaryStage) throws FileNotFoundException {
         //Salva referência ao stage principal
         this.primaryStage = primaryStage;
-
         //Instanciação da View
         this.setView(new MainScreenView());
 
@@ -39,7 +39,7 @@ public class MainScreenController {
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
-        this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
+        this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS(),this.view.getAddV(), this.view.getDelete(), this.view.getAddE(), this.view.getClear(), this.view.getRandom());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
         this.graphModel = GraphModel.getInstance();
@@ -108,13 +108,18 @@ public class MainScreenController {
         });
     }
 
-    public void showDFSState(Button b1, Button b2, Button run, Button stop){
+    public void showDFSState(Button b1, Button b2, Button run, Button stop, RadioButton toDisable, RadioButton toDisable2, Button... toDisable3){
         EventHandler<MouseEvent> eventHandler = e ->{
             if(e.getSource().equals(run)){
                 b1.setOpacity(1);
                 b2.setOpacity(1);
                 b1.setDisable(false);
-                b2.setDisable(false);
+                toDisable.setDisable(true);
+                toDisable2.setDisable(true);
+                for (Button b:toDisable3) {
+                    b.setDisable(true);
+                }
+                currentState = -1;
                 executeDFS();
             }
             if (e.getSource().equals(stop)) {
@@ -122,16 +127,23 @@ public class MainScreenController {
                 b2.setOpacity(0);
                 b1.setDisable(true);
                 b2.setDisable(true);
+                toDisable.setDisable(false);
+                toDisable2.setDisable(false);
+                for (Button b:toDisable3) {
+                    b.setDisable(false);
+                }
             }
             if (e.getSource().equals(b1)) {
                 boolean isValidState = goToNextExecutionStep();
                 if (!isValidState) { b1.setDisable(true); }
                 if (isValidState) { b2.setDisable(false); }
+
             }
             if (e.getSource().equals(b2)) {
                 boolean isValidState = goToPreviousExecutionStep();
                 if (!isValidState) { b2.setDisable(true); }
                 if (isValidState) { b1.setDisable(false); }
+
             }
         };
         stop.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
@@ -229,7 +241,7 @@ public class MainScreenController {
     }
 
     // novas
-    public boolean goToNextExecutionStep() {
+    private boolean goToNextExecutionStep() {
         currentState += 1;
         if (currentState >= searchExecution.size()) {
             return false;
@@ -240,7 +252,7 @@ public class MainScreenController {
     }
 
     // novas
-    public boolean goToPreviousExecutionStep() {
+    private boolean goToPreviousExecutionStep() {
         currentState -= 1;
         if (currentState < 0) {
             return false;
