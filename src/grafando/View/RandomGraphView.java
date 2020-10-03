@@ -54,7 +54,7 @@ public class RandomGraphView {
         number_vertex.setBorder((new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5)))));
     }
     private void initializeLabel() {
-        label_number = new Label("Quantidade de vertices:");
+        label_number = new Label("Number of vertexes:");
         label_number.setTextFill(Color.web("#ffffff"));
 
     }
