@@ -297,7 +297,7 @@ public class MainScreenView {
 
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
 
-        Edge line = styleEdge(new Edge(initialVertexIndex, finalVertexIndex));
+        Edge line = styleEdge(new Edge(initialVertexIndex, finalVertexIndex), Color.SPRINGGREEN);
 
         Circle c1 = this.vertexes.get(initialVertexIndex).getShape();
         Circle c2 = this.vertexes.get(finalVertexIndex).getShape();
@@ -330,14 +330,14 @@ public class MainScreenView {
         });
     }
 
-    public static void styleVertexShape(Circle vertexShape) {
+    public static void styleVertexShape(Circle vertexShape, Color color) {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
         vertexShape.setStrokeWidth(2);
-        vertexShape.setStroke(Color.SPRINGGREEN);
+        vertexShape.setStroke(color);
         DropShadow s = new DropShadow();
-        s.setColor(Color.SPRINGGREEN);
+        s.setColor(color);
         s.setRadius(13);
         s.setSpread(0.00001);
         vertexShape.setEffect(s);
@@ -348,12 +348,12 @@ public class MainScreenView {
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
     }
 
-    private static Edge styleEdge(Edge line) {
-        line.setStroke(Color.SPRINGGREEN);
+    private static Edge styleEdge(Edge line, Color color) {
+        line.setStroke(color);
         line.setStrokeWidth(2);
 
         DropShadow s = new DropShadow();
-        s.setColor(Color.SPRINGGREEN);
+        s.setColor(color);
         s.setRadius(13);
         s.setSpread(0.0001);
         line.setEffect(s);
@@ -374,31 +374,16 @@ public class MainScreenView {
             String color = currentSearchState.getVertexColor(vertexes.lastIndexOf(v));
             if (color != null) {
                 if (color.equals("white")) {
-                    v.getShape().setStroke(Color.WHITE);
-                    DropShadow s = new DropShadow();
-                    s.setColor(Color.WHITE);
-                    s.setRadius(13);
-                    s.setSpread(0.00001);
-                    v.getShape().setEffect(s);
+                    styleVertexShape(v.getShape(), Color.WHITE);
                 }
                 if (color.equals("gray")) {
-                    v.getShape().setStroke(Color.GRAY);
-                    DropShadow s = new DropShadow();
-                    s.setColor(Color.GRAY);
-                    s.setRadius(13);
-                    s.setSpread(0.00001);
-                    v.getShape().setEffect(s);
+                    styleVertexShape(v.getShape(), Color.GRAY);
                 }
                 if (color.equals("black")) {
-                    v.getShape().setStroke(Color.BLACK);
-                    DropShadow s = new DropShadow();
-                    s.setColor(Color.WHITE);
-                    s.setRadius(13);
-                    s.setSpread(0.00001);
-                    v.getShape().setEffect(s);
+                    styleVertexShape(v.getShape(), Color.BLACK);
                 }
             }else{
-                MainScreenView.styleVertexShape(v.getShape());
+                MainScreenView.styleVertexShape(v.getShape(), Color.SPRINGGREEN);
             }
             try{
                 int current = vertexes.lastIndexOf(v);
@@ -412,7 +397,7 @@ public class MainScreenView {
                     }
                     assert color != null;
                     if(color.equals("white") && e.getStroke().equals(Color.ORANGERED) && v.getConnectedEdges().contains(e)){
-                        MainScreenView.styleEdge(e);
+                        MainScreenView.styleEdge(e, Color.SPRINGGREEN);
                     }
                 }
             }catch (NullPointerException ignored){}

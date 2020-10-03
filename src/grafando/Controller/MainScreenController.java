@@ -85,7 +85,7 @@ public class MainScreenController {
                 Circle circle = new Circle();
                 circle.setCenterX(e.getX());
                 circle.setCenterY(e.getY());
-                MainScreenView.styleVertexShape(circle);
+                MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN);
 
                 Text txt = new Text(""+vertexArray.size());
                 MainScreenView.styleVertexText(txt);
