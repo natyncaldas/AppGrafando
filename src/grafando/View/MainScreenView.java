@@ -330,21 +330,21 @@ public class MainScreenView {
         });
     }
 
-    public static void styleVertexShape(Circle vertexShape, Color color) {
+    public static void styleVertexShape(Circle vertexShape, Color color, Color shadow) {
         vertexShape.setRadius(13);
         vertexShape.setFill(Color.TRANSPARENT);
         vertexShape.setStrokeType(StrokeType.CENTERED);
         vertexShape.setStrokeWidth(2);
         vertexShape.setStroke(color);
         DropShadow s = new DropShadow();
-        s.setColor(color);
+        s.setColor(shadow);
         s.setRadius(13);
         s.setSpread(0.00001);
         vertexShape.setEffect(s);
     }
 
-    public static void styleVertexText(Text vertexText) {
-        vertexText.setFill(Color.SPRINGGREEN);
+    public static void styleVertexText(Text vertexText, Color color) {
+        vertexText.setFill(color);
         vertexText.setFont(Font.loadFont("file:resources/fonts/OpenSans-SemiBold.ttf", 12));
     }
 
@@ -358,6 +358,16 @@ public class MainScreenView {
         s.setSpread(0.0001);
         line.setEffect(s);
         return line;
+    }
+
+    public void setDefaultEdgeAndVertexColors() {
+        for (Vertex v: vertexes) {
+            styleVertexShape(v.getShape(), Color.SPRINGGREEN, Color.SPRINGGREEN);
+            styleVertexText(v.getIndex(), Color.SPRINGGREEN);
+        }
+        for (Edge e: edges) {
+            styleEdge(e, Color.SPRINGGREEN);
+        }
     }
 
     //nova
@@ -374,16 +384,20 @@ public class MainScreenView {
             String color = currentSearchState.getVertexColor(vertexes.lastIndexOf(v));
             if (color != null) {
                 if (color.equals("white")) {
-                    styleVertexShape(v.getShape(), Color.WHITE);
+                    styleVertexShape(v.getShape(), Color.WHITE, Color.WHITE);
+                    styleVertexText(v.getIndex(), Color.WHITE);
                 }
                 if (color.equals("gray")) {
-                    styleVertexShape(v.getShape(), Color.GRAY);
+                    styleVertexShape(v.getShape(), Color.LIGHTSLATEGRAY, Color.LIGHTSLATEGRAY);
+                    styleVertexText(v.getIndex(), Color.LIGHTSLATEGRAY);
                 }
                 if (color.equals("black")) {
-                    styleVertexShape(v.getShape(), Color.BLACK);
+                    styleVertexShape(v.getShape(), Color.BLACK, Color.WHITE);
+                    styleVertexText(v.getIndex(), Color.WHITE);
                 }
             }else{
-                MainScreenView.styleVertexShape(v.getShape(), Color.SPRINGGREEN);
+                MainScreenView.styleVertexShape(v.getShape(), Color.SPRINGGREEN, Color.SPRINGGREEN);
+                MainScreenView.styleVertexText(v.getIndex(), Color.SPRINGGREEN);
             }
             try{
                 int current = vertexes.lastIndexOf(v);
@@ -392,11 +406,11 @@ public class MainScreenView {
                 for (Edge e:edges) {
                     if(parent != -1){
                         if(e.containsVertexPair(current, parent)){
-                            e.setStroke(Color.ORANGERED);
+                            e.setStroke(Color.WHITE);
                         }
                     }
                     assert color != null;
-                    if(color.equals("white") && e.getStroke().equals(Color.ORANGERED) && v.getConnectedEdges().contains(e)){
+                    if(color.equals("white") && e.getStroke().equals(Color.WHITE) && v.getConnectedEdges().contains(e)){
                         MainScreenView.styleEdge(e, Color.SPRINGGREEN);
                     }
                 }

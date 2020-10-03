@@ -85,10 +85,10 @@ public class MainScreenController {
                 Circle circle = new Circle();
                 circle.setCenterX(e.getX());
                 circle.setCenterY(e.getY());
-                MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN);
+                MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN, Color.SPRINGGREEN);
 
                 Text txt = new Text(""+vertexArray.size());
-                MainScreenView.styleVertexText(txt);
+                MainScreenView.styleVertexText(txt, Color.SPRINGGREEN);
 
                 vertex.setVertex(new StackPane(), circle, txt);
                 vertexArray.add(vertex);
@@ -115,6 +115,7 @@ public class MainScreenController {
         this.view.getClear().setDisable(b);
         this.view.getRunDFS().setDisable(b);
         this.view.getRandom().setDisable(b);
+        this.view.getDrawGraph().setDisable(b);
     }
 
     public void showDFSState(Button b1, Button b2, Button run, Button stop){
@@ -134,6 +135,7 @@ public class MainScreenController {
                 b1.setDisable(true);
                 b2.setDisable(true);
                 disableAllOnDFS(false);
+                view.setDefaultEdgeAndVertexColors();
             }
             if (e.getSource().equals(b1)) {
                 boolean isValidState = goToNextExecutionStep();
