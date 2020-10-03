@@ -77,21 +77,21 @@ public class GraphModel {
         vertexes.getVertexSet().clear();
     }
 
-    public int totalVertexes(){
-        return vertexes.getVertexSet().size();
+    public static int totalVertexes(GraphModel graphModel){
+        return graphModel.vertexes.getVertexSet().size();
     }
 
-    public GraphModel generateRandomGraph(int numberVertexes){
+    public static GraphModel generateRandomGraph(int numberVertexes){
         GraphModel randomGraph = new GraphModel();
         for (int i = 0; i < numberVertexes; i++){
             randomGraph.addVertex(i);
         }
         Random random = new Random();
-        int numberEdges = random.nextInt((int)(randomGraph.totalVertexes()*((totalVertexes()-1)/2) +1));
+        int numberEdges = random.nextInt((int)(totalVertexes(randomGraph)*((totalVertexes(randomGraph)-1)/2) +1));
 
         for (int i=0; i < numberEdges; i++){
-            int vertexA = random.nextInt(randomGraph.totalVertexes());
-            int vertexB = random.nextInt(randomGraph.totalVertexes());
+            int vertexA = random.nextInt(totalVertexes(randomGraph));
+            int vertexB = random.nextInt(totalVertexes(randomGraph));
             if(!(randomGraph.existEdge(vertexA, vertexB))){
                 randomGraph.connectVertexes(vertexA, vertexB);
             }
