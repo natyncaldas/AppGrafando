@@ -1,8 +1,8 @@
 package grafando.Model;
 
-import java.util.HashSet;
-import java.util.TreeMap;
-import java.util.Random;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 public class GraphModel {
     private final VertexModel vertexes;
@@ -77,24 +77,42 @@ public class GraphModel {
         vertexes.getVertexSet().clear();
     }
 
-    public int totalVertexes(){
-        return vertexes.getVertexSet().size();
+    public static int totalVertexes(GraphModel graphModel){
+        return graphModel.vertexes.getVertexSet().size();
     }
-    public void generateRandomGraph(int numberVertexes){
-        MainGraphModel randomGraph = new MainGraphModel();
+
+    public static void generateRandomGraph(int numberVertexes, GraphModel randomGraph){
+        randomGraph.clearGraph();
         for (int i = 0; i < numberVertexes; i++){
             randomGraph.addVertex(i);
         }
         Random random = new Random();
-        int numberEdges = random.nextInt((int)(randomGraph.totalVertexes()*((totalVertexes()-1)/2) +1));
-
+        int numberEdges = random.nextInt((totalVertexes(randomGraph)/2)+10);
         for (int i=0; i < numberEdges; i++){
-            int vertexA = random.nextInt(randomGraph.totalVertexes());
-            int vertexB = random.nextInt(randomGraph.totalVertexes());
-            if(!(randomGraph.existEdge(vertexA, vertexB))){
+            int vertexA = random.nextInt(totalVertexes(randomGraph));
+            int vertexB = random.nextInt(totalVertexes(randomGraph));
+            if(!(randomGraph.existEdge(vertexA, vertexB)) && vertexA != vertexB){
                 randomGraph.connectVertexes(vertexA, vertexB);
             }
         }
     }
 
+    public static ArrayList<Double[]> getPositionsArray() throws FileNotFoundException {
+        ArrayList<Double[]> pos = new ArrayList<>();
+        File file = new File("resources/data_source/positions.txt");
+        Scanner scanner = new Scanner(file);
+        while(scanner.hasNextLine()){
+            Double[] coord = new Double[2];
+            String[] line = scanner.nextLine().split("\\s");
+            coord[0] = Double.parseDouble(line[0]);
+            coord[1] = Double.parseDouble(line[1]);
+            pos.add(coord);
+        }
+
+        Random random = new Random();
+        for(int i = 0; i < random.nextInt(); i++){
+            Collections.shuffle(pos);
+       }
+        return pos;
+    }
 }

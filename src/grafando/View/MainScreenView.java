@@ -158,7 +158,7 @@ public class MainScreenView {
         return stopDFS;
     }
     private void setStopDFSStyled(Button stopDFS) throws FileNotFoundException {
-        FileInputStream input=new FileInputStream("resources/icons/stop-16.png");
+        FileInputStream input=new FileInputStream("resources/icons/stop.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
         stopDFS.setGraphic(img);
@@ -226,7 +226,7 @@ public class MainScreenView {
     }
 
     private void setNextStyled(Button next) throws FileNotFoundException {
-        FileInputStream input=new FileInputStream("resources/icons/arrow-31-24.png");
+        FileInputStream input=new FileInputStream("resources/icons/right_arrow.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
         next.setGraphic(img);
@@ -243,7 +243,7 @@ public class MainScreenView {
     }
 
     private void setPreviousStyled(Button previous) throws FileNotFoundException {
-        FileInputStream input=new FileInputStream("resources/icons/arrow-96-24.png");
+        FileInputStream input=new FileInputStream("resources/icons/left_arrow.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
         previous.setGraphic(img);
@@ -294,6 +294,25 @@ public class MainScreenView {
     }
 
     public ArrayList<Edge> getEdges() { return edges; }
+
+    public void drawVertex(double x, double y){
+        Vertex vertex = new Vertex();
+
+        Circle circle = new Circle();
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN, Color.SPRINGGREEN);
+
+        Text txt = new Text(""+vertexes.size());
+        MainScreenView.styleVertexText(txt, Color.SPRINGGREEN);
+
+        vertex.setVertex(new StackPane(), circle, txt);
+        vertexes.add(vertex);
+        vertex.getVertex().setLayoutX(x-13);
+        vertex.getVertex().setLayoutY(y-13);
+
+        drawGraph.getChildren().addAll(vertex.getVertex());
+    }
 
     public void drawEdge(int initialVertexIndex, int finalVertexIndex) {
 

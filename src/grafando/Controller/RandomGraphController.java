@@ -38,7 +38,12 @@ public class RandomGraphController {
             if (emptynumber) {
                 random_view.getNumber_vertex().setBorder(new Border(new BorderStroke(Color.ORANGERED, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5))));
             }else{
-
+                int graphSize = random_view.getNumber_vertex().getValue();
+                try {
+                    mainScreenController.confirmRandomGraph(graphSize);
+                } catch (Exception exception) {
+                    exception.getLocalizedMessage();
+                }
                 random_view.getRandomPopUpStage().close();
             }
         };

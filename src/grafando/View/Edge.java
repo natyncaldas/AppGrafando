@@ -27,9 +27,6 @@ public class Edge extends Line {
     }
 
     public boolean containsVertexPair(int ini, int fin){
-        if((ini == initialVertex && fin == finalVertex) || (ini == finalVertex && fin == initialVertex)){
-            return true;
-        }
-        return false;
+        return (ini == initialVertex && fin == finalVertex) || (ini == finalVertex && fin == initialVertex);
     }
 }

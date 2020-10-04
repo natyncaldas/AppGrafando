@@ -34,6 +34,7 @@ public class MainScreenController {
         this.primaryStage = primaryStage;
         //Instanciação da View
         this.setView(new MainScreenView());
+        this.graphModel = GraphModel.getInstance();
 
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
@@ -42,7 +43,7 @@ public class MainScreenController {
         this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
-        this.graphModel = GraphModel.getInstance();
+
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
     }
@@ -80,22 +81,7 @@ public class MainScreenController {
                     && !(e.getTarget() instanceof Text)){
 
                 graphModel.addVertex(vertexArray.size());
-                Vertex vertex = new Vertex();
-
-                Circle circle = new Circle();
-                circle.setCenterX(e.getX());
-                circle.setCenterY(e.getY());
-                MainScreenView.styleVertexShape(circle, Color.SPRINGGREEN, Color.SPRINGGREEN);
-
-                Text txt = new Text(""+vertexArray.size());
-                MainScreenView.styleVertexText(txt, Color.SPRINGGREEN);
-
-                vertex.setVertex(new StackPane(), circle, txt);
-                vertexArray.add(vertex);
-                vertex.getVertex().setLayoutX(e.getX()-13);
-                vertex.getVertex().setLayoutY(e.getY()-13);
-
-                pane.getChildren().addAll(vertex.getVertex());
+                this.view.drawVertex(e.getX(), e.getY());
             }
         };
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
@@ -165,6 +151,29 @@ public class MainScreenController {
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
+    private void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray, int graphSize) throws FileNotFoundException {
+
+        pane.getChildren().clear();
+        vertexArray.clear();
+        edgesArray.clear();
+
+        GraphModel.generateRandomGraph(graphSize, graphModel);
+        ArrayList<Double[]> positions = GraphModel.getPositionsArray();
+
+        for (Integer i :graphModel.getVertexes().getVertexSet()) {
+            this.view.drawVertex(positions.get(i)[0], positions.get(i)[1]);
+
+        }
+        for (Integer i :graphModel.getVertexes().getVertexSet()) {
+            for (Integer j : graphModel.getAdjList().get(i).getVertexSet()) {
+                this.callDrawEdgeOnView(i, j);
+            }
+        }
+    }
+
+    public void confirmRandomGraph(int graphSize) throws FileNotFoundException {
+        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges(), graphSize);
+    }
 
     //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos
     //TODO: verificar se operacões marcadas como "teste" resolvem o problema
