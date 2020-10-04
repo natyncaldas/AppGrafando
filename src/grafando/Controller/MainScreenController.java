@@ -34,8 +34,8 @@ public class MainScreenController {
         this.primaryStage = primaryStage;
         //Instanciação da View
         this.setView(new MainScreenView());
-
-        //callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), 13);
+        this.graphModel = GraphModel.getInstance();
+        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), 6);
 
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
@@ -44,7 +44,7 @@ public class MainScreenController {
         this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
 
-        this.graphModel = GraphModel.getInstance();
+
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
     }
@@ -153,16 +153,21 @@ public class MainScreenController {
     }
 
     public void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray,int graphSize) throws FileNotFoundException {
-        //TODO: fazer tudo kk
-        /*
+
         pane.getChildren().clear();
         vertexArray.clear();
-        graphModel = GraphModel.generateRandomGraph(graphSize);
+        this.view.getEdges().clear();
+        GraphModel.generateRandomGraph(graphSize, graphModel);
         ArrayList<Double[]> postions = GraphModel.getPositionsArray();
         for (Integer i :graphModel.getVertexes().getVertexSet()) {
             this.view.drawVertex(postions.get(i)[0], postions.get(i)[1]);
+
         }
-        */
+        for (Integer i :graphModel.getVertexes().getVertexSet()) {
+            for (Integer j : graphModel.getAdjList().get(i).getVertexSet()) {
+                this.callDrawEdgeOnView(i, j);
+            }
+        }
     }
 
     //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos

@@ -81,14 +81,13 @@ public class GraphModel {
         return graphModel.vertexes.getVertexSet().size();
     }
 
-    public static GraphModel generateRandomGraph(int numberVertexes){
-        GraphModel randomGraph = new GraphModel();
+    public static void generateRandomGraph(int numberVertexes, GraphModel randomGraph){
         for (int i = 0; i < numberVertexes; i++){
             randomGraph.addVertex(i);
         }
         Random random = new Random();
-        int numberEdges = random.nextInt((int)(totalVertexes(randomGraph)*((totalVertexes(randomGraph)-1)/2) +1));
-
+        //int numberEdges = random.nextInt((int)(totalVertexes(randomGraph)*((totalVertexes(randomGraph)-1)/2) +1));
+        int numberEdges = random.nextInt((totalVertexes(randomGraph)/2)+1);
         for (int i=0; i < numberEdges; i++){
             int vertexA = random.nextInt(totalVertexes(randomGraph));
             int vertexB = random.nextInt(totalVertexes(randomGraph));
@@ -96,7 +95,6 @@ public class GraphModel {
                 randomGraph.connectVertexes(vertexA, vertexB);
             }
         }
-        return randomGraph;
     }
 
     public static ArrayList<Double[]> getPositionsArray() throws FileNotFoundException {
