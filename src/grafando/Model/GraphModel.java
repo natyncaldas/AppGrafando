@@ -92,7 +92,7 @@ public class GraphModel {
         for (int i=0; i < numberEdges; i++){
             int vertexA = random.nextInt(totalVertexes(randomGraph));
             int vertexB = random.nextInt(totalVertexes(randomGraph));
-            if(!(randomGraph.existEdge(vertexA, vertexB))){
+            if(!(randomGraph.existEdge(vertexA, vertexB)) && vertexA != vertexB){
                 randomGraph.connectVertexes(vertexA, vertexB);
             }
         }
