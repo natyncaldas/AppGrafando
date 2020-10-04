@@ -35,7 +35,6 @@ public class MainScreenController {
         //Instanciação da View
         this.setView(new MainScreenView());
         this.graphModel = GraphModel.getInstance();
-        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), 6);
 
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
@@ -152,15 +151,17 @@ public class MainScreenController {
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    public void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray,int graphSize) throws FileNotFoundException {
+    private void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray,int graphSize) throws FileNotFoundException {
 
         pane.getChildren().clear();
         vertexArray.clear();
         this.view.getEdges().clear();
+
         GraphModel.generateRandomGraph(graphSize, graphModel);
-        ArrayList<Double[]> postions = GraphModel.getPositionsArray();
+        ArrayList<Double[]> positions = GraphModel.getPositionsArray();
+
         for (Integer i :graphModel.getVertexes().getVertexSet()) {
-            this.view.drawVertex(postions.get(i)[0], postions.get(i)[1]);
+            this.view.drawVertex(positions.get(i)[0], positions.get(i)[1]);
 
         }
         for (Integer i :graphModel.getVertexes().getVertexSet()) {
@@ -168,6 +169,10 @@ public class MainScreenController {
                 this.callDrawEdgeOnView(i, j);
             }
         }
+    }
+
+    public void confirmRandomGraph(int graphSize) throws FileNotFoundException {
+        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), graphSize);
     }
 
     //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos

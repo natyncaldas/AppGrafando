@@ -82,12 +82,13 @@ public class GraphModel {
     }
 
     public static void generateRandomGraph(int numberVertexes, GraphModel randomGraph){
+        randomGraph.clearGraph();
         for (int i = 0; i < numberVertexes; i++){
             randomGraph.addVertex(i);
         }
         Random random = new Random();
         //int numberEdges = random.nextInt((int)(totalVertexes(randomGraph)*((totalVertexes(randomGraph)-1)/2) +1));
-        int numberEdges = random.nextInt((totalVertexes(randomGraph)/2)+1);
+        int numberEdges = random.nextInt((totalVertexes(randomGraph)/2)+10);
         for (int i=0; i < numberEdges; i++){
             int vertexA = random.nextInt(totalVertexes(randomGraph));
             int vertexB = random.nextInt(totalVertexes(randomGraph));
