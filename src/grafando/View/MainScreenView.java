@@ -158,7 +158,7 @@ public class MainScreenView {
         return stopDFS;
     }
     private void setStopDFSStyled(Button stopDFS) throws FileNotFoundException {
-        FileInputStream input=new FileInputStream("resources/icons/stop-16.png");
+        FileInputStream input=new FileInputStream("resources/icons/stop.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
         stopDFS.setGraphic(img);
@@ -226,7 +226,7 @@ public class MainScreenView {
     }
 
     private void setNextStyled(Button next) throws FileNotFoundException {
-        FileInputStream input=new FileInputStream("resources/icons/arrow-31-24.png");
+        FileInputStream input=new FileInputStream("resources/icons/right_arrow.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
         next.setGraphic(img);
@@ -243,7 +243,7 @@ public class MainScreenView {
     }
 
     private void setPreviousStyled(Button previous) throws FileNotFoundException {
-        FileInputStream input=new FileInputStream("resources/icons/arrow-96-24.png");
+        FileInputStream input=new FileInputStream("resources/icons/left_arrow.png");
         Image image = new Image(input);
         ImageView img=new ImageView(image);
         previous.setGraphic(img);

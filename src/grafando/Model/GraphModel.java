@@ -87,7 +87,6 @@ public class GraphModel {
             randomGraph.addVertex(i);
         }
         Random random = new Random();
-        //int numberEdges = random.nextInt((int)(totalVertexes(randomGraph)*((totalVertexes(randomGraph)-1)/2) +1));
         int numberEdges = random.nextInt((totalVertexes(randomGraph)/2)+10);
         for (int i=0; i < numberEdges; i++){
             int vertexA = random.nextInt(totalVertexes(randomGraph));
