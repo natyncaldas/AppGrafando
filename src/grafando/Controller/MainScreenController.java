@@ -151,11 +151,11 @@ public class MainScreenController {
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    private void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray,int graphSize) throws FileNotFoundException {
+    private void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray, int graphSize) throws FileNotFoundException {
 
         pane.getChildren().clear();
         vertexArray.clear();
-        this.view.getEdges().clear();
+        edgesArray.clear();
 
         GraphModel.generateRandomGraph(graphSize, graphModel);
         ArrayList<Double[]> positions = GraphModel.getPositionsArray();
@@ -172,7 +172,7 @@ public class MainScreenController {
     }
 
     public void confirmRandomGraph(int graphSize) throws FileNotFoundException {
-        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), graphSize);
+        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges(), graphSize);
     }
 
     //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos
