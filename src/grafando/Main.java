@@ -12,7 +12,7 @@ public class Main extends Application {
         MainScreenController controller = new MainScreenController(primaryStage);
         primaryStage.setResizable(false);
         primaryStage.setTitle("Grafando");
-        primaryStage.setScene(new Scene(controller.getView().getRoot(), 600, 400));
+        primaryStage.setScene(new Scene(controller.getView().getRoot(), 600, 430));
         primaryStage.show();
     }
 

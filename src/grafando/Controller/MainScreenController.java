@@ -76,7 +76,7 @@ public class MainScreenController {
     public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e -> {
 
-            if(pane.contains(e.getX() + 30, e.getY() + 30)
+            if(pane.contains(e.getX() + 30, e.getY() + 30) && pane.contains(e.getX() - 30, e.getY() - 30)
                     && !(e.getTarget() instanceof StackPane) && !(e.getTarget() instanceof Circle)
                     && !(e.getTarget() instanceof Text)){
 

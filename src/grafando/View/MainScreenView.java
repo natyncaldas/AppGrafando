@@ -4,10 +4,7 @@ import grafando.Model.DepthFirstSearch;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,21 +25,18 @@ public class MainScreenView {
     private GridPane editGraph, run;
     private Pane drawGraph;
     private VBox forward, backwards;
-    private Button clear;
-    private Button addE;
-    private Button stopDFS;
-    private Button runDFS;
-    private Button random;
-    private Button previous;
-    private Button next;
+    private Button clear, addE, stopDFS, runDFS, random, previous, next;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
+    private Menu help;
+    private MenuItem save, open;
     private ArrayList<Vertex> vertexes;
     private ArrayList<Edge> edges;
     private DepthFirstSearch currentSearchState;
 
     public MainScreenView() throws FileNotFoundException {
         this.setUpElements();
+        this.setUpMenu();
         this.positionElements();
     }
 
@@ -65,8 +59,20 @@ public class MainScreenView {
         this.setAddVStyled(new RadioButton("Add Vertex"));
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
+        this.setHelp(new Menu("Help"));
+        this.setSave(new MenuItem("Save"));
+        this.setOpen(new MenuItem("Open"));
         this.setVertexes(new ArrayList<>());
-        this.edges = new ArrayList<>();
+        this.setEdges(new ArrayList<>());
+    }
+
+    public void setUpMenu(){
+        MenuBar menubar = new MenuBar();
+        menubar.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
+        Menu fileMenu = new Menu("File");
+        fileMenu.getItems().addAll(this.save, this.open);
+        menubar.getMenus().addAll(fileMenu, this.help);
+        root.setTop(menubar);
     }
 
     //Posicionamento dos Nodes na interface gráfica
@@ -285,6 +291,30 @@ public class MainScreenView {
         this.toggleAddDel = toggleAddDel;
     }
 
+    public Menu getHelp() {
+        return help;
+    }
+
+    public void setHelp(Menu help) {
+        this.help = help;
+    }
+
+    public MenuItem getSave() {
+        return save;
+    }
+
+    public void setSave(MenuItem save) {
+        this.save = save;
+    }
+
+    public MenuItem getOpen() {
+        return open;
+    }
+
+    public void setOpen(MenuItem open) {
+        this.open = open;
+    }
+
     public ArrayList<Vertex> getVertexes() {
         return vertexes;
     }
@@ -294,6 +324,10 @@ public class MainScreenView {
     }
 
     public ArrayList<Edge> getEdges() { return edges; }
+
+    public void setEdges(ArrayList<Edge> edges){
+        this.edges = edges;
+    }
 
     public void drawVertex(double x, double y){
         Vertex vertex = new Vertex();
