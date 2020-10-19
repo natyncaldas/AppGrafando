@@ -30,11 +30,11 @@ public class GraphModel {
         return this.adjList.get(v).getVertexSet();
     }
 
-    public boolean existEdge(int v1, int v2){
+    public boolean hasEdge(int v1, int v2){
         return adjList.get(v1).getVertexSet().contains(v2) || adjList.get(v2).getVertexSet().contains(v1);
     }
 
-    public boolean existVertex(int v){
+    public boolean hasVertex(int v){
         return vertexes.getVertexSet().contains(v);
     }
 
@@ -45,30 +45,27 @@ public class GraphModel {
         }
     }
     public void connectVertexes(int v1, int v2){
-        if((existVertex(v1) && existVertex(v2)) && !existEdge(v1,v2)){
+        if((hasVertex(v1) && hasVertex(v2)) && !hasEdge(v1,v2)){
             adjList.get(v1).getVertexSet().add(v2);
             adjList.get(v2).getVertexSet().add(v1);
         }
-        //else: joga uma exceção
     }
 
     public void removeVertex(int v){
-        if(existVertex(v)) {
+        if(hasVertex(v)) {
             vertexes.getVertexSet().remove(v);
             for (Integer c : adjList.keySet()) {
                 removeEdge(c, v);
             }
             adjList.remove(v);
         }
-        //else: joga uma exceção
     }
 
     public void removeEdge(int v1, int v2){
-        if(existEdge(v1,v2)){
+        if(hasEdge(v1,v2)){
             adjList.get(v1).getVertexSet().remove(v2);
             adjList.get(v2).getVertexSet().remove(v1);
         }
-        //else: joga uma exceção
     }
 
     public void clearGraph(){
@@ -76,7 +73,7 @@ public class GraphModel {
         vertexes.getVertexSet().clear();
     }
 
-    public static int totalVertexes(GraphModel graphModel){
+    public static int graphSize(GraphModel graphModel){
         return graphModel.vertexes.getVertexSet().size();
     }
 
@@ -86,11 +83,11 @@ public class GraphModel {
             randomGraph.addVertex(i);
         }
         Random random = new Random();
-        int numberEdges = random.nextInt((totalVertexes(randomGraph)/2)+10);
+        int numberEdges = random.nextInt((graphSize(randomGraph)/2)+10);
         for (int i=0; i < numberEdges; i++){
-            int vertexA = random.nextInt(totalVertexes(randomGraph));
-            int vertexB = random.nextInt(totalVertexes(randomGraph));
-            if(!(randomGraph.existEdge(vertexA, vertexB)) && vertexA != vertexB){
+            int vertexA = random.nextInt(graphSize(randomGraph));
+            int vertexB = random.nextInt(graphSize(randomGraph));
+            if(!(randomGraph.hasEdge(vertexA, vertexB)) && vertexA != vertexB){
                 randomGraph.connectVertexes(vertexA, vertexB);
             }
         }

@@ -22,17 +22,17 @@ import java.util.ArrayList;
 
 public class RandomGraphView {
 
-    Stage Random_popUpStage;
+    Stage randomPopUpStage;
     Stage primaryStage;
-    GridPane random_vertexSelection;
-    ComboBox<Integer> number_vertex;
-    Label label_number;
+    GridPane randomVertexSelection;
+    ComboBox<Integer> numberVertex;
+    Label labelNumber;
     Button confirmButton;
-    ArrayList quantidade;
+    ArrayList quantity;
 
-    public RandomGraphView(Stage primaryStage, ArrayList quantidade) {
+    public RandomGraphView(Stage primaryStage, ArrayList quantity) {
         this.primaryStage = primaryStage;
-        this.quantidade = quantidade;
+        this.quantity = quantity;
         setupElements();
         positionElementsInsideView();
     }
@@ -49,13 +49,13 @@ public class RandomGraphView {
     }
 
     private void initializeCombobox() {
-        ObservableList<Integer> options = FXCollections.observableArrayList(quantidade);
-        number_vertex = new ComboBox<>(options);
-        number_vertex.setBorder((new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5)))));
+        ObservableList<Integer> options = FXCollections.observableArrayList(quantity);
+        numberVertex = new ComboBox<>(options);
+        numberVertex.setBorder((new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5)))));
     }
     private void initializeLabel() {
-        label_number = new Label("Number of vertexes:");
-        label_number.setTextFill(Color.web("#ffffff"));
+        labelNumber = new Label("Number of vertexes:");
+        labelNumber.setTextFill(Color.web("#ffffff"));
 
     }
     private void initializeButton() {
@@ -82,30 +82,30 @@ public class RandomGraphView {
         });
     }
     private void setupPopUpStage() {
-        Random_popUpStage = new Stage();
-        Random_popUpStage.initModality(Modality.APPLICATION_MODAL);
-        Random_popUpStage.setResizable(false);
-        Random_popUpStage.setTitle("Generate a Random Graph");
+        randomPopUpStage = new Stage();
+        randomPopUpStage.initModality(Modality.APPLICATION_MODAL);
+        randomPopUpStage.setResizable(false);
+        randomPopUpStage.setTitle("Generate a Random Graph");
 
-        Scene Random_popUpScene = new Scene(random_vertexSelection, 250, 150);
+        Scene Random_popUpScene = new Scene(randomVertexSelection, 250, 150);
         Random_popUpScene.setFill(Color.web("#15202b"));
 
-        Random_popUpStage.setScene(Random_popUpScene);
+        randomPopUpStage.setScene(Random_popUpScene);
     }
 
     private void setupGrid() {
-        random_vertexSelection = new GridPane();
-        random_vertexSelection.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
-        random_vertexSelection.setPadding(new Insets(12,12,12,12));
-        random_vertexSelection.setHgap(20);
-        random_vertexSelection.setVgap(5);
-        random_vertexSelection.setAlignment(Pos.CENTER);
+        randomVertexSelection = new GridPane();
+        randomVertexSelection.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
+        randomVertexSelection.setPadding(new Insets(12,12,12,12));
+        randomVertexSelection.setHgap(20);
+        randomVertexSelection.setVgap(5);
+        randomVertexSelection.setAlignment(Pos.CENTER);
     }
     private void positionElementsInsideGridLayout() {
-        random_vertexSelection.add(label_number, 0, 0);
-        random_vertexSelection.add(number_vertex, 1, 0);
-        random_vertexSelection.add(confirmButton, 1, 3);
-        GridPane.setHalignment(label_number, HPos.CENTER);
+        randomVertexSelection.add(labelNumber, 0, 0);
+        randomVertexSelection.add(numberVertex, 1, 0);
+        randomVertexSelection.add(confirmButton, 1, 3);
+        GridPane.setHalignment(labelNumber, HPos.CENTER);
         GridPane.setHalignment(confirmButton, HPos.RIGHT);
     }
     public void positioningPopupInsideParentStage() {
@@ -114,16 +114,16 @@ public class RandomGraphView {
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight()/2d;
 
         // Hide the pop-up stage before it is shown and becomes relocated
-        Random_popUpStage.setOnShowing(ev -> Random_popUpStage.hide());
+        randomPopUpStage.setOnShowing(ev -> randomPopUpStage.hide());
 
         // Relocate the pop-up Stage
-        Random_popUpStage.setOnShown(ev -> {
-            Random_popUpStage.setX(centerXPosition - Random_popUpStage.getWidth()/2d);
-            Random_popUpStage.setY(centerYPosition - Random_popUpStage.getHeight()/2d);
-            Random_popUpStage.show();
+        randomPopUpStage.setOnShown(ev -> {
+            randomPopUpStage.setX(centerXPosition - randomPopUpStage.getWidth()/2d);
+            randomPopUpStage.setY(centerYPosition - randomPopUpStage.getHeight()/2d);
+            randomPopUpStage.show();
         });
 
-        Random_popUpStage.showAndWait();
+        randomPopUpStage.showAndWait();
     }
 
     public Button getConfirmButton() {
@@ -131,11 +131,11 @@ public class RandomGraphView {
     }
 
     public Stage getRandomPopUpStage() {
-        return Random_popUpStage;
+        return randomPopUpStage;
     }
 
-    public ComboBox<Integer> getNumber_vertex() {
-        return number_vertex;
+    public ComboBox<Integer> getNumberVertex() {
+        return numberVertex;
     }
 
 
