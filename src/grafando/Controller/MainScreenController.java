@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainScreenController {
     //Declaração da View
@@ -278,6 +279,8 @@ public class MainScreenController {
     private void setupSaveGraphButton() {
         this.view.getSave().setOnAction(mouseEvent -> {
             final FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("binary graph file", "*.bin");
+            fileChooser.getExtensionFilters().add(filter);
             File file = fileChooser.showSaveDialog(primaryStage);
             if (GraphModel.totalVertexes(this.graphModel) <= 25) {
                 if (file != null) {
