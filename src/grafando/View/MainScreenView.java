@@ -28,7 +28,7 @@ public class MainScreenView {
     private Button clear, addE, stopDFS, runDFS, random, previous, next;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
-    private Menu help;
+    private MenuItem exit;
     private MenuItem save, open;
     private ArrayList<Vertex> vertexes;
     private ArrayList<Edge> edges;
@@ -59,7 +59,7 @@ public class MainScreenView {
         this.setAddVStyled(new RadioButton("Add Vertex"));
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
-        this.setHelp(new Menu("Help"));
+        this.setExit(new MenuItem("Exit"));
         this.setSave(new MenuItem("Save"));
         this.setOpen(new MenuItem("Open"));
         this.setVertexes(new ArrayList<>());
@@ -70,8 +70,8 @@ public class MainScreenView {
         MenuBar menubar = new MenuBar();
         menubar.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
         Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(this.save, this.open);
-        menubar.getMenus().addAll(fileMenu, this.help);
+        fileMenu.getItems().addAll(this.save, this.open, this.exit);
+        menubar.getMenus().addAll(fileMenu);
         root.setTop(menubar);
     }
 
@@ -291,12 +291,12 @@ public class MainScreenView {
         this.toggleAddDel = toggleAddDel;
     }
 
-    public Menu getHelp() {
-        return help;
+    public MenuItem getExit() {
+        return exit;
     }
 
-    public void setHelp(Menu help) {
-        this.help = help;
+    public void setExit(MenuItem exit) {
+        this.exit = exit;
     }
 
     public MenuItem getSave() {

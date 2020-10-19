@@ -115,13 +115,13 @@ public class GraphModel {
         return pos;
     }
 
-    public void open(File file){;
+    public void open(File file) {;
         try {
             InputStream input = new FileInputStream(file);
             byte[] stream = input.readAllBytes();
             this.clearGraph();
             if(this.hasSignature(stream)){
-                int i = 2;
+                int i = 5;
                 while (stream[i] != -1) {
                     int v = stream[i];
                     this.addVertex(v);
@@ -141,18 +141,19 @@ public class GraphModel {
                 throw new ArithmeticException();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ArithmeticException();
         }
     }
 
-    public void save(){
-        File file = new File("saved_graph.bin");
+    public void save(File file){
+        //File file = new File("saved_graph.bin");
 
         int i = 1;
-        while (file.exists()){
-            file = new File("saved_graph("+i+").bin");
+        while (file.exists()) {
+            file = new File(file.getAbsolutePath() + "(" + i + ").bin");
             i++;
         }
+        file = new File(file.getAbsolutePath() + ".bin");
         try {
             file.createNewFile();
             OutputStream output = new FileOutputStream(file);
