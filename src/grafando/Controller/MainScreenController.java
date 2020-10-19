@@ -8,18 +8,19 @@ import grafando.View.Vertex;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainScreenController {
     //Declaração da View
@@ -42,7 +43,10 @@ public class MainScreenController {
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
         this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
-
+        this.setupSaveGraphButton();
+        this.setupOpenGraphButton();
+        this.setupExitButton();
+        this.setupScreenshotButton();
 
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
@@ -76,7 +80,7 @@ public class MainScreenController {
     public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e -> {
 
-            if(pane.contains(e.getX() + 30, e.getY() + 30)
+            if(pane.contains(e.getX() + 30, e.getY() + 30) && pane.contains(e.getX() - 30, e.getY() - 30)
                     && !(e.getTarget() instanceof StackPane) && !(e.getTarget() instanceof Circle)
                     && !(e.getTarget() instanceof Text)){
 
@@ -102,6 +106,8 @@ public class MainScreenController {
         this.view.getRunDFS().setDisable(b);
         this.view.getRandom().setDisable(b);
         this.view.getDrawGraph().setDisable(b);
+        this.view.getOpen().setDisable(b);
+        this.view.getSave().setDisable(b);
     }
 
     public void showDFSState(Button b1, Button b2, Button run, Button stop){
@@ -151,18 +157,16 @@ public class MainScreenController {
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    private void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray, int graphSize) throws FileNotFoundException {
+    private void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray) throws FileNotFoundException {
 
         pane.getChildren().clear();
         vertexArray.clear();
         edgesArray.clear();
 
-        GraphModel.generateRandomGraph(graphSize, graphModel);
         ArrayList<Double[]> positions = GraphModel.getPositionsArray();
 
         for (Integer i :graphModel.getVertexes().getVertexSet()) {
             this.view.drawVertex(positions.get(i)[0], positions.get(i)[1]);
-
         }
         for (Integer i :graphModel.getVertexes().getVertexSet()) {
             for (Integer j : graphModel.getAdjList().get(i).getVertexSet()) {
@@ -172,7 +176,8 @@ public class MainScreenController {
     }
 
     public void confirmRandomGraph(int graphSize) throws FileNotFoundException {
-        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges(), graphSize);
+        GraphModel.generateRandomGraph(graphSize, graphModel);
+        callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges());
     }
 
     //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos
@@ -273,5 +278,64 @@ public class MainScreenController {
         view.reloadGraphState();
         return true;
     }
+
+    private void setupSaveGraphButton() {
+        this.view.getSave().setOnAction(mouseEvent -> {
+            if (GraphModel.totalVertexes(this.graphModel) <= 25) {
+                final FileChooser fileChooser = new FileChooser();
+                FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Binary Graph File (.bin)", "*.bin");
+                fileChooser.getExtensionFilters().add(filter);
+                File file = fileChooser.showSaveDialog(primaryStage);
+                if (file != null) {
+                    this.graphModel.save(file);
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setContentText("Graph too big to save.");
+                alert.show();
+            }
+        });
+    }
+
+    private void setupOpenGraphButton() {
+        this.view.getOpen().setOnAction(mouseEvent -> {
+            final FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(primaryStage);
+            if (file != null) {
+                try {
+                    this.graphModel.open(file);
+                    this.callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges());
+                } catch (FileNotFoundException | ArithmeticException e) {
+                    if (e instanceof ArithmeticException) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error!");
+                        alert.setContentText("Invalid or corrupted file!");
+                        alert.show();
+                    }
+                }
+            }
+        });
+    }
+
+    private void setupExitButton() {
+        this.view.getExit().setOnAction(mouseEvent -> {
+            primaryStage.close();
+        });
+    }
+
+    private void setupScreenshotButton() {
+        this.view.getScreenshot().setOnAction(mouseEvent -> {
+
+                final FileChooser fileChooser = new FileChooser();
+                FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Graph Image File (.png)", "*.png");
+                fileChooser.getExtensionFilters().add(filter);
+                File file = fileChooser.showSaveDialog(primaryStage);
+                if (file != null) {
+                    MainScreenView.createGraphImageFile(this.view.getDrawGraph(), file);
+                }
+        });
+    }
+
 }
 

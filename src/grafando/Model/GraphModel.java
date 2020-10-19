@@ -1,7 +1,6 @@
 package grafando.Model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 public class GraphModel {
@@ -114,5 +113,71 @@ public class GraphModel {
             Collections.shuffle(pos);
        }
         return pos;
+    }
+
+    public void open(File file) {;
+        try {
+            InputStream input = new FileInputStream(file);
+            byte[] stream = input.readAllBytes();
+
+            if(this.hasSignature(stream)){
+                this.clearGraph();
+                int i = 6;
+                while (stream[i] != -1) {
+                    int v = stream[i];
+                    this.addVertex(v);
+
+                    i++;
+                }
+
+                char ini = 0;
+                for (i++; i < stream.length; i++) {
+                    ini = (stream[i-1] == -1) ? (char)stream[i] : ini;
+                    if(stream[i] != -1 && stream[i-1] != -1){
+                        this.connectVertexes(ini, stream[i]);
+                    }
+                }
+
+            }else{
+                throw new ArithmeticException();
+            }
+        } catch (ArithmeticException | IOException e) {
+            throw new ArithmeticException();
+        }
+    }
+
+    public void save(File file){
+
+        file = new File(file.getAbsolutePath());
+        try {
+            file.createNewFile();
+            OutputStream output = new FileOutputStream(file);
+
+            output.write('G');
+            output.write('R');
+            output.write('A');
+            output.write('P');
+            output.write('H');
+            output.write(0x7);
+
+            for (Integer v:this.vertexes.getVertexSet()) {
+                output.write(v);
+            }
+            output.write(0xff);
+            for (Integer v:this.adjList.keySet()) {
+                output.write(v);
+                for (Integer u:this.adjList.get(v).getVertexSet()) {
+                    output.write(u);
+                }
+                output.write(0xff);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean hasSignature(byte[] stream){
+        return (stream[0] == 'G' && stream[1] == 'R' && stream[2] == 'A' && stream[3] == 'P' && stream[4] == 'H' && stream[5] == 0x7);
     }
 }

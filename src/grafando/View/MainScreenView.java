@@ -1,16 +1,16 @@
 package grafando.View;
 
 import grafando.Model.DepthFirstSearch;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,8 +18,11 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainScreenView {
@@ -28,21 +31,20 @@ public class MainScreenView {
     private GridPane editGraph, run;
     private Pane drawGraph;
     private VBox forward, backwards;
-    private Button clear;
-    private Button addE;
-    private Button stopDFS;
-    private Button runDFS;
-    private Button random;
-    private Button previous;
-    private Button next;
+    private Button clear, addE, stopDFS, runDFS, random, previous, next;
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
+    private MenuItem exit;
+    private MenuItem save;
+    private MenuItem open;
+    private MenuItem screenshot;
     private ArrayList<Vertex> vertexes;
     private ArrayList<Edge> edges;
     private DepthFirstSearch currentSearchState;
 
     public MainScreenView() throws FileNotFoundException {
         this.setUpElements();
+        this.setUpMenu();
         this.positionElements();
     }
 
@@ -65,8 +67,23 @@ public class MainScreenView {
         this.setAddVStyled(new RadioButton("Add Vertex"));
         this.setDeleteStyled(new RadioButton("Delete"));
         this.setToggleAddDel(new ToggleGroup());
+        this.setExit(new MenuItem("Exit"));
+        this.setSave(new MenuItem("Save"));
+        this.setOpen(new MenuItem("Open"));
+        this.setScreenshot(new MenuItem("Screenshot"));
         this.setVertexes(new ArrayList<>());
-        this.edges = new ArrayList<>();
+        this.setEdges(new ArrayList<>());
+    }
+
+    public void setUpMenu(){
+        MenuBar menubar = new MenuBar();
+        menubar.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
+        Menu fileMenu = new Menu("File");
+        Menu viewMenu = new Menu("View");
+        fileMenu.getItems().addAll(this.save, this.open, this.exit);
+        viewMenu.getItems().add(this.screenshot);
+        menubar.getMenus().addAll(fileMenu, viewMenu);
+        root.setTop(menubar);
     }
 
     //Posicionamento dos Nodes na interface gráfica
@@ -285,6 +302,38 @@ public class MainScreenView {
         this.toggleAddDel = toggleAddDel;
     }
 
+    public MenuItem getExit() {
+        return exit;
+    }
+
+    public void setExit(MenuItem exit) {
+        this.exit = exit;
+    }
+
+    public MenuItem getSave() {
+        return save;
+    }
+
+    public void setSave(MenuItem save) {
+        this.save = save;
+    }
+
+    public MenuItem getOpen() {
+        return open;
+    }
+
+    public void setOpen(MenuItem open) {
+        this.open = open;
+    }
+
+    public MenuItem getScreenshot() {
+        return screenshot;
+    }
+
+    public void setScreenshot(MenuItem screenshot) {
+        this.screenshot = screenshot;
+    }
+
     public ArrayList<Vertex> getVertexes() {
         return vertexes;
     }
@@ -294,6 +343,10 @@ public class MainScreenView {
     }
 
     public ArrayList<Edge> getEdges() { return edges; }
+
+    public void setEdges(ArrayList<Edge> edges){
+        this.edges = edges;
+    }
 
     public void drawVertex(double x, double y){
         Vertex vertex = new Vertex();
@@ -434,6 +487,18 @@ public class MainScreenView {
                     }
                 }
             }catch (NullPointerException ignored){}
+        }
+    }
+
+    public static void createGraphImageFile(Pane pane, File image) {
+        try {
+            SnapshotParameters parameters = new SnapshotParameters();
+            parameters.setFill(Color.TRANSPARENT);
+            WritableImage graphImage = pane.snapshot(parameters, null);
+            ImageIO.write(SwingFXUtils.fromFXImage(graphImage, null), "png", image);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
