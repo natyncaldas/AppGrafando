@@ -122,7 +122,7 @@ public class GraphModel {
 
             if(this.hasSignature(stream)){
                 this.clearGraph();
-                int i = 5;
+                int i = 6;
                 while (stream[i] != -1) {
                     int v = stream[i];
                     this.addVertex(v);
@@ -147,7 +147,7 @@ public class GraphModel {
     }
 
     public void save(File file){
-        
+
         file = new File(file.getAbsolutePath());
         try {
             file.createNewFile();
@@ -158,6 +158,7 @@ public class GraphModel {
             output.write('A');
             output.write('P');
             output.write('H');
+            output.write(0x7);
 
             for (Integer v:this.vertexes.getVertexSet()) {
                 output.write(v);
@@ -177,6 +178,6 @@ public class GraphModel {
     }
 
     private boolean hasSignature(byte[] stream){
-        return (stream[0] == 'G' && stream[1] == 'R' && stream[2] == 'A' && stream[3] == 'P' && stream[4] == 'H');
+        return (stream[0] == 'G' && stream[1] == 'R' && stream[2] == 'A' && stream[3] == 'P' && stream[4] == 'H' && stream[5] == 0x7);
     }
 }
