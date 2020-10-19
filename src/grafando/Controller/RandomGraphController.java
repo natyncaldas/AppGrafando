@@ -19,10 +19,14 @@ public class RandomGraphController {
     MainScreenController mainScreenController;
     GraphModel graphModel;
 
+    // Inicializa o controller com referencia para o controller pai, além
+    // de referenciar o stage principal
     RandomGraphController(Stage primaryStage, MainScreenController mainScreenController) {
         this.primaryStage = primaryStage;
         this.graphModel = GraphModel.getInstance();
         ArrayList<Integer> quantidade = new ArrayList<Integer>();
+
+        // Adiciona de 5 a 25 para se selecionar nas comboboxes
         for (int i=5; i<26; i++){
             quantidade.add(i);
         }
@@ -33,7 +37,9 @@ public class RandomGraphController {
     }
     
     private void confirmButtonAction() {
-
+        // Caso nenhum número tenha sido selecionado, não é possível desenhar o
+        // grafo.
+        // Após esse teste é feito uma geração de um grafo aleatório
         EventHandler<MouseEvent> mousePressed = e ->{
             boolean emptynumber = randomView.getNumberVertex().getSelectionModel().isEmpty();
             if (emptynumber) {
@@ -49,6 +55,7 @@ public class RandomGraphController {
             }
         };
 
+        // Retorna as bordas para a cor inicial, no caso de terem sido alteradas
         EventHandler<MouseEvent> mouseReleased = e ->{
             randomView.getNumberVertex().setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5))));
         };
