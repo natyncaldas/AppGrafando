@@ -119,7 +119,7 @@ public class GraphModel {
         try {
             InputStream input = new FileInputStream(file);
             byte[] stream = input.readAllBytes();
-            
+
             if(this.hasSignature(stream)){
                 this.clearGraph();
                 int i = 5;
@@ -147,11 +147,7 @@ public class GraphModel {
     }
 
     public void save(File file){
-        int i = 1;
-        while (file.exists()) {
-            file = new File(file.getAbsolutePath() + "(" + i + ")");
-            i++;
-        }
+        
         file = new File(file.getAbsolutePath());
         try {
             file.createNewFile();
