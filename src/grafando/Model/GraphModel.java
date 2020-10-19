@@ -146,14 +146,12 @@ public class GraphModel {
     }
 
     public void save(File file){
-        //File file = new File("saved_graph.bin");
-
         int i = 1;
         while (file.exists()) {
-            file = new File(file.getAbsolutePath() + "(" + i + ").bin");
+            file = new File(file.getAbsolutePath() + "(" + i + ")");
             i++;
         }
-        file = new File(file.getAbsolutePath() + ".bin");
+        file = new File(file.getAbsolutePath());
         try {
             file.createNewFile();
             OutputStream output = new FileOutputStream(file);

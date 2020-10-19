@@ -279,7 +279,7 @@ public class MainScreenController {
     private void setupSaveGraphButton() {
         this.view.getSave().setOnAction(mouseEvent -> {
             final FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("binary graph file", "*.bin");
+            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Binary Graph File", "*.bin");
             fileChooser.getExtensionFilters().add(filter);
             File file = fileChooser.showSaveDialog(primaryStage);
             if (GraphModel.totalVertexes(this.graphModel) <= 25) {
