@@ -1,13 +1,16 @@
 package grafando.View;
 
 import grafando.Model.DepthFirstSearch;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -15,8 +18,11 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainScreenView {
@@ -29,7 +35,9 @@ public class MainScreenView {
     private RadioButton addV, delete;
     private ToggleGroup toggleAddDel;
     private MenuItem exit;
-    private MenuItem save, open;
+    private MenuItem save;
+    private MenuItem open;
+    private MenuItem screenshot;
     private ArrayList<Vertex> vertexes;
     private ArrayList<Edge> edges;
     private DepthFirstSearch currentSearchState;
@@ -62,6 +70,7 @@ public class MainScreenView {
         this.setExit(new MenuItem("Exit"));
         this.setSave(new MenuItem("Save"));
         this.setOpen(new MenuItem("Open"));
+        this.setScreenshot(new MenuItem("Screenshot"));
         this.setVertexes(new ArrayList<>());
         this.setEdges(new ArrayList<>());
     }
@@ -70,8 +79,10 @@ public class MainScreenView {
         MenuBar menubar = new MenuBar();
         menubar.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
         Menu fileMenu = new Menu("File");
+        Menu viewMenu = new Menu("View");
         fileMenu.getItems().addAll(this.save, this.open, this.exit);
-        menubar.getMenus().addAll(fileMenu);
+        viewMenu.getItems().add(this.screenshot);
+        menubar.getMenus().addAll(fileMenu, viewMenu);
         root.setTop(menubar);
     }
 
@@ -315,6 +326,14 @@ public class MainScreenView {
         this.open = open;
     }
 
+    public MenuItem getScreenshot() {
+        return screenshot;
+    }
+
+    public void setScreenshot(MenuItem screenshot) {
+        this.screenshot = screenshot;
+    }
+
     public ArrayList<Vertex> getVertexes() {
         return vertexes;
     }
@@ -468,6 +487,18 @@ public class MainScreenView {
                     }
                 }
             }catch (NullPointerException ignored){}
+        }
+    }
+
+    public static void createGraphImageFile(Pane pane, File image) {
+        try {
+            SnapshotParameters parameters = new SnapshotParameters();
+            parameters.setFill(Color.TRANSPARENT);
+            WritableImage graphImage = pane.snapshot(parameters, null);
+            ImageIO.write(SwingFXUtils.fromFXImage(graphImage, null), "png", image);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

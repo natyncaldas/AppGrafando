@@ -46,6 +46,7 @@ public class MainScreenController {
         this.setupSaveGraphButton();
         this.setupOpenGraphButton();
         this.setupExitButton();
+        this.setupScreenshotButton();
 
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
@@ -322,5 +323,19 @@ public class MainScreenController {
             primaryStage.close();
         });
     }
+
+    private void setupScreenshotButton() {
+        this.view.getScreenshot().setOnAction(mouseEvent -> {
+
+                final FileChooser fileChooser = new FileChooser();
+                FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Graph Image File (.png)", "*.png");
+                fileChooser.getExtensionFilters().add(filter);
+                File file = fileChooser.showSaveDialog(primaryStage);
+                if (file != null) {
+                    MainScreenView.createGraphImageFile(this.view.getDrawGraph(), file);
+                }
+        });
+    }
+
 }
 
