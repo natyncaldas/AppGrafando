@@ -105,6 +105,8 @@ public class MainScreenController {
         this.view.getRunDFS().setDisable(b);
         this.view.getRandom().setDisable(b);
         this.view.getDrawGraph().setDisable(b);
+        this.view.getOpen().setDisable(b);
+        this.view.getSave().setDisable(b);
     }
 
     public void showDFSState(Button b1, Button b2, Button run, Button stop){
@@ -278,19 +280,17 @@ public class MainScreenController {
 
     private void setupSaveGraphButton() {
         this.view.getSave().setOnAction(mouseEvent -> {
-            final FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Binary Graph File", "*.bin");
-            fileChooser.getExtensionFilters().add(filter);
-            File file = fileChooser.showSaveDialog(primaryStage);
             if (GraphModel.totalVertexes(this.graphModel) <= 25) {
+                final FileChooser fileChooser = new FileChooser();
+                FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Binary Graph File (.bin)", "*.bin");
+                fileChooser.getExtensionFilters().add(filter);
+                File file = fileChooser.showSaveDialog(primaryStage);
                 if (file != null) {
                     this.graphModel.save(file);
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                //Setting the title
                 alert.setTitle("Error!");
-                //Setting the content of the dialog
                 alert.setContentText("Graph too big to save.");
                 alert.show();
             }
@@ -307,11 +307,8 @@ public class MainScreenController {
                     this.callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges());
                 } catch (FileNotFoundException | ArithmeticException e) {
                     if (e instanceof ArithmeticException) {
-                        //Creating a dialog
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        //Setting the title
                         alert.setTitle("Error!");
-                        //Setting the content of the dialog
                         alert.setContentText("Invalid or corrupted file!");
                         alert.show();
                     }

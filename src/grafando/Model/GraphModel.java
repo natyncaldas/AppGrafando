@@ -119,8 +119,9 @@ public class GraphModel {
         try {
             InputStream input = new FileInputStream(file);
             byte[] stream = input.readAllBytes();
-            this.clearGraph();
+            
             if(this.hasSignature(stream)){
+                this.clearGraph();
                 int i = 5;
                 while (stream[i] != -1) {
                     int v = stream[i];
@@ -140,7 +141,7 @@ public class GraphModel {
             }else{
                 throw new ArithmeticException();
             }
-        } catch (Exception e) {
+        } catch (ArithmeticException | IOException e) {
             throw new ArithmeticException();
         }
     }
