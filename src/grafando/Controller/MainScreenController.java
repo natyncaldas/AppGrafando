@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainScreenController {
     //Declaração da View
@@ -31,12 +30,21 @@ public class MainScreenController {
     private int currentState;
 
     public MainScreenController(Stage primaryStage) throws FileNotFoundException {
+
+        this.setUpController(primaryStage);
+        this.setUpButtonsActions();
+        this.setUpPopUpScreens();
+    }
+
+    private void setUpController(Stage primaryStage) throws FileNotFoundException {
         //Salva referência ao stage principal
         this.primaryStage = primaryStage;
         //Instanciação da View
         this.setView(new MainScreenView());
         this.graphModel = GraphModel.getInstance();
+    }
 
+    private void setUpButtonsActions(){
         //Chamada de métodos com eventos para Nodes específicos
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
         this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
@@ -47,10 +55,13 @@ public class MainScreenController {
         this.setupOpenGraphButton();
         this.setupExitButton();
         this.setupScreenshotButton();
+    }
 
+    private void setUpPopUpScreens(){
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
     }
+
     //Getter e Setter para View
     public MainScreenView getView() {
         return view;
@@ -62,7 +73,6 @@ public class MainScreenController {
 
     //Métodos para adcionar eventos em Nodes
 
-    //*Completa
     public void colorPressedButton(Button... b){
         for (Button btn:b) {
             btn.setOnMousePressed(mouseEvent -> {
@@ -76,7 +86,6 @@ public class MainScreenController {
         }
     }
 
-    //*Completa
     public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e -> {
 
@@ -147,7 +156,6 @@ public class MainScreenController {
         b2.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    //*Completa
     public void clearGraph(Pane pane, Button b, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e ->{
             pane.getChildren().clear();
@@ -180,47 +188,45 @@ public class MainScreenController {
         callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges());
     }
 
-    //*Versão anterior estava retornando várias NullPointerExceptions; lambda de eventos para Edges bugava em alguns casos
-    //TODO: verificar se operacões marcadas como "teste" resolvem o problema
     public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray){
         EventHandler<MouseEvent> eventHandler = e ->{
 
-            ArrayList<Edge>deleted = new ArrayList<>();//teste
+            ArrayList<Edge>deleted = new ArrayList<>();
 
             for (Vertex v:vertexArray) {
                 if(v.getVertex().getChildren().contains(e.getTarget())) {
 
                     for (Edge l:v.getConnectedEdges()) {
                         graphModel.removeEdge(l.getInitialVertex(), l.getFinalVertex());
-                        deleted.add(l);//teste
+                        deleted.add(l);
 
                     }
                     for (Edge l:deleted){
                         int index  = vertexArray.indexOf(v) == l.getInitialVertex() ? l.getFinalVertex() : l.getInitialVertex();
-                        vertexArray.get(index).getConnectedEdges().remove(l);//teste
+                        vertexArray.get(index).getConnectedEdges().remove(l);
                     }
 
                     graphModel.removeVertex(vertexArray.indexOf(v));
                     pane.getChildren().removeAll(v.getConnectedEdges());
-                    edgesArray.removeAll(v.getConnectedEdges());//teste
+                    edgesArray.removeAll(v.getConnectedEdges());
                     v.getVertex().getChildren().removeAll();
                     pane.getChildren().remove(v.getVertex());
                     v.delete();
                     break;
                 }
             }
-            deleted = new ArrayList<>();//teste
+            deleted = new ArrayList<>();
 
             for (Edge l: edgesArray){
                 if(l.contains(e.getX(), e.getY())){
                     pane.getChildren().remove(l);
                     graphModel.removeEdge(l.getInitialVertex(), l.getFinalVertex());
-                    vertexArray.get(l.getInitialVertex()).getConnectedEdges().remove(l);//teste
-                    vertexArray.get(l.getFinalVertex()).getConnectedEdges().remove(l);//teste
-                    deleted.add(l);//teste
+                    vertexArray.get(l.getInitialVertex()).getConnectedEdges().remove(l);
+                    vertexArray.get(l.getFinalVertex()).getConnectedEdges().remove(l);
+                    deleted.add(l);
                 }
             }
-            edgesArray.removeAll(deleted);//teste
+            edgesArray.removeAll(deleted);
         };
 
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
@@ -251,13 +257,13 @@ public class MainScreenController {
         view.drawEdge(initialVertexIndex, finalVertexIndex);
     }
 
-    // novas
+
     private void executeDFS() {
         DepthFirstSearch dfs = new DepthFirstSearch(this.graphModel);
         this.searchExecution = dfs.getSearchExecution();
     }
 
-    // novas
+
     private boolean goToNextExecutionStep() {
         currentState += 1;
         if (currentState >= searchExecution.size()) {
@@ -268,7 +274,6 @@ public class MainScreenController {
         return true;
     }
 
-    // novas
     private boolean goToPreviousExecutionStep() {
         currentState -= 1;
         if (currentState < 0) {
@@ -281,7 +286,7 @@ public class MainScreenController {
 
     private void setupSaveGraphButton() {
         this.view.getSave().setOnAction(mouseEvent -> {
-            if (GraphModel.totalVertexes(this.graphModel) <= 25) {
+            if (GraphModel.graphSize(this.graphModel) <= 25) {
                 final FileChooser fileChooser = new FileChooser();
                 FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Binary Graph File (.bin)", "*.bin");
                 fileChooser.getExtensionFilters().add(filter);
@@ -336,6 +341,5 @@ public class MainScreenController {
                 }
         });
     }
-
 }
 
