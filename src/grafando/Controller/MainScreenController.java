@@ -22,13 +22,16 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainScreenController {
-    //Declaração da View
+    //****** Inicialização ******
+
+    //Declaração dos atributos utilizados pelo controller
     public Stage primaryStage;
     private MainScreenView view;
     public GraphModel graphModel;
     private ArrayList<DepthFirstSearch> searchExecution;
     private int currentState;
 
+    //Construtor do controller
     public MainScreenController(Stage primaryStage) throws FileNotFoundException {
 
         this.setUpController(primaryStage);
@@ -36,18 +39,18 @@ public class MainScreenController {
         this.setUpPopUpScreens();
     }
 
+    //Inicializa atributos
     private void setUpController(Stage primaryStage) throws FileNotFoundException {
-        //Salva referência ao stage principal
-        this.primaryStage = primaryStage;
-        //Instanciação da View
+        this.primaryStage = primaryStage; //~salva referência ao stage principal
         this.setView(new MainScreenView());
-        this.graphModel = GraphModel.getInstance();
+        this.graphModel = GraphModel.getInstance(); //~recebe singleton do model do grafo
     }
 
+    //Chama métodos com eventos para Nodes específicos
     private void setUpButtonsActions(){
-        //Chamada de métodos com eventos para Nodes específicos
+
         this.colorPressedButton(this.view.getRunDFS(), this.view.getRandom(), this.view.getAddE(), this.view.getClear(), this.view.getNext(), this.view.getPrevious());
-        this.drawVertex(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
+        this.callDrawVertexOnView(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes());
         this.clearGraph(this.view.getDrawGraph(), this.view.getClear(), this.view.getVertexes());
         this.showDFSState(this.view.getNext(), this.view.getPrevious(), this.view.getRunDFS(), this.view.getStopDFS());
         this.deleteElements(this.view.getDrawGraph(), this.view.getToggleAddDel(), this.view.getVertexes(), this.view.getEdges());
@@ -57,6 +60,7 @@ public class MainScreenController {
         this.setupScreenshotButton();
     }
 
+    //Chama métodos para abrir as telas Pop Up
     private void setUpPopUpScreens(){
         this.openConnectVertexScreen();
         this.openRandomGraphScreen();
@@ -67,13 +71,14 @@ public class MainScreenController {
         return view;
     }
 
-    public void setView(MainScreenView view) {
+    private void setView(MainScreenView view) {
         this.view = view;
     }
 
-    //Métodos para adcionar eventos em Nodes
+    //****** Métodos para adcionar eventos em Nodes ******
 
-    public void colorPressedButton(Button... b){
+    //Colore botões ao serem clicados
+    private void colorPressedButton(Button... b){
         for (Button btn:b) {
             btn.setOnMousePressed(mouseEvent -> {
                 final Color bg = btn.getGraphic() == null ? Color.SPRINGGREEN : Color.SLATEGRAY;
@@ -86,7 +91,8 @@ public class MainScreenController {
         }
     }
 
-    public void drawVertex(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
+    //Desenha vértices no Pane DrawGraph, caso o ToggleButton "Add Vertex" estiver selecionado
+    private void callDrawVertexOnView(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e -> {
 
             if(pane.contains(e.getX() + 30, e.getY() + 30) && pane.contains(e.getX() - 30, e.getY() - 30)
@@ -94,7 +100,7 @@ public class MainScreenController {
                     && !(e.getTarget() instanceof Text)){
 
                 graphModel.addVertex(vertexArray.size());
-                this.view.drawVertex(e.getX(), e.getY());
+                this.view.drawVertex(e.getX(), e.getY()); //~chama o método na view
             }
         };
         group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
@@ -107,6 +113,7 @@ public class MainScreenController {
         });
     }
 
+    //Desabilita ou abilita botões; método chamado durante a execução do DFS
     private void disableAllOnDFS(boolean b){
         this.view.getAddV().setDisable(b);
         this.view.getDelete().setDisable(b);
@@ -119,7 +126,8 @@ public class MainScreenController {
         this.view.getSave().setDisable(b);
     }
 
-    public void showDFSState(Button b1, Button b2, Button run, Button stop){
+    //Adiciona eventos em botões utilizados na execução do DFS; desabilita/abilita alguns botões
+    private void showDFSState(Button b1, Button b2, Button run, Button stop){
         EventHandler<MouseEvent> eventHandler = e ->{
             if(e.getSource().equals(run)){
                 b1.setOpacity(1);
@@ -156,7 +164,8 @@ public class MainScreenController {
         b2.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    public void clearGraph(Pane pane, Button b, ArrayList<Vertex> vertexArray){
+    //Limpa o grafo na View e no Model caso o botão "Clear" seja clicado
+    private void clearGraph(Pane pane, Button b, ArrayList<Vertex> vertexArray){
         EventHandler<MouseEvent> eventHandler = e ->{
             pane.getChildren().clear();
             vertexArray.clear();
@@ -165,6 +174,7 @@ public class MainScreenController {
         b.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
+    //Desenha vértices e arestas de um Model já pronto
     private void callDrawGraph(Pane pane, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray) throws FileNotFoundException {
 
         pane.getChildren().clear();
@@ -183,17 +193,19 @@ public class MainScreenController {
         }
     }
 
+    //Gera grafo aleatório e chama método "callDrawGraph" para o desenhar
     public void confirmRandomGraph(int graphSize) throws FileNotFoundException {
         GraphModel.generateRandomGraph(graphSize, graphModel);
         callDrawGraph(this.view.getDrawGraph(), this.view.getVertexes(), this.view.getEdges());
     }
 
-    public void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray){
+    //Deleta vértices ou arestas selecionadas pelo o usuário, caso o ToggleButton "Delete" estiver selecionado
+    private void deleteElements(Pane pane, ToggleGroup group, ArrayList<Vertex> vertexArray, ArrayList<Edge> edgesArray){
         EventHandler<MouseEvent> eventHandler = e ->{
 
             ArrayList<Edge>deleted = new ArrayList<>();
 
-            for (Vertex v:vertexArray) {
+            for (Vertex v:vertexArray) { //~deleta vértices e arestas ligadas neste
                 if(v.getVertex().getChildren().contains(e.getTarget())) {
 
                     for (Edge l:v.getConnectedEdges()) {
@@ -217,7 +229,7 @@ public class MainScreenController {
             }
             deleted = new ArrayList<>();
 
-            for (Edge l: edgesArray){
+            for (Edge l: edgesArray){//~deleta arestas
                 if(l.contains(e.getX(), e.getY())){
                     pane.getChildren().remove(l);
                     graphModel.removeEdge(l.getInitialVertex(), l.getFinalVertex());
@@ -239,31 +251,19 @@ public class MainScreenController {
         });
     }
 
-    //adiciona funcionalidade de criar a popup
-    public void openConnectVertexScreen() {
-        view.getAddE().setOnAction(e ->{
-            ConnectVertexController popupController = new ConnectVertexController(this.primaryStage, this);
-        });
-    }
-    public void openRandomGraphScreen() {
-        view.getRandom().setOnAction(e ->{
-           RandomGraphController popupRandom = new RandomGraphController(this.primaryStage, this);
-        });
-    }
-
-    //cria aresta ligando dois nós
+    //Cria aresta conectando dois vértices
     public void callDrawEdgeOnView(int initialVertexIndex, int finalVertexIndex) {
         graphModel.connectVertexes(initialVertexIndex, finalVertexIndex);
-        view.drawEdge(initialVertexIndex, finalVertexIndex);
+        view.drawEdge(initialVertexIndex, finalVertexIndex);//~chama método de desenhar na View
     }
 
-
+    //Inicia execução da busca
     private void executeDFS() {
         DepthFirstSearch dfs = new DepthFirstSearch(this.graphModel);
         this.searchExecution = dfs.getSearchExecution();
     }
 
-
+    //Avança 1x no estado da busca
     private boolean goToNextExecutionStep() {
         currentState += 1;
         if (currentState >= searchExecution.size()) {
@@ -274,6 +274,7 @@ public class MainScreenController {
         return true;
     }
 
+    //Volta 1x no estado da busca
     private boolean goToPreviousExecutionStep() {
         currentState -= 1;
         if (currentState < 0) {
@@ -284,6 +285,7 @@ public class MainScreenController {
         return true;
     }
 
+    //Salva o grafo no arquivo escolhido pelo usuário caso o MenuItem "Save" seja selecionado
     private void setupSaveGraphButton() {
         this.view.getSave().setOnAction(mouseEvent -> {
             if (GraphModel.graphSize(this.graphModel) <= 25) {
@@ -303,6 +305,7 @@ public class MainScreenController {
         });
     }
 
+    //Abre um arquivo de grafo escolhido pelo usuário caso o MenuItem "Open" seja selecionado
     private void setupOpenGraphButton() {
         this.view.getOpen().setOnAction(mouseEvent -> {
             final FileChooser fileChooser = new FileChooser();
@@ -323,12 +326,14 @@ public class MainScreenController {
         });
     }
 
+    //Fecha a aplicação caso o MenuItem "Exit" seja selecionado
     private void setupExitButton() {
         this.view.getExit().setOnAction(mouseEvent -> {
             primaryStage.close();
         });
     }
 
+    //Salva uma imagem do grafo no arquivo escolhido pelo usuário caso o MenuItem "Screenshot" seja selecionado
     private void setupScreenshotButton() {
         this.view.getScreenshot().setOnAction(mouseEvent -> {
 
@@ -341,5 +346,23 @@ public class MainScreenController {
                 }
         });
     }
+
+    //****** Métodos para criar os Popups ******
+
+    //Cria Popup de conectar vértices
+    public void openConnectVertexScreen() {
+        view.getAddE().setOnAction(e ->{
+            ConnectVertexController popupController = new ConnectVertexController(this.primaryStage, this);
+        });
+    }
+
+    //Cria Popup de gerar grafo aleatório
+    public void openRandomGraphScreen() {
+        view.getRandom().setOnAction(e ->{
+            RandomGraphController popupRandom = new RandomGraphController(this.primaryStage, this);
+        });
+    }
 }
+
+
 

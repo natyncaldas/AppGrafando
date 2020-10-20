@@ -3,22 +3,25 @@ package grafando.Model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DepthFirstSearch extends
-        GraphSearchAlgorithms{
-    private GraphModel Graph;
+public class DepthFirstSearch extends GraphSearchAlgorithms{
+    //****** Inicialização ******
 
+    //Declaração dos atributos
+    private GraphModel Graph;
     private HashMap<Integer, String> vertexesColors;
     private HashMap <Integer, Integer> vertexParent;
     private HashMap <Integer, Integer> vertexInitialTime, vertexFinalTime;
     private ArrayList<DepthFirstSearch> searchExecution;
     private int executionTime;
 
+    //Construtor público; recebe um grafo como parâmetro para realizar a busca
     public DepthFirstSearch(GraphModel G){
         this();
         setGraph(G);
         executeSearch();
     }
 
+    //Construtor privado; inicializa atributos
     private DepthFirstSearch(){
 
         searchExecution = new ArrayList<>();
@@ -29,10 +32,11 @@ public class DepthFirstSearch extends
 
     }
 
+    //****** Execução da Busca ******
 
+    //Executa algoritmo do DFS
     public void executeSearch(){
         this.executionTime = 0;
-
 
         for(Integer v: this.Graph.getVertexes().getVertexSet()){
             this.setInitialVertexTime(v, 0);
@@ -49,6 +53,7 @@ public class DepthFirstSearch extends
         }
     }
 
+    //Subrotina do algoritmo do DFS
     private void visitVertex(int u){
 
         setVertexColor(u, "gray");
@@ -57,23 +62,20 @@ public class DepthFirstSearch extends
 
         copyAttributes(this.vertexesColors,this.vertexParent,this.vertexInitialTime,this.vertexFinalTime);
 
-
         for(Integer v: Graph.getAdjVertex(u)){
             if(getVertexColor(v).equals("white")){
                 setVertexParent(v, u);
                 visitVertex(v);
             }
         }
-
         setVertexColor(u, "black");
         this.executionTime++;
         setFinalVertexTime(u, executionTime);
 
         copyAttributes(this.vertexesColors,this.vertexParent,this.vertexInitialTime,this.vertexFinalTime);
-
     }
 
-
+    //Adiciona cada estado dos atributos do DFS em uma array
     private void copyAttributes(HashMap<Integer,String> color, HashMap<Integer,Integer> parent, HashMap<Integer,Integer> i, HashMap<Integer,Integer> f){
 
         DepthFirstSearch temp = new DepthFirstSearch();
@@ -86,6 +88,8 @@ public class DepthFirstSearch extends
 
         this.searchExecution.add(temp);
     }
+
+    //****** Getters e Setters ******
 
     private void setGraph(GraphModel G){
         this.Graph = G;
@@ -126,6 +130,7 @@ public class DepthFirstSearch extends
     public int getFinalVertexTime(int v){
         return vertexFinalTime.get(v);
     }
+
     public GraphModel getGraph(){
         return Graph;
     }

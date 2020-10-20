@@ -22,6 +22,9 @@ import java.util.ArrayList;
 
 public class RandomGraphView {
 
+    //****** Inicialização ******
+
+    //Declaração dos atributos
     Stage randomPopUpStage;
     Stage primaryStage;
     GridPane randomVertexSelection;
@@ -30,12 +33,15 @@ public class RandomGraphView {
     Button confirmButton;
     ArrayList quantity;
 
+    //Construtor
     public RandomGraphView(Stage primaryStage, ArrayList quantity) {
         this.primaryStage = primaryStage;
         this.quantity = quantity;
         setupElements();
         positionElementsInsideView();
     }
+
+    //Inicialização e posicionamento de atributos
 
     private void setupElements() {
         setupGrid();
@@ -109,14 +115,14 @@ public class RandomGraphView {
         GridPane.setHalignment(confirmButton, HPos.RIGHT);
     }
     public void positioningPopupInsideParentStage() {
-        // Calculate the center position of the parent Stage
+        // Calcula a posição central do Parent Stage
         double centerXPosition = primaryStage.getX() + primaryStage.getWidth()/2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight()/2d;
 
-        // Hide the pop-up stage before it is shown and becomes relocated
+        // Esconde o popup antes de ser mostrado e realocado
         randomPopUpStage.setOnShowing(ev -> randomPopUpStage.hide());
 
-        // Relocate the pop-up Stage
+        // Realoca o Popup Stage
         randomPopUpStage.setOnShown(ev -> {
             randomPopUpStage.setX(centerXPosition - randomPopUpStage.getWidth()/2d);
             randomPopUpStage.setY(centerYPosition - randomPopUpStage.getHeight()/2d);
@@ -125,6 +131,8 @@ public class RandomGraphView {
 
         randomPopUpStage.showAndWait();
     }
+
+    // ****** Getters ******
 
     public Button getConfirmButton() {
         return confirmButton;

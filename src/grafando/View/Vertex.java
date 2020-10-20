@@ -7,15 +7,22 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 public class Vertex{
+
+    //****** Inicialização ******
+
+    //Declaração dos atributos
     private Circle shape;
     private Text index;
     private StackPane vertex;
     private boolean deleted;
     private ArrayList<Edge> connectedEdges;
 
+    //Construtor
     public Vertex() {
         this.deleted = false;
     }
+
+    //****** Getters e Setters ******
 
     public Circle getShape() {
         return shape;
