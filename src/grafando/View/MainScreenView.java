@@ -75,6 +75,7 @@ public class MainScreenView {
         this.setEdges(new ArrayList<>());
     }
 
+    // A menubar é inicializada adicionando os botoes
     public void setUpMenu(){
         MenuBar menubar = new MenuBar();
         menubar.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -111,6 +112,7 @@ public class MainScreenView {
         return root;
     }
 
+    // Estiliza o pane principal da aplicação
     private void setRootStyled(BorderPane root) {
         root.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
         this.root = root;
@@ -174,6 +176,8 @@ public class MainScreenView {
     public Button getStopDFS() {
         return stopDFS;
     }
+
+    // Estiliza o icone de stop
     private void setStopDFSStyled(Button stopDFS) throws FileNotFoundException {
         FileInputStream input=new FileInputStream("resources/icons/stop.png");
         Image image = new Image(input);
@@ -189,6 +193,7 @@ public class MainScreenView {
         return runDFS;
     }
 
+    // Estiliza o icone de run DFS
     private void setRunDFSStyled(Button runDFS) throws FileNotFoundException {
         FileInputStream input=new FileInputStream("resources/icons/play.png");
         Image image = new Image(input);
@@ -348,6 +353,8 @@ public class MainScreenView {
         this.edges = edges;
     }
 
+    // Um vertice é desenhado na tela, tomando como base o clique e sua posiçao x y
+    // O vertice é estilizado e adicionado o numero dentro dele, de acordo com o contador interno
     public void drawVertex(double x, double y){
         Vertex vertex = new Vertex();
 
@@ -450,7 +457,7 @@ public class MainScreenView {
     public void reloadGraphState() {
         // para cada vertice in vertexes
         // pega o index dele e vê a cor dele no dfs
-        // colore
+        // colore em seguida
         for (Vertex v: vertexes) {
             String color = currentSearchState.getVertexColor(vertexes.lastIndexOf(v));
             if (color != null) {
@@ -489,6 +496,7 @@ public class MainScreenView {
         }
     }
 
+    // Pega-se um snapshot do estado atual apresentado na tela e o salva em png
     public static void createGraphImageFile(Pane pane, File image) {
         try {
             SnapshotParameters parameters = new SnapshotParameters();

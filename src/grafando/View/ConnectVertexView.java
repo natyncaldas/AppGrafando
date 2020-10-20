@@ -29,6 +29,8 @@ public class ConnectVertexView {
     Button confirmButton;
     HashSet<Integer> vertexesCurrentlyOnScreen;
 
+    // Precisa de uma referencia ao stage inicial para seu posicionamento
+    // Uma referencia dos vertices na tela para as comboboxes se preencherem
     public ConnectVertexView(Stage primaryStage, HashSet<Integer> vertexesCurrentlyOnScreen) {
         this.primaryStage = primaryStage;
         this.vertexesCurrentlyOnScreen = vertexesCurrentlyOnScreen;
@@ -48,8 +50,8 @@ public class ConnectVertexView {
         positionElementsInsideGridLayout();
     }
 
+    // Pega os vertices na tela e preenche as caixas
     private void initializeComboboxes() {
-        //TODO: pegar array de vertices do controller depois
         ObservableList<Integer> options = FXCollections.observableArrayList(vertexesCurrentlyOnScreen);
         startingVertex = new ComboBox<>(options);
         finalVertex = new ComboBox<>(options);
@@ -57,6 +59,7 @@ public class ConnectVertexView {
         finalVertex.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(1.5))));
     }
 
+    // Inicializa as caixas de texto e cores
     private void initializeLabels() {
         labelVertexA = new Label("Vertex A");
         labelVertexB = new Label("Vertex B");
@@ -64,6 +67,8 @@ public class ConnectVertexView {
         labelVertexB.setTextFill(Color.web("#ffffff"));
     }
 
+    // Botão de confirmação da conexao de vertices
+    // Muda de cor ao ser pressionado
     private void initializeButton() {
         confirmButton = new Button("OK");
         confirmButton.setTextFill(Color.DARKSLATEGRAY);
@@ -100,6 +105,8 @@ public class ConnectVertexView {
         popUpStage.setScene(popUpScene);
     }
 
+
+    // Cria o grid de posiçoes
     private void setupGrid() {
         vertexSelection = new GridPane();
         vertexSelection.setBackground(new Background(new BackgroundFill(Color.web("#15202b"), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -121,14 +128,14 @@ public class ConnectVertexView {
     }
 
     public void positioningPopupInsideParentStage() {
-        // Calculate the center position of the parent Stage
+        // Calcula o centro da posiçao do stage pai
         double centerXPosition = primaryStage.getX() + primaryStage.getWidth()/2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight()/2d;
 
-        // Hide the pop-up stage before it is shown and becomes relocated
+        // Esconde o pop up enquanto ele não é alocado no local certo
         popUpStage.setOnShowing(ev -> popUpStage.hide());
 
-        // Relocate the pop-up Stage
+        // Após termos o centro, o mostramos
         popUpStage.setOnShown(ev -> {
             popUpStage.setX(centerXPosition - popUpStage.getWidth()/2d);
             popUpStage.setY(centerYPosition - popUpStage.getHeight()/2d);

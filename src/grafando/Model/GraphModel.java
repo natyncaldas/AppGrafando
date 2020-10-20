@@ -7,6 +7,8 @@ public class GraphModel {
     private final VertexModel vertexes;
     private final TreeMap<Integer, VertexModel> adjList;
 
+    // Um SINGLETON que é usado para se referenciar em todas as telas
+    // que necessitam de referência específica ao grafo.
     private static GraphModel sharedModelGraph = new GraphModel();
 
     private GraphModel(){
@@ -30,20 +32,25 @@ public class GraphModel {
         return this.adjList.get(v).getVertexSet();
     }
 
+    // Testa se existe uma aresta conectando dois vértices
     public boolean hasEdge(int v1, int v2){
         return adjList.get(v1).getVertexSet().contains(v2) || adjList.get(v2).getVertexSet().contains(v1);
     }
 
+    // Testa se existe o vertice especificado
     public boolean hasVertex(int v){
         return vertexes.getVertexSet().contains(v);
     }
 
+    // Adiciona o vertice na lista de vertices e o insere no grafo
     public void addVertex(Integer... v){
         for(Integer c: v){
             vertexes.getVertexSet().add(c);
             adjList.put(c, new VertexModel());
         }
     }
+
+    // Conecta dois vertices, checando se eles já não estão conectados antes disso
     public void connectVertexes(int v1, int v2){
         if((hasVertex(v1) && hasVertex(v2)) && !hasEdge(v1,v2)){
             adjList.get(v1).getVertexSet().add(v2);
@@ -51,6 +58,7 @@ public class GraphModel {
         }
     }
 
+    // Checa se existe um vertice, e então o remove, além de remover suas arestas
     public void removeVertex(int v){
         if(hasVertex(v)) {
             vertexes.getVertexSet().remove(v);
@@ -61,6 +69,7 @@ public class GraphModel {
         }
     }
 
+    // Remove as arestas relacionadas a um vertice
     public void removeEdge(int v1, int v2){
         if(hasEdge(v1,v2)){
             adjList.get(v1).getVertexSet().remove(v2);
@@ -77,6 +86,12 @@ public class GraphModel {
         return graphModel.vertexes.getVertexSet().size();
     }
 
+    /*
+    Gera-se um grafo aleatório:
+    Primeiro o estado atual é limpo;
+    Então de acordo com o número de vertices requerido, ele é criado
+    Na hora de se conectar os vertices é feito uma escolha aleatoria de quais devem se conectar
+     */
     public static void generateRandomGraph(int numberVertexes, GraphModel randomGraph){
         randomGraph.clearGraph();
         for (int i = 0; i < numberVertexes; i++){
@@ -93,6 +108,12 @@ public class GraphModel {
         }
     }
 
+    /*
+    Um arquivo com posiçoes para um grafo de 25 vertices é disponibilizado junto
+    do programa. Ele serve para que o grafo aleatorio seja minimamente legivel,
+    no caso de um grafo com menos de 25 vertices, uma amostra aleatoria desses vertices
+    é recolhida e é criado na tela a partir dela o grafo na tela.
+     */
     public static ArrayList<Double[]> getPositionsArray() throws FileNotFoundException {
         ArrayList<Double[]> pos = new ArrayList<>();
         File file = new File("resources/data_source/positions.txt");
@@ -112,6 +133,12 @@ public class GraphModel {
         return pos;
     }
 
+    /*
+    Abre um arquivo criado previamente pelo programa, carregando o grafo na tela
+    O grafo possuirá as mesmas conexoes e numero de vertices, apesar de ter
+    a chance de suas posiçoes mudarem.
+    É feito um teste de chave para se checar se o arquivo é valido.
+     */
     public void open(File file) {;
         try {
             InputStream input = new FileInputStream(file);
@@ -143,6 +170,11 @@ public class GraphModel {
         }
     }
 
+    /*
+    Salva um grafo em formato binário em um arquivo
+    É escrito um 'cabeçalho' no arquivo, para se identificar (signature)
+    que é um arquivo válido e gerado pelo programa.
+     */
     public void save(File file){
 
         file = new File(file.getAbsolutePath());
@@ -174,6 +206,7 @@ public class GraphModel {
         }
     }
 
+    // Testa se a assinatura do arquivo de grafo salvo é a criada pelo programa
     private boolean hasSignature(byte[] stream){
         return (stream[0] == 'G' && stream[1] == 'R' && stream[2] == 'A' && stream[3] == 'P' && stream[4] == 'H' && stream[5] == 0x7);
     }
